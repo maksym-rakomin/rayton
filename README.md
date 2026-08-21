@@ -195,8 +195,10 @@ node tools/compare.js index.html home 7400   # скриншот вёрстки +
 python3 tools/sbs.py <ref.png> <mine.png> <outdir> 760   # склейка side-by-side
 ```
 
-`tools/build-partials.js` нужно запускать после правки `assets/icons/sprite.svg`
-или футера в `index.html` — футер синхронизируется во все страницы из главной.
+`tools/build-partials.js` нужно запускать после правки `assets/icons/sprite.svg`,
+шапки или футера в `index.html` — они синхронизируются во все страницы из главной.
+Флаг `--bump` дополнительно обновляет `?v=` у CSS/JS (аналог `$ver`
+в `wp_enqueue_style`); без флага версия не трогается, чтобы не шуметь в диффах.
 
 В `tools/figma/` лежат скрипты, которыми макет разбирался в данные: декодер
 бинарного `.fig` (kiwi + zstd), резолвер компонентов, экспорт геометрии и иконок

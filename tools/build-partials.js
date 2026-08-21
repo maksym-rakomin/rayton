@@ -37,9 +37,12 @@ for (const file of fs.readdirSync(root).filter(f => f.endsWith('.html'))) {
 }
 
 /* --- asset cache-busting -------------------------------------------------
-   Bumps ?v= on the CSS/JS links so a plain reload picks up edits (WordPress
-   does the same through the $ver argument of wp_enqueue_style/script).      */
-{
+   Bumps ?v= on the CSS/JS links (WordPress does the same through the $ver
+   argument of wp_enqueue_style/script).
+
+   Opt-in: `node tools/build-partials.js --bump`. Without the flag the version
+   stays put, so routine partial syncing does not churn every page in git.   */
+if (process.argv.includes('--bump')) {
   const stamp = String(Math.floor(Date.now() / 1000));
   for (const file of fs.readdirSync(root).filter(f => f.endsWith('.html'))) {
     const p = path.join(root, file);
