@@ -1,0 +1,403 @@
+/* ==========================================================================
+   Rayton — layout: container, site header, site footer
+   ========================================================================== */
+
+/* --------------------------------------------------------------------- */
+/* Container                                                              */
+/* --------------------------------------------------------------------- */
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section { padding-block: var(--section-pad); }
+.section--tight { padding-block: 76px; }
+.section--flush-top { padding-top: 0; }
+
+.section--dark {
+  background: var(--c-black);
+  color: var(--c-white);
+}
+
+.section--dark .eyebrow { color: var(--c-grey); }
+
+/* --------------------------------------------------------------------- */
+/* Site header — translucent glass bar pinned over the hero               */
+/* --------------------------------------------------------------------- */
+
+.site-header {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  z-index: 60;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.25);
+  transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  width: 100%;
+}
+
+/* sticky variant applied by JS once the hero is scrolled past */
+.site-header.is-stuck {
+  position: fixed;
+  background: rgba(17, 19, 26, 0.82);
+}
+
+.site-header.is-stuck .nav__link,
+.site-header.is-stuck .header__burger { color: var(--c-white); }
+
+.site-logo {
+  flex: 0 0 auto;
+  display: block;
+  width: 155px;
+  height: 39px;
+  color: var(--c-ink);
+}
+
+.site-logo svg { width: 100%; height: 100%; }
+.site-header.is-stuck .site-logo { color: var(--c-white); }
+
+/* --- navigation ---------------------------------------------------- */
+
+.nav { flex: 0 1 auto; }
+
+.nav__list {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  line-height: var(--lh-s);
+}
+
+.nav__item { display: flex; align-items: center; }
+
+/* chevron that expands a mega panel inside the burger menu */
+.nav__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-left: auto;
+  color: currentColor;
+}
+
+.nav__toggle svg { width: 16px; height: 16px; transform: rotate(90deg); transition: transform var(--dur) var(--ease); }
+.nav__item--open > .nav__toggle svg { transform: rotate(-90deg); }
+
+.nav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  font-weight: 500;
+  color: var(--c-ink);
+  white-space: nowrap;
+}
+
+/* glowing yellow dot marks the entries that open a mega menu */
+.nav__link--dot::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--c-yellow);
+  box-shadow: 0 0 3.7px rgba(255, 210, 31, 0.75);
+  transition: height var(--dur) var(--ease), border-radius var(--dur) var(--ease);
+}
+
+.nav__link:hover { color: var(--c-yellow); }
+
+/* open state: yellow label, the dot grows a tail, a 3px bar underlines the item */
+.nav__item--open > .nav__link { color: var(--c-yellow); }
+.nav__item--open > .nav__link--dot::before { height: 10px; border-radius: 2px; }
+
+/* the panel is absolute against .site-header, so the item itself must not
+   become a containing block — the underline lives on the link instead */
+.nav__item--has-menu { position: static; }
+.nav__link { position: relative; }
+
+.nav__item--has-menu > .nav__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -25px;
+  height: 3px;
+  background: var(--c-yellow);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.nav__item--open > .nav__link::after { opacity: 1; }
+
+/* --- mega menu ------------------------------------------------------ */
+
+/* the header itself turns opaque while a panel is open */
+.site-header.has-menu-open {
+  background: var(--c-white);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.site-header.has-menu-open .nav__link,
+.site-header.has-menu-open .header__burger { color: var(--c-ink); }
+.site-header.has-menu-open .site-logo { color: var(--c-ink); }
+.site-header.has-menu-open .nav__item--open > .nav__link { color: var(--c-yellow); }
+
+.mega {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  padding-block: 28px 48px;
+  background: var(--c-white);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+}
+
+.mega[hidden] { display: none; }
+
+.mega__inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 198px;
+}
+
+.mega__group { display: flex; flex-direction: column; gap: 16px; }
+.mega__group--wide { flex: 0 1 675px; }
+.mega__group--list { flex: 0 0 187px; gap: 19px; }
+
+.mega__title {
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--c-grey-dark);
+}
+
+.mega__cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 318px));
+  gap: 9px 39px;
+}
+
+.mega__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border-radius: var(--r-md);
+  transition: background var(--dur) var(--ease);
+}
+
+.mega__link:hover { background: var(--c-grey-lighter); }
+.mega__link:hover .mega__link-title { color: var(--c-yellow); }
+
+.mega__link .icon-chip { flex: 0 0 44px; }
+
+.mega__link-text { display: flex; flex-direction: column; }
+
+.mega__link-title {
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  font-weight: 600;
+  color: var(--c-black);
+  transition: color var(--dur) var(--ease);
+}
+
+.mega__link-note {
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs);
+  color: var(--c-black);
+}
+
+.mega__list { display: flex; flex-direction: column; gap: 6px; }
+
+.mega__list a {
+  display: block;
+  font-size: var(--fs-s);
+  line-height: var(--lh-s-r);
+  color: var(--c-black);
+}
+
+.mega__list a:hover { color: var(--c-yellow); }
+
+/* dim the page behind an open panel */
+.mega-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(10, 10, 10, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.has-mega-open .mega-backdrop { opacity: 1; pointer-events: auto; }
+
+.header__actions { flex: 0 0 auto; display: flex; align-items: center; gap: 12px; }
+
+.header__burger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-ink);
+}
+
+.header__burger span {
+  position: relative;
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+  transition: background var(--dur) var(--ease);
+}
+
+.header__burger span::before,
+.header__burger span::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+  transition: transform var(--dur) var(--ease);
+}
+
+.header__burger span::before { top: -7px; }
+.header__burger span::after  { top: 7px; }
+
+.is-nav-open .header__burger span { background: transparent; }
+.is-nav-open .header__burger span::before { transform: translateY(7px) rotate(45deg); }
+.is-nav-open .header__burger span::after  { transform: translateY(-7px) rotate(-45deg); }
+
+/* --------------------------------------------------------------------- */
+/* Site footer                                                            */
+/* --------------------------------------------------------------------- */
+
+.site-footer {
+  background: var(--c-navy);
+  color: var(--c-white);
+  padding-block: 54px 20px;
+}
+
+.footer__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 63px;
+  padding-bottom: 54px;
+}
+
+.footer__brand {
+  flex: 0 0 195px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer__logo { display: block; width: 155px; height: 39px; color: var(--c-white); }
+.footer__logo svg { width: 100%; height: 100%; }
+
+.footer__about {
+  font-size: var(--fs-s);
+  line-height: var(--lh-s-r);
+  color: var(--c-grey);
+}
+
+.socials { display: flex; align-items: center; gap: 6px; }
+
+.socials__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0.7px solid #454545;
+  border-radius: var(--r-sm);
+  color: var(--c-white);
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+
+.socials__link svg { width: 16px; height: 16px; }
+.socials__link:hover { border-color: var(--c-yellow); background: rgba(255, 210, 31, 0.08); }
+
+.footer__nav {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 62px;
+}
+
+.footer__col { display: flex; flex-direction: column; gap: 24px; }
+
+.footer__title {
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--c-grey);
+}
+
+/* the list itself carries the line-height so <li> struts do not add extra rows */
+.footer__links { display: flex; flex-direction: column; gap: 8px; font-size: var(--fs-s); line-height: var(--lh-s); }
+
+.footer__links a {
+  display: block;
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  font-weight: 500;
+  color: var(--c-white);
+  white-space: nowrap;
+}
+
+.footer__links a:hover { color: var(--c-yellow); }
+
+.footer__contacts { display: flex; flex-direction: column; gap: 8px; }
+
+.footer__contact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  font-weight: 500;
+  color: var(--c-white);
+}
+
+.footer__contact svg { flex: 0 0 16px; width: 16px; height: 16px; }
+.footer__contact--muted { color: var(--c-grey); }
+a.footer__contact:hover { color: var(--c-yellow); }
+
+.footer__bottom { border-top: 1px solid var(--c-border-dark); padding-top: 20px; }
+
+.footer__bottom-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  font-size: var(--fs-s);
+  line-height: var(--lh-s);
+  color: var(--c-grey);
+}
+
+.footer__legal { display: flex; align-items: center; gap: 32px; }
+.footer__legal a:hover { color: var(--c-white); }
