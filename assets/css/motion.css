@@ -1,0 +1,90 @@
+/* ==========================================================================
+   Rayton — движение при прокрутке
+
+   Два эффекта и ничего больше:
+     1. крупные фото едут медленнее контента (параллакс);
+     2. блоки проявляются один раз при входе в экран.
+
+   Всё считается в main.js: IntersectionObserver для появлений и один rAF-цикл
+   для параллакса, который пишет только `--py` (никакого layout, только
+   composited transform).
+
+   Почему не CSS scroll-driven animations: `view()` привязывается к ближайшему
+   scroll-контейнеру, а у нас `overflow: hidden` стоит на героях и на секциях
+   с фото — таймлайн цепляется за них и стоит мёртво. JS-путь ведёт себя
+   одинаково во всех браузерах.
+
+   Ничего не включается, если система просит `prefers-reduced-motion: reduce`
+   или если JS отключён — тогда страница просто статична.
+   ========================================================================== */
+
+:root {
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --reveal-shift: 22px;
+  --reveal-dur: 0.8s;
+}
+
+/* --------------------------------------------------------------------- */
+/* 1. Параллакс                                                           */
+/* --------------------------------------------------------------------- */
+
+/* сдвиг приходит в --py, амплитуда задаётся ниже через --px */
+[data-parallax='hero'],
+[data-parallax='section'] {
+  transform: translate3d(0, var(--py, 0px), 0);
+  will-change: transform;
+}
+
+/* --- амплитуды --------------------------------------------------------
+   Держим их маленькими: запас хода ограничен «вылетом» картинки за рамку,
+   а на глаз крупное смещение сразу читается как дешёвый эффект.          */
+
+.hero__media { --px: 56px; }        /* картинка выступает на 63px сверху */
+.hero--sub .hero__media { --px: 32px; }
+.about-showcase__bg { --px: 26px; }
+.section-bg img { --px: 30px; }
+
+/* --------------------------------------------------------------------- */
+/* 2. Появление блоков                                                    */
+/* --------------------------------------------------------------------- */
+
+/* класс на <html> ставит main.js — без JS ничего не прячется */
+.has-motion [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-shift), 0);
+  transition: opacity var(--reveal-dur) var(--ease-out),
+              transform var(--reveal-dur) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.has-motion [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* то, что видно при загрузке, показываем без анимации: герой не должен
+   «собираться» на глазах */
+.has-motion [data-reveal].is-instant {
+  transition: none;
+  transition-delay: 0s;
+}
+
+/* --------------------------------------------------------------------- */
+/* Полное отключение                                                      */
+/* --------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-parallax='hero'],
+  [data-parallax='section'] {
+    transform: none;
+    will-change: auto;
+  }
+
+  .has-motion [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

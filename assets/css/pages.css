@@ -157,7 +157,7 @@
   aspect-ratio: 1296 / 660;
 }
 
-.about-showcase__bg { width: 100%; height: 100%; object-fit: cover; }
+.about-showcase__bg { position: absolute; left: 0; top: -6%; width: 100%; height: 112%; object-fit: cover; }
 
 .about-showcase::after {
   content: '';
@@ -423,20 +423,44 @@
 .post-row__media { flex: 0 0 196px; width: 196px; height: 142px; aspect-ratio: auto; }
 
 /* --------------------------------------------------------------------- */
+/* Фоновое фото секции                                                    */
+/* --------------------------------------------------------------------- */
+
+/* Отдельный слой вместо background у секции: картинку можно двигать при
+   прокрутке, а браузеру проще — это обычный img, а не псевдоэлемент. */
+.section-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* запас по 6% сверху и снизу — это ход параллакса */
+.section-bg img {
+  position: absolute;
+  left: 0;
+  top: -6%;
+  width: 100%;
+  height: 112%;
+  max-width: none;
+  object-fit: cover;
+}
+
+.section-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(17, 19, 26, 0.44);
+}
+
+/* --------------------------------------------------------------------- */
 /* Калькулятор                                                            */
 /* --------------------------------------------------------------------- */
 
 .section-calc {
   position: relative;
-  background: url('../img/calculator-bg.jpg') center / cover no-repeat;
+  background: var(--c-navy);
   color: var(--c-white);
-}
-
-.section-calc::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(17, 19, 26, 0.44);
 }
 
 .section-calc .container { position: relative; z-index: 2; }
@@ -544,7 +568,7 @@
 
 /* inner-page hero: artwork is 1584×821 at −32,−19 inside a 1536×756 frame */
 .hero--sub { min-height: 756px; }
-.hero--sub .hero__media img { left: -2.1%; top: -2.5%; width: 103.1%; height: 108.6%; }
+.hero--sub .hero__media img { left: -2.1%; top: -5.5%; width: 103.1%; height: 108.6%; }
 .hero--sub .hero__inner { padding-top: 97px; padding-bottom: 173px; }
 .hero--sub .hero__content { margin-top: 145px; }
 .hero--light .hero__title { color: var(--c-white); }
@@ -598,12 +622,10 @@
 
 .section-benefits {
   position: relative;
-  background: url('../img/benefits-bg.jpg') center / cover no-repeat;
+  background: var(--c-navy);
   color: var(--c-white);
   padding-block: 114px 115px;
 }
-
-.section-benefits::before { content: ''; position: absolute; inset: 0; background: rgba(17, 19, 26, 0.44); }
 .section-benefits .container { position: relative; z-index: 2; }
 .section-benefits .section-head__title { color: var(--c-white); }
 .section-benefits .eyebrow { color: var(--c-white); }
@@ -895,11 +917,9 @@
 
 .section-pick {
   position: relative;
-  background: url('../img/uze-cta-bg.jpg') center / cover no-repeat;
+  background: var(--c-navy);
   color: var(--c-white);
 }
-
-.section-pick::before { content: ''; position: absolute; inset: 0; background: rgba(17, 19, 26, 0.44); }
 .section-pick .container { position: relative; z-index: 2; }
 .pick__head { align-items: flex-end; }
 .pick__title { color: var(--c-white); max-width: 349px; }

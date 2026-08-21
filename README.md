@@ -8,8 +8,9 @@ index.html          Головна
 ses.html            СЕС для бізнесу
 uze.html            УЗЕ
 assets/
-  css/              fonts → base → layout → components → pages → responsive
-  js/main.js        шапка, бургер, аккордеоны, табы, раскрытие таблицы
+  css/              fonts → base → layout → components → pages → motion → responsive
+  js/main.js        шапка, мега-меню, бургер, аккордеоны, табы, счётчики,
+                    движение при прокрутке
   fonts/            Montserrat 400/500/600/700 (latin, latin-ext, cyrillic, cyrillic-ext)
   img/              растровые изображения из макета
   icons/            SVG-иконки + sprite.svg (инлайнится в страницы)
@@ -118,7 +119,8 @@ wp_enqueue_style( 'rayton-base',       "$uri/assets/css/base.css",       [ 'rayt
 wp_enqueue_style( 'rayton-layout',     "$uri/assets/css/layout.css",     [ 'rayton-base' ], $ver );
 wp_enqueue_style( 'rayton-components', "$uri/assets/css/components.css", [ 'rayton-base' ], $ver );
 wp_enqueue_style( 'rayton-pages',      "$uri/assets/css/pages.css",      [ 'rayton-components' ], $ver );
-wp_enqueue_style( 'rayton-responsive', "$uri/assets/css/responsive.css", [ 'rayton-pages' ], $ver );
+wp_enqueue_style( 'rayton-motion',     "$uri/assets/css/motion.css",     [ 'rayton-pages' ], $ver );
+wp_enqueue_style( 'rayton-responsive', "$uri/assets/css/responsive.css", [ 'rayton-motion' ], $ver );
 
 wp_enqueue_script( 'rayton', "$uri/assets/js/main.js", [], $ver, true );
 ```
@@ -145,6 +147,42 @@ iframe создаётся только по клику (без загрузки 
 
 **Счётчики.** `<span data-count="1000">` — число докручивается при попадании
 в вьюпорт, `prefers-reduced-motion` уважается.
+
+---
+
+## Движение при прокрутке
+
+Всё в `assets/css/motion.css` плюс один блок в `main.js`. Эффекта два, оба
+намеренно сдержанные — крупные смещения сразу читаются как дешёвый приём.
+
+**Параллакс.** Крупные фото едут медленнее контента: герой 56 px за экран
+прокрутки (на внутренних 32 px), фото в «Про компанію» и полноэкранные
+фоновые секции — ±26…30 px. Запас хода даёт «вылет» картинки за рамку
+(`top: -6%; height: 112%`), поэтому по краям никогда не появляется пустота.
+
+**Появление блоков.** Заголовки, сетки и карточки поднимаются на 22 px и
+проявляются один раз, дети сеток — с задержкой 80 ms друг за другом (не
+больше пяти шагов). То, что видно при загрузке, показывается сразу и без
+анимации — первый экран не должен собираться на глазах.
+
+Список целей лежит в `main.js` (константы `PARALLAX`, `REVEAL`, `STAGGER`),
+а не в разметке: правится в одном месте и шаблоны темы остаются чистыми.
+
+Реализация — `IntersectionObserver` плюс один `requestAnimationFrame`-цикл,
+который пишет только CSS-переменную `--py` (никакого layout, только
+composited transform; чтения геометрии батчатся перед записями).
+
+Полноэкранные секции с фото используют слой `<div class="section-bg">`
+с обычным `<img>` вместо `background` у самой секции — картинку так можно
+двигать, а браузеру проще её композитить.
+
+Почему не CSS scroll-driven animations (`animation-timeline`): `view()`
+привязывается к ближайшему scroll-контейнеру, а `overflow: hidden` стоит
+и на героях, и на фоновых секциях — таймлайн цеплялся за них и стоял мёртво.
+JS-путь ведёт себя одинаково во всех браузерах.
+
+При `prefers-reduced-motion: reduce` и при отключённом JS движения нет
+совсем, страница просто статична.
 
 JS не использует зависимостей и безопасно подключается с `defer`.
 Разметка семантическая: заголовки по иерархии, `aria-expanded` на аккордеонах

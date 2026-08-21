@@ -227,6 +227,135 @@
   }
 
   /* ---------------------------------------------------------------- */
+  /* Движение при прокрутке: параллакс и появление блоков              */
+  /*                                                                    */
+  /* Список целей живёт здесь, а не в разметке — так его правят в одном */
+  /* месте и шаблоны темы остаются чистыми. Сами эффекты описаны        */
+  /* в assets/css/motion.css.                                           */
+  /* ---------------------------------------------------------------- */
+  var motionOff = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!motionOff) {
+    /* какие фото едут медленнее контента */
+    var PARALLAX = [
+      ['.hero__media', 'hero'],
+      ['.about-showcase__bg, .section-bg img', 'section']
+    ];
+
+    /* что проявляется при входе в экран */
+    var REVEAL = [
+      '.section-head', '.section-head-row__aside', '.posts__lead', '.models__lead',
+      '.projects__lead', '.control__lead', '.about-showcase', '.cta-banner',
+      '.showcase__feature', '.showcase__list', '.posts', '.calc', '.calc__disclaimer',
+      '.quote', '.compare', '.seo__text', '.seo__faq', '.control__scheme', '.benefits'
+    ].join(',');
+
+    /* сетки: дети выезжают друг за другом */
+    var STAGGER = [
+      '.solutions-grid', '.process-grid', '.projects-grid', '.models-grid',
+      '.audience-grid', '.choose-grid', '.whatis-grid', '.pick-grid',
+      '.control__grid', '.about-showcase__cards'
+    ].join(',');
+
+    document.documentElement.classList.add('has-motion');
+
+    PARALLAX.forEach(function (pair) {
+      document.querySelectorAll(pair[0]).forEach(function (el) {
+        el.setAttribute('data-parallax', pair[1]);
+      });
+    });
+
+    document.querySelectorAll(REVEAL).forEach(function (el) {
+      el.setAttribute('data-reveal', '');
+    });
+
+    document.querySelectorAll(STAGGER).forEach(function (grid) {
+      grid.setAttribute('data-reveal-stagger', '');
+      Array.prototype.forEach.call(grid.children, function (child, i) {
+        child.setAttribute('data-reveal', '');
+        child.style.setProperty('--reveal-delay', Math.min(i, 4) * 0.08 + 's');
+      });
+    });
+
+    /* --- появление ------------------------------------------------- */
+    var targets = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
+
+    /* то, что уже на экране, показываем сразу и без перехода — иначе при
+       загрузке первый экран собирается на глазах */
+    var vh0 = window.innerHeight;
+    targets.forEach(function (el) {
+      if (el.getBoundingClientRect().top < vh0 * 0.9) {
+        el.classList.add('is-instant', 'is-in');
+      }
+    });
+
+    if ('IntersectionObserver' in window) {
+      var revealIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-in');
+          revealIO.unobserve(entry.target);
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+
+      targets.forEach(function (el) {
+        if (!el.classList.contains('is-in')) revealIO.observe(el);
+      });
+    } else {
+      targets.forEach(function (el) { el.classList.add('is-in'); });
+    }
+
+    /* --- параллакс -------------------------------------------------- */
+    var layers = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'))
+      .map(function (el) {
+        return { el: el, kind: el.getAttribute('data-parallax'),
+                 amount: parseFloat(getComputedStyle(el).getPropertyValue('--px')) || 24 };
+      });
+
+    if (layers.length) {
+      var pending = false;
+
+      var paint = function () {
+        pending = false;
+        var vh = window.innerHeight;
+
+        /* сначала все чтения, потом все записи — иначе браузер пересчитывает
+           геометрию на каждом элементе по очереди */
+        var boxes = layers.map(function (l) { return l.el.getBoundingClientRect(); });
+
+        layers.forEach(function (l, i) {
+          var box = boxes[i];
+          if (box.bottom < -240 || box.top > vh + 240) return;
+
+          var shift;
+          if (l.kind === 'hero') {
+            /* герой стоит наверху: при нулевом скролле смещения нет */
+            shift = clamp(-box.top / vh, 0, 1) * l.amount;
+          } else {
+            /* остальные: −amount на входе в экран, +amount на выходе */
+            var progress = (vh - box.top) / (vh + box.height);
+            shift = (clamp(progress, 0, 1) * 2 - 1) * l.amount;
+          }
+
+          l.el.style.setProperty('--py', shift.toFixed(1) + 'px');
+        });
+      };
+
+      var schedule = function () {
+        if (pending) return;
+        pending = true;
+        window.requestAnimationFrame(paint);
+      };
+
+      window.addEventListener('scroll', schedule, { passive: true });
+      window.addEventListener('resize', schedule);
+      paint();
+    }
+  }
+
+  function clamp(v, min, max) { return v < min ? min : v > max ? max : v; }
+
+  /* ---------------------------------------------------------------- */
   /* YouTube facade — the iframe is only created on demand             */
   /* ---------------------------------------------------------------- */
   document.querySelectorAll('[data-youtube]').forEach(function (holder) {
