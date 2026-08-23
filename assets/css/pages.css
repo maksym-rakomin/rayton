@@ -96,10 +96,12 @@
 
 /* --- stats row ------------------------------------------------------ */
 
-.stats { display: flex; align-items: flex-start; margin-top: 46px; }
+.stats { display: flex; align-items: stretch; margin-top: 46px; }
 
-.stats__item { flex: 0 0 auto; display: flex; flex-direction: column; gap: 4px; width: 99px; }
-.stats__item:first-child { width: 165px; }
+/* колонки меряются по своему тексту. Раньше стояла жёсткая ширина из макета,
+   но при box-sizing: border-box её съедал отступ до разделителя — подписи
+   вылезали за колонку и наезжали на соседнюю линию */
+.stats__item { flex: 0 0 auto; display: flex; flex-direction: column; gap: 4px; }
 
 .stats__item + .stats__item {
   margin-left: 82.75px;

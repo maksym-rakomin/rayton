@@ -326,7 +326,7 @@
 
   /* flex-basis switches to the block axis once these rows stack */
   .stats { flex-direction: column; gap: 20px; }
-  .stats__item, .stats__item:first-child { flex: 0 0 auto; width: auto; }
+  .stats__item { flex: 0 0 auto; }
   .stats__item + .stats__item { margin-left: 0; padding-left: 0; border-left: 0; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.18); }
 
   .process-grid,
