@@ -28,8 +28,15 @@
 /* Site header — translucent glass bar pinned over the hero               */
 /* --------------------------------------------------------------------- */
 
+/* Шапка закреплена всегда. Раньше она была `absolute` и переключалась на
+   `fixed` на 120-м пикселе прокрутки — то есть уезжала вместе с героем, а
+   потом мгновенно телепортировалась обратно к верху окна. Прыжок был виден
+   на каждой странице; вдобавок `backdrop-filter` делает шапку containing
+   block, поэтому бургер-панель внутри неё («fixed») уезжала вместе с ней.
+   Постоянный `fixed` убирает и то, и другое: `is-stuck` теперь меняет только
+   цвет, и этот переход честно проигрывается. */
 .site-header {
-  position: absolute;
+  position: fixed;
   inset: 0 auto auto 0;
   width: 100%;
   z-index: 60;
@@ -40,7 +47,12 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 4px 32px rgba(0, 0, 0, 0.25);
-  transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  /* бордюр держим всегда прозрачным: если добавлять его вместе с классом,
+     высота border-box меняется на 1px и всё содержимое дёргается */
+  border-bottom: 1px solid transparent;
+  transition: background var(--dur) var(--ease),
+              border-color var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
 }
 
 .site-header__inner {
@@ -51,11 +63,8 @@
   width: 100%;
 }
 
-/* sticky variant applied by JS once the hero is scrolled past */
-.site-header.is-stuck {
-  position: fixed;
-  background: rgba(17, 19, 26, 0.82);
-}
+/* JS вешает класс, когда герой прокручен: меняется только фон */
+.site-header.is-stuck { background: rgba(17, 19, 26, 0.82); }
 
 .site-header.is-stuck .nav__link,
 .site-header.is-stuck .header__burger { color: var(--c-white); }
@@ -66,6 +75,7 @@
   width: 155px;
   height: 39px;
   color: var(--c-ink);
+  transition: color var(--dur) var(--ease);
 }
 
 .site-logo svg { width: 100%; height: 100%; }
@@ -74,6 +84,11 @@
 /* --- navigation ---------------------------------------------------- */
 
 .nav { flex: 0 1 auto; }
+
+/* Обёртка существует только ради бургер-меню (см. responsive.css): там она
+   клипует содержимое, пока панель раскрывается. На десктопе исчезает из
+   раскладки и ничего не меняет. */
+.nav__inner { display: contents; }
 
 .nav__list {
   display: flex;
@@ -159,6 +174,12 @@
 .site-header.has-menu-open .site-logo { color: var(--c-ink); }
 .site-header.has-menu-open .nav__item--open > .nav__link { color: var(--c-yellow); }
 
+/* Панель раньше пряталась атрибутом `hidden` (display: none), поэтому её
+   появление невозможно было анимировать: она возникала за один кадр, а
+   затемнение и фон шапки в это же время плавно ехали 250 мс. Теперь панель
+   скрыта через visibility/opacity и живёт на тех же 250 мс, что и всё
+   остальное в шапке. `visibility` переключается по завершении перехода,
+   чтобы закрытая панель уходила из фокуса и из дерева доступности. */
 .mega {
   position: absolute;
   top: 100%;
@@ -168,8 +189,25 @@
   padding-block: 28px 48px;
   background: var(--c-white);
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity var(--dur) var(--ease),
+              transform var(--dur) var(--ease),
+              visibility 0s linear var(--dur);
 }
 
+.nav__item--open > .mega {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+/* до инициализации JS панель скрыта атрибутом — так ничего не мигает */
 .mega[hidden] { display: none; }
 
 .mega__inner {
@@ -238,18 +276,31 @@
 
 .mega__list a:hover { color: var(--c-yellow); }
 
-/* dim the page behind an open panel */
+/* dim the page behind an open panel
+
+   Затемнение тоже пряталось через `hidden`, из-за чего объявленный ниже
+   переход не проигрывался ни разу: страница гасла и разгоралась мгновенно.
+   Держим его на тех же 250 мс, что панель и фон шапки. */
 .mega-backdrop {
   position: fixed;
   inset: 0;
   z-index: 50;
   background: rgba(10, 10, 10, 0.35);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity var(--dur) var(--ease);
+  transition: opacity var(--dur) var(--ease),
+              visibility 0s linear var(--dur);
 }
 
-.has-mega-open .mega-backdrop { opacity: 1; pointer-events: auto; }
+.mega-backdrop[hidden] { display: none; }
+
+.has-mega-open .mega-backdrop {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
 
 .header__actions { flex: 0 0 auto; display: flex; align-items: center; gap: 12px; }
 
@@ -260,6 +311,9 @@
   align-items: center;
   justify-content: center;
   color: var(--c-ink);
+  /* <button> не наследует переход цвета от <a> в base.css — иконка иначе
+     перекрашивалась мгновенно рядом с логотипом, который ехал 250 мс */
+  transition: color var(--dur) var(--ease);
 }
 
 .header__burger span {
@@ -268,9 +322,11 @@
   width: 22px;
   height: 2px;
   background: currentColor;
-  transition: background var(--dur) var(--ease);
+  transition: background-color var(--dur) var(--ease);
 }
 
+/* обе крайние полоски держим на том же таймере, что и средняя: раньше они
+   меняли цвет за кадр, пока средняя крестика плавно гасла */
 .header__burger span::before,
 .header__burger span::after {
   content: '';
@@ -279,7 +335,8 @@
   width: 22px;
   height: 2px;
   background: currentColor;
-  transition: transform var(--dur) var(--ease);
+  transition: transform var(--dur) var(--ease),
+              background-color var(--dur) var(--ease);
 }
 
 .header__burger span::before { top: -7px; }

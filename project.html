@@ -14,6 +14,9 @@
 <link rel="stylesheet" href="assets/css/pages.css?v=1787332495">
 <link rel="stylesheet" href="assets/css/motion.css?v=1787332495">
 <link rel="stylesheet" href="assets/css/responsive.css?v=1787332495">
+<script>/* класс ставим до первой отрисовки: если ждать defer-скрипт, страница
+   успевает показать блоки, а потом гасит их под анимацию */
+if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("has-motion");</script>
 </head>
 <body class="page page--project">
 
@@ -27,6 +30,10 @@
     </a>
 
     <nav class="nav" aria-label="Головне меню">
+      <!-- обёртка нужна бургер-меню: в ней происходит clip при раскрытии
+           (grid-template-rows 0fr → 1fr). На десктопе она display: contents
+           и на раскладку не влияет. -->
+      <div class="nav__inner">
       <ul class="nav__list">
         <li class="nav__item nav__item--has-menu">
           <a class="nav__link nav__link--dot" href="ses.html" data-menu="menu-ses" aria-expanded="false" aria-controls="menu-ses">СЕС</a>
@@ -251,6 +258,7 @@
         Розрахувати проєкт
         <span class="btn__icon"><svg><use href="#i-arrow-ur"></use></svg></span>
       </a>
+      </div>
     </nav>
 
     <div class="header__actions">

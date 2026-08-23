@@ -19,9 +19,10 @@
    ========================================================================== */
 
 :root {
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --reveal-shift: 22px;
-  --reveal-dur: 0.8s;
+  --reveal-dur: 0.6s;
+  /* шаг «лесенки» внутри сетки задаёт main.js: он считается по пачке,
+     которая вошла в экран, а не по номеру элемента в разметке */
 }
 
 /* --------------------------------------------------------------------- */
@@ -48,34 +49,61 @@
 /* 2. Появление блоков                                                    */
 /* --------------------------------------------------------------------- */
 
-/* класс на <html> ставит main.js — без JS ничего не прячется */
-.has-motion [data-reveal] {
-  opacity: 0;
-  transform: translate3d(0, var(--reveal-shift), 0);
-  transition: opacity var(--reveal-dur) var(--ease-out),
-              transform var(--reveal-dur) var(--ease-out);
-  transition-delay: var(--reveal-delay, 0s);
+/* Появление сделано @keyframes, а не transition, и снимается совсем, когда
+   отыграло (класс `is-done` ставит main.js по animationend).
+
+   Почему так. Раньше здесь стоял `transition: opacity …, transform …`, и это
+   свойство наследовалось элементом навсегда. Motion.css подключается после
+   pages.css, специфичность у `.has-motion [data-reveal]` такая же, как у
+   `.process-grid > .step`, — значит выигрывал он и затирал собственный
+   переход компонента. В итоге у карточек внутри «лесенок» ховер ломался:
+   фон менялся мгновенно (его больше не было в списке), а подъём тянулся
+   0.8 с вместо 0.35 с. Анимация такого побочного эффекта не даёт, а `is-done`
+   гарантирует, что после появления элемент возвращается к своим стилям. */
+
+.has-motion [data-reveal]:not(.is-in) { opacity: 0; }
+
+.has-motion [data-reveal].is-in {
+  animation: reveal-in var(--reveal-dur) var(--ease-out) var(--reveal-delay, 0s) both;
   will-change: opacity, transform;
 }
 
-.has-motion [data-reveal].is-in {
+/* то, что видно при загрузке, показываем без анимации: герой не должен
+   «собираться» на глазах. `is-done` — то же самое, но уже после показа */
+.has-motion [data-reveal].is-instant,
+.has-motion [data-reveal].is-done {
+  animation: none;
   opacity: 1;
-  transform: none;
   will-change: auto;
 }
 
-/* то, что видно при загрузке, показываем без анимации: герой не должен
-   «собираться» на глазах */
-.has-motion [data-reveal].is-instant {
-  transition: none;
-  transition-delay: 0s;
+@keyframes reveal-in {
+  from { opacity: 0; transform: translate3d(0, var(--reveal-shift), 0); }
+  to   { opacity: 1; transform: none; }
 }
 
 /* --------------------------------------------------------------------- */
 /* Полное отключение                                                      */
+/*                                                                        */
+/* Раньше здесь глушились только параллакс и появления, а всё, что человек  */
+/* запускает руками — меню, затемнение, аккордеон, ховеры — продолжало     */
+/* ездить. Гасим разом: длительности в ноль, задержки в ноль, плавная      */
+/* прокрутка выключена.                                                    */
 /* --------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+
   [data-parallax='hero'],
   [data-parallax='section'] {
     transform: none;
@@ -84,7 +112,7 @@
 
   .has-motion [data-reveal] {
     opacity: 1;
-    transform: none;
-    transition: none;
+    animation: none;
+    will-change: auto;
   }
 }

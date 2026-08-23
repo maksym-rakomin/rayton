@@ -1,118 +1,181 @@
 /* ==========================================================================
    Rayton — front-end behaviour
    Vanilla JS, no dependencies. Safe to enqueue in WordPress with `defer`.
+
+   Правило по анимациям: JS переключает только классы, длительности живут
+   в CSS (--dur / --dur-lg / --reveal-dur). Ничего не прячем через
+   display/hidden в момент, когда рядом что-то едет, — иначе половина жеста
+   происходит за кадр, а половина за 250 мс.
    ========================================================================== */
 (function () {
   'use strict';
 
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var compact = window.matchMedia('(max-width: 1024px)');
+
+  function isCompact() { return compact.matches; }
+  function clamp(v, min, max) { return v < min ? min : v > max ? max : v; }
+
+  /* ---------------------------------------------------------------- */
+  /* Один слушатель прокрутки на всё                                   */
+  /*                                                                    */
+  /* Раньше их было два, каждый со своим rAF: шапка успевала поменять   */
+  /* класс ровно перед тем, как параллакс начинал мерить геометрию, —   */
+  /* и кадр переключения был самым дорогим за всю прокрутку.            */
+  /* ---------------------------------------------------------------- */
+  var scrollJobs = [];
+  var scrollPending = false;
+
+  function runScrollJobs() {
+    scrollPending = false;
+    for (var i = 0; i < scrollJobs.length; i++) scrollJobs[i]();
+  }
+
+  function scheduleScroll() {
+    if (scrollPending) return;
+    scrollPending = true;
+    window.requestAnimationFrame(runScrollJobs);
+  }
+
+  function onScroll(fn) {
+    scrollJobs.push(fn);
+    fn();
+  }
+
+  window.addEventListener('scroll', scheduleScroll, { passive: true });
+
   /* ---------------------------------------------------------------- */
   /* Sticky header                                                     */
+  /*                                                                    */
+  /* Шапка теперь всегда position: fixed (см. layout.css), поэтому здесь */
+  /* остаётся только цвет. Порог с гистерезисом, чтобы у самой границы  */
+  /* фон не мигал туда-сюда на инерционной прокрутке.                   */
   /* ---------------------------------------------------------------- */
   var header = document.getElementById('site-header');
 
   if (header) {
-    var threshold = 120;
-    var ticking = false;
+    var STUCK_ON = 120;
+    var STUCK_OFF = 88;
+    var stuck = false;
 
-    var onScroll = function () {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(function () {
-        header.classList.toggle('is-stuck', window.scrollY > threshold);
-        ticking = false;
-      });
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    onScroll(function () {
+      var y = window.scrollY;
+      if (!stuck && y > STUCK_ON) stuck = true;
+      else if (stuck && y < STUCK_OFF) stuck = false;
+      else return;
+      header.classList.toggle('is-stuck', stuck);
+    });
   }
 
+  /* Прокрутка закрывает раскрытое меню: держать затемнение над страницей,
+     которая уезжает под ним, — странно. Обработчик регистрируется ниже,
+     когда closeMega уже объявлен. */
+
   /* ---------------------------------------------------------------- */
-  /* Mobile navigation                                                 */
+  /* Mega menu + mobile navigation                                     */
+  /*                                                                    */
+  /* Панели и затемнение больше не прячутся атрибутом `hidden`: он даёт */
+  /* display: none, а его нельзя проанимировать — панель возникала за   */
+  /* кадр, пока фон шапки ехал 250 мс. Снимаем атрибут один раз при     */
+  /* инициализации, дальше всё состояние — на классах, а видимость и    */
+  /* доступность закрывает visibility в CSS.                            */
   /* ---------------------------------------------------------------- */
   var burger = document.querySelector('.header__burger');
-
-  if (burger) {
-    burger.addEventListener('click', function () {
-      var open = document.body.classList.toggle('is-nav-open');
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (!open) closeMega();
-    });
-
-    document.querySelectorAll('.nav__link').forEach(function (link) {
-      link.addEventListener('click', function () {
-        if (link.dataset.menu && isCompact()) return;   // handled by the mega logic
-        document.body.classList.remove('is-nav-open');
-        burger.setAttribute('aria-expanded', 'false');
-      });
-    });
-  }
-
-  /* mark the entry that matches the current document */
-  var here = location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav__link[href]').forEach(function (link) {
-    if (link.getAttribute('href') === here) link.setAttribute('aria-current', 'page');
-  });
-
-  /* ---------------------------------------------------------------- */
-  /* Mega menu                                                         */
-  /* ---------------------------------------------------------------- */
   var backdrop = document.querySelector('.mega-backdrop');
+  var megaItems = Array.prototype.slice.call(document.querySelectorAll('.nav__item--has-menu'));
   var openItem = null;
   var closeTimer = null;
 
-  function isCompact() { return window.matchMedia('(max-width: 1024px)').matches; }
+  if (backdrop) backdrop.removeAttribute('hidden');
 
-  function panelOf(trigger) {
-    var id = trigger.dataset.menu || trigger.dataset.menuToggle;
-    return id ? document.getElementById(id) : null;
+  function panelOf(item) { return item ? item.querySelector('.mega') : null; }
+  function triggerOf(item) { return item ? item.querySelector('[data-menu]') : null; }
+
+  function cancelClose() {
+    if (closeTimer === null) return;
+    clearTimeout(closeTimer);
+    closeTimer = null;
   }
 
-  function closeMega() {
-    if (!openItem) return;
-    var link = openItem.querySelector('[data-menu]');
-    var panel = link && panelOf(link);
+  /* Фон шапки и затемнение — общая «оправа» меню: при переходе с одного
+     пункта на другой её трогать нельзя, иначе страница на 250 мс светлеет
+     и снова гаснет. Поэтому оправа отдельно от панели. */
+  function setChrome(on) {
+    if (header) header.classList.toggle('has-menu-open', on);
+    document.body.classList.toggle('has-mega-open', on);
+  }
+
+  function closeMega(keepChrome) {
+    cancelClose();
+    if (!openItem) {
+      if (!keepChrome) setChrome(false);
+      return;
+    }
+    var trigger = triggerOf(openItem);
     openItem.classList.remove('nav__item--open');
-    if (link) link.setAttribute('aria-expanded', 'false');
-    if (panel) panel.hidden = true;
-    if (header) header.classList.remove('has-menu-open');
-    document.body.classList.remove('has-mega-open');
-    if (backdrop) backdrop.hidden = true;
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    var toggle = openItem.querySelector('[data-menu-toggle]');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
     openItem = null;
+    if (!keepChrome) setChrome(false);
   }
 
   function openMega(item) {
+    cancelClose();
     if (openItem === item) return;
-    closeMega();
-    var link = item.querySelector('[data-menu]');
-    var panel = link && panelOf(link);
-    if (!panel) return;
+    if (!panelOf(item)) return;
+
+    /* оправа уже поднята — значит это перелистывание между пунктами */
+    closeMega(true);
+
+    var trigger = triggerOf(item);
     item.classList.add('nav__item--open');
-    link.setAttribute('aria-expanded', 'true');
-    panel.hidden = false;
-    if (!isCompact()) {
-      if (header) header.classList.add('has-menu-open');
-      document.body.classList.add('has-mega-open');
-      if (backdrop) backdrop.hidden = false;
-    }
+    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+    var toggle = item.querySelector('[data-menu-toggle]');
+    if (toggle) toggle.setAttribute('aria-expanded', 'true');
     openItem = item;
+
+    /* в бургере панель встроена в список — затемнять там нечего */
+    setChrome(!isCompact());
   }
 
-  document.querySelectorAll('.nav__item--has-menu').forEach(function (item) {
-    var link = item.querySelector('[data-menu]');
+  function scheduleClose() {
+    cancelClose();
+    closeTimer = setTimeout(function () {
+      closeTimer = null;
+      /* мышь ушла, но фокус остался внутри — закрывать нельзя, иначе
+         клавиатурная навигация теряет место */
+      if (openItem && openItem.contains(document.activeElement)) return;
+      closeMega();
+    }, 160);
+  }
+
+  megaItems.forEach(function (item) {
+    var trigger = triggerOf(item);
+    var panel = panelOf(item);
     var toggle = item.querySelector('[data-menu-toggle]');
-    var panel = link && panelOf(link);
-    if (!link || !panel) return;
+    if (!trigger || !panel) return;
+
+    panel.removeAttribute('hidden');
 
     /* desktop: hover and keyboard focus reveal the panel, the link still navigates */
-    var enter = function () { if (isCompact()) return; clearTimeout(closeTimer); openMega(item); };
-    var leave = function () { if (isCompact()) return; closeTimer = setTimeout(closeMega, 160); };
+    item.addEventListener('mouseenter', function () { if (!isCompact()) openMega(item); });
+    item.addEventListener('mouseleave', function () { if (!isCompact()) scheduleClose(); });
 
-    item.addEventListener('mouseenter', enter);
-    item.addEventListener('mouseleave', leave);
-    panel.addEventListener('mouseenter', function () { clearTimeout(closeTimer); });
-    panel.addEventListener('mouseleave', leave);
-    link.addEventListener('focus', enter);
+    /* панель лежит внутри того же <li>, но у неё своя рамка попадания —
+       на границе между ссылкой и панелью курсор успевает «выпасть» */
+    panel.addEventListener('mouseenter', cancelClose);
+    panel.addEventListener('mouseleave', function () { if (!isCompact()) scheduleClose(); });
+
+    trigger.addEventListener('focus', function () { if (!isCompact()) openMega(item); });
+
+    /* фокус ушёл из пункта и из его панели — закрываем: раньше открытое
+       по фокусу меню оставалось висеть до Escape */
+    item.addEventListener('focusout', function (e) {
+      if (isCompact()) return;
+      if (e.relatedTarget && item.contains(e.relatedTarget)) return;
+      closeMega();
+    });
 
     /* compact: the chevron expands, the link keeps navigating */
     if (toggle) {
@@ -124,18 +187,65 @@
     }
   });
 
-  if (backdrop) backdrop.addEventListener('click', closeMega);
+  if (backdrop) backdrop.addEventListener('click', function () { closeMega(); });
+
+  onScroll(function () {
+    if (!openItem || isCompact()) return;
+    /* Курсор всё ещё на пункте — значит человек в меню и просто крутит колесо.
+       Закрыть тут нельзя: `mouseenter` больше не сработает, пока указатель не
+       уйдёт с пункта и не вернётся, и меню будет выглядеть сломанным. */
+    if (openItem.matches(':hover')) return;
+    closeMega();
+  });
+
+  /* --- бургер ------------------------------------------------------ */
+  function setNav(open) {
+    document.body.classList.toggle('is-nav-open', open);
+    if (burger) burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    /* страница под открытым меню больше не уезжает под пальцем */
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+    if (!open) closeMega();
+  }
+
+  if (burger) {
+    burger.addEventListener('click', function () {
+      setNav(!document.body.classList.contains('is-nav-open'));
+    });
+  }
+
+  /* любая ссылка внутри меню закрывает его целиком — вместе с раскрытым
+     разделом, иначе при следующем открытии шеврон уже повёрнут */
+  document.querySelectorAll('.nav__link, .mega__link, .mega__list a, .nav .btn').forEach(function (link) {
+    link.addEventListener('click', function () {
+      if (link.dataset.menu && isCompact()) return;   // handled by the mega logic
+      if (isCompact()) setNav(false);
+      else closeMega();
+    });
+  });
+
+  /* mark the entry that matches the current document */
+  var here = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav__link[href]').forEach(function (link) {
+    if (link.getAttribute('href') === here) link.setAttribute('aria-current', 'page');
+  });
 
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
+    var wasOpen = document.body.classList.contains('is-nav-open');
     closeMega();
-    if (document.body.classList.contains('is-nav-open')) {
-      document.body.classList.remove('is-nav-open');
-      if (burger) burger.setAttribute('aria-expanded', 'false');
+    if (wasOpen) {
+      setNav(false);
+      if (burger) burger.focus();
     }
   });
 
-  window.addEventListener('resize', closeMega);
+  /* Реагируем на смену раскладки, а не на любой resize. Раньше здесь висел
+     closeMega на голом `resize`: на телефоне достаточно было прокрутить
+     список, чтобы схлопнулась адресная строка, — событие срабатывало и
+     раскрытый раздел закрывался прямо под пальцем. */
+  var onBreakpoint = function () { setNav(false); closeMega(); };
+  if (compact.addEventListener) compact.addEventListener('change', onBreakpoint);
+  else if (compact.addListener) compact.addListener(onBreakpoint);
 
   /* ---------------------------------------------------------------- */
   /* Accordions                                                        */
@@ -168,38 +278,348 @@
   /* ---------------------------------------------------------------- */
   document.querySelectorAll('.tabs').forEach(function (tabs) {
     var scope = tabs.dataset.tabs ? document.querySelector(tabs.dataset.tabs) : null;
+    var buttons = Array.prototype.slice.call(tabs.querySelectorAll('.tabs__btn'));
 
-    tabs.querySelectorAll('.tabs__btn').forEach(function (btn, index) {
+    buttons.forEach(function (btn, index) {
       btn.addEventListener('click', function () {
-        tabs.querySelectorAll('.tabs__btn').forEach(function (b) {
+        buttons.forEach(function (b) {
           b.classList.remove('is-active');
-          b.setAttribute('aria-selected', 'false');
+          if (b.getAttribute('role') === 'tab') b.setAttribute('aria-selected', 'false');
+          else b.setAttribute('aria-pressed', 'false');
         });
         btn.classList.add('is-active');
-        btn.setAttribute('aria-selected', 'true');
+        if (btn.getAttribute('role') === 'tab') btn.setAttribute('aria-selected', 'true');
+        else btn.setAttribute('aria-pressed', 'true');
 
         if (!scope) return;
         /* every panel tagged with this index becomes visible — a tab can swap
            several regions at once (feature card + side list) */
         scope.querySelectorAll('[data-tab-panel]').forEach(function (panel, i) {
           var owner = panel.dataset.tabPanel === '' ? String(i) : panel.dataset.tabPanel;
-          panel.classList.toggle('is-hidden', owner !== String(index));
+          var show = owner === String(index);
+          var wasHidden = panel.classList.contains('is-hidden');
+
+          if (!show) {
+            /* уходящая панель не должна продолжать играть видео за кадром */
+            stopVideo(panel);
+            panel.classList.add('is-hidden');
+            return;
+          }
+
+          panel.classList.remove('is-hidden');
+          if (!wasHidden) return;
+
+          /* появление на те же 250 мс, что заливка кнопки */
+          panel.classList.remove('is-tab-in');
+          void panel.offsetWidth;                      // рестарт анимации
+          panel.classList.add('is-tab-in');
+          panel.addEventListener('animationend', function done() {
+            panel.classList.remove('is-tab-in');
+            panel.removeEventListener('animationend', done);
+          });
         });
       });
     });
   });
 
   /* ---------------------------------------------------------------- */
+  /* Движение при прокрутке: параллакс и появление блоков              */
+  /*                                                                    */
+  /* Что появляется — считается от разметки, а не от списка классов.    */
+  /* Единица показа — прямой ребёнок `.section > .container`: заголовок  */
+  /* с подводкой, сетка карточек, баннер. Так связанные вещи всегда     */
+  /* едут вместе, а не «заголовок поехал, а текст рядом стоит».         */
+  /*                                                                    */
+  /* Сами эффекты описаны в assets/css/motion.css.                      */
+  /* ---------------------------------------------------------------- */
+  var STAGGER_SEL = [
+    '.solutions-grid', '.process-grid', '.projects-grid', '.models-grid',
+    '.audience-grid', '.choose-grid', '.whatis-grid', '.pick-grid',
+    '.control__grid', '.about-showcase__cards', '.grid', '.posts__grid'
+  ].join(',');
+
+  /* блоки, которые не должны разъезжаться на части и не должны появляться
+     вовсе (шапки секций-героев, абсолютные подложки) */
+  var SKIP_SEL = '.section-bg, .hero, .site-header, .mega, .mega-backdrop';
+
+  if (!still.matches) {
+    document.documentElement.classList.add('has-motion');
+
+    /* --- параллакс: разметка ---------------------------------------- */
+    [['.hero__media', 'hero'], ['.about-showcase__bg, .section-bg img', 'section']]
+      .forEach(function (pair) {
+        document.querySelectorAll(pair[0]).forEach(function (el) {
+          el.setAttribute('data-parallax', pair[1]);
+        });
+      });
+
+    /* --- появление: разметка ---------------------------------------- */
+    function isStaggerGrid(el) {
+      if (el.matches(STAGGER_SEL)) return true;
+      if (el.tagName !== 'UL' && el.tagName !== 'OL') return false;
+      if (el.children.length < 2) return false;
+      var display = getComputedStyle(el).display;
+      return display === 'grid' || display === 'flex';
+    }
+
+    function tag(el) {
+      if (el.hasAttribute('data-reveal')) return;
+      /* ни вложенности, ни перекрытия: иначе ребёнок едет 22px внутри
+         родителя, который сам едет 22px, и прозрачности перемножаются */
+      if (el.parentElement && el.parentElement.closest('[data-reveal]')) return;
+      if (el.querySelector('[data-reveal]')) return;
+      el.setAttribute('data-reveal', '');
+    }
+
+    var roots = Array.prototype.slice.call(document.querySelectorAll('.section > .container > *'));
+    var vhPlan = window.innerHeight || document.documentElement.clientHeight || 0;
+
+    /* Высоты снимаем одним проходом заранее: решения ниже на них опираются, а
+       чередовать чтение геометрии с записью атрибутов нельзя — каждая запись
+       заставляет браузер пересчитывать вёрстку заново. */
+    var heights = new Map();
+    (function measureTree(list, depth) {
+      list.forEach(function (el) {
+        heights.set(el, el.getBoundingClientRect().height);
+        if (depth < 2) measureTree(Array.prototype.slice.call(el.children), depth + 1);
+      });
+    }(roots, 0));
+
+    /* Обходим блоки секции сверху вниз и спускаемся ровно там, где внутри
+       лежит сетка карточек или слой параллакса. Так «шапка + сетка» внутри
+       .posts ведёт себя так же, как .solutions-grid прямо в контейнере, —
+       иначе две одинаковые на вид сетки появлялись бы по-разному. */
+    function plan(block, depth) {
+      if (block.matches(SKIP_SEL)) return;
+      if (block.hasAttribute('data-parallax')) return;
+
+      var cs = getComputedStyle(block);
+      if (cs.display === 'none') return;
+      /* Только на верхнем уровне: там абсолютные дети контейнера — это
+         декоративные подложки. Ниже мы спускаемся осознанно, и абсолютный
+         блок может быть содержимым (.about-showcase__cards на десктопе). */
+      if (depth === 0 && (cs.position === 'absolute' || cs.position === 'fixed')) return;
+
+      if (isStaggerGrid(block)) {
+        block.setAttribute('data-reveal-stagger', '');
+        Array.prototype.forEach.call(block.children, tag);
+        return;
+      }
+
+      /* Блок выше экрана нельзя показывать одним куском: пока пользователь
+         доскроллит до его низа, анимация давно кончилась, и нижняя половина
+         просто возникает готовой. */
+      var tall = vhPlan && (heights.get(block) || 0) > vhPlan * 0.9;
+      var inside = block.querySelector(STAGGER_SEL + ',[data-parallax]');
+
+      /* У блока своя прокрутка (список материалов) — показываем его целиком.
+         Видимость его детей зависит от внутреннего скролла, а не от положения
+         страницы: разметив их по отдельности, мы оставили бы нижние строки
+         прозрачными до тех пор, пока человек не прокрутит список внутри. */
+      if (cs.overflowY === 'auto' || cs.overflowY === 'scroll') { tall = false; }
+
+      if ((inside || tall) && depth < 2 && block.children.length && block.children.length <= 8) {
+        Array.prototype.forEach.call(block.children, function (child) { plan(child, depth + 1); });
+        return;
+      }
+
+      tag(block);
+    }
+
+    roots.forEach(function (block) { plan(block, 0); });
+
+    /* --- появление: запуск ------------------------------------------ */
+    var targets = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
+
+    /* Что уже на экране при загрузке, показываем сразу и без анимации: первый
+       экран не должен «собираться» на глазах.
+
+       Сначала все чтения, потом все записи. Раньше цикл чередовал
+       getBoundingClientRect и classList.add — до полусотни принудительных
+       пересчётов вёрстки одной пачкой прямо на загрузке. */
+    var vh0 = window.innerHeight || document.documentElement.clientHeight || 0;
+
+    /* Высоты экрана может ещё не быть: фоновая вкладка, нулевой iframe,
+       часть webview, prerender. Тогда мерить не от чего — решение отдаём
+       первому отчёту IntersectionObserver, у него геометрия уже настоящая. */
+    var firstPass = !vh0;
+
+    /* Возвращает true, если судьба элемента решена, — иначе он остаётся под
+       наблюдением и появится при входе в экран. */
+    function classify(el, box) {
+      /* display: none (скрытая вкладка) — коробки нет, и rect.top === 0.
+         По старому условию такой блок считался «уже на экране»; теперь он
+         просто не участвует, а его появление делает переключатель вкладок. */
+      if (!box.width && !box.height) { el.classList.add('is-done'); return true; }
+      if (box.top < vh0 * 0.9) { el.classList.add('is-instant', 'is-in'); return true; }
+      return false;
+    }
+
+    if (!firstPass) {
+      var boxes = targets.map(function (el) { return el.getBoundingClientRect(); });
+      targets.forEach(function (el, i) { classify(el, boxes[i]); });
+    }
+
+    function markDone(el) {
+      el.classList.add('is-done');
+      el.style.removeProperty('--reveal-delay');
+    }
+
+    function reveal(el) {
+      el.classList.add('is-in');
+      var fallback = setTimeout(function () { markDone(el); }, 2000);
+      el.addEventListener('animationend', function done(e) {
+        if (e.target !== el) return;
+        clearTimeout(fallback);
+        el.removeEventListener('animationend', done);
+        markDone(el);
+      });
+    }
+
+    if ('IntersectionObserver' in window) {
+      var revealIO = new IntersectionObserver(function (entries) {
+        /* геометрию при загрузке снять не удалось — первый отчёт наблюдателя
+           и есть замер: что видно, показываем без анимации, остальное ждёт */
+        if (firstPass) {
+          var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+          /* Наблюдатель присылает первый отчёт всегда, даже когда мерить ещё
+             нечего. Такой отчёт ничего не решает — ждём следующего, иначе
+             флаг сгорит впустую и страховка ниже уже не сработает. */
+          if (!vh) return;
+          firstPass = false;
+          vh0 = vh;
+          entries.forEach(function (e) {
+            /* снимаем с наблюдения только то, с чем разобрались */
+            if (classify(e.target, e.boundingClientRect)) revealIO.unobserve(e.target);
+          });
+          return;
+        }
+
+        var batch = entries.filter(function (e) { return e.isIntersecting; })
+                           .map(function (e) { return e.target; });
+        if (!batch.length) return;
+
+        /* Лесенка считается по пачке, а не по номеру ребёнка в разметке.
+           Раньше задержка была прибита к индексу: вторая строка сетки
+           въезжала в экран отдельно, но всё равно ждала свои 0.16–0.32 с —
+           получалась мёртвая пауза и потом рывок всей строкой сразу. */
+        var groups = new Map();
+        batch.forEach(function (el) {
+          var parent = el.parentElement;
+          var key = parent && parent.hasAttribute('data-reveal-stagger') ? parent : el;
+          if (!groups.has(key)) groups.set(key, []);
+          groups.get(key).push(el);
+        });
+
+        groups.forEach(function (list) {
+          list.sort(function (a, b) {
+            return (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1;
+          });
+          list.forEach(function (el, i) {
+            revealIO.unobserve(el);
+            if (i) el.style.setProperty('--reveal-delay', (Math.min(i, 4) * 0.07).toFixed(2) + 's');
+            reveal(el);
+          });
+        });
+      }, { rootMargin: '0px 0px -12% 0px', threshold: 0 });
+
+      targets.forEach(function (el) {
+        if (!el.classList.contains('is-in') && !el.classList.contains('is-done')) revealIO.observe(el);
+      });
+
+      /* страховка: если отрисовки так и не случилось и наблюдатель молчит,
+         через три секунды просто показываем страницу — пустой она остаться
+         не может ни при каких обстоятельствах */
+      if (firstPass) {
+        setTimeout(function () {
+          if (!firstPass) return;
+          firstPass = false;
+          targets.forEach(function (el) {
+            revealIO.unobserve(el);
+            el.classList.add('is-instant', 'is-in');
+          });
+        }, 3000);
+      }
+    } else {
+      targets.forEach(function (el) { el.classList.add('is-in', 'is-done'); });
+    }
+
+    /* --- параллакс: счёт -------------------------------------------- */
+    var layers = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'))
+      .map(function (el) {
+        return { el: el, kind: el.getAttribute('data-parallax'), amount: 0, shift: 0 };
+      });
+
+    function measure() {
+      layers.forEach(function (l) {
+        /* именно isNaN, а не `|| 24`: медиазапрос вправе выставить --px: 0,
+           чтобы погасить ход там, где картинке не хватает запаса за рамкой */
+        var px = parseFloat(getComputedStyle(l.el).getPropertyValue('--px'));
+        l.amount = isNaN(px) ? 24 : px;
+      });
+    }
+
+    if (layers.length) {
+      measure();
+
+      onScroll(function () {
+        var vh = window.innerHeight;
+        if (!vh) return;                      /* фоновая вкладка: делить не на что */
+
+        /* сначала все чтения, потом все записи — иначе браузер пересчитывает
+           геометрию на каждом элементе по очереди */
+        var boxes = layers.map(function (l) { return l.el.getBoundingClientRect(); });
+
+        layers.forEach(function (l, i) {
+          var box = boxes[i];
+          /* rect уже включает наш собственный сдвиг — вычитаем его, иначе
+             каждый кадр считается от предыдущего и амплитуда «недобирает» */
+          var top = box.top - l.shift;
+          if (box.bottom < -240 || box.top > vh + 240) return;
+
+          var shift;
+          if (l.kind === 'hero') {
+            /* герой стоит наверху: при нулевом скролле смещения нет */
+            shift = clamp(-top / vh, 0, 1) * l.amount;
+          } else {
+            /* остальные: −amount на входе в экран, +amount на выходе */
+            var progress = (vh - top) / (vh + box.height);
+            shift = (clamp(progress, 0, 1) * 2 - 1) * l.amount;
+          }
+
+          l.shift = shift;
+          l.el.style.setProperty('--py', shift.toFixed(1) + 'px');
+        });
+      });
+    }
+
+    /* амплитуда зависит от медиазапроса — после смены ширины её надо
+       перечитать, иначе фото ездит на «десктопные» пиксели в мобильной рамке */
+    window.addEventListener('resize', function () {
+      measure();
+      scheduleScroll();
+    });
+  }
+
+  /* ---------------------------------------------------------------- */
   /* Counters — numbers spin up once they scroll into view             */
+  /*                                                                    */
+  /* Пороги те же, что у появления блоков: раньше плашка начинала       */
+  /* проявляться на 5% видимости, а цифры стартовали только на 40% —    */
+  /* число «догоняло» уже проявившийся блок.                            */
   /* ---------------------------------------------------------------- */
   var counters = document.querySelectorAll('[data-count]');
-  var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (counters.length) {
     var run = function (el) {
       var target = parseFloat(el.dataset.count) || 0;
       var dur = parseInt(el.dataset.countDuration, 10) || 1400;
-      if (still) { el.textContent = String(target); return; }
+
+      /* моноширинные цифры: иначе на каждом кадре меняется ширина разрядов
+         и число мелко дрожит внутри своей колонки */
+      el.style.fontVariantNumeric = 'tabular-nums';
+
+      if (still.matches) { el.textContent = String(target); return; }
 
       var start = null;
       var step = function (now) {
@@ -219,7 +639,7 @@
           run(entry.target);
           io.unobserve(entry.target);
         });
-      }, { threshold: 0.4 });
+      }, { rootMargin: '0px 0px -12% 0px', threshold: 0 });
       counters.forEach(function (el) { io.observe(el); });
     } else {
       counters.forEach(run);
@@ -227,139 +647,16 @@
   }
 
   /* ---------------------------------------------------------------- */
-  /* Движение при прокрутке: параллакс и появление блоков              */
-  /*                                                                    */
-  /* Список целей живёт здесь, а не в разметке — так его правят в одном */
-  /* месте и шаблоны темы остаются чистыми. Сами эффекты описаны        */
-  /* в assets/css/motion.css.                                           */
-  /* ---------------------------------------------------------------- */
-  var motionOff = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!motionOff) {
-    /* какие фото едут медленнее контента */
-    var PARALLAX = [
-      ['.hero__media', 'hero'],
-      ['.about-showcase__bg, .section-bg img', 'section']
-    ];
-
-    /* что проявляется при входе в экран */
-    var REVEAL = [
-      '.section-head', '.section-head-row__aside', '.posts__lead', '.models__lead',
-      '.projects__lead', '.control__lead', '.about-showcase', '.cta-banner',
-      '.showcase__feature', '.showcase__list', '.posts', '.calc', '.calc__disclaimer',
-      '.quote', '.compare', '.seo__text', '.seo__faq', '.control__scheme', '.benefits',
-      '.post-feature', '.split-cta', '.cta-wide', '.map-block', '.article__cta',
-      '.service-block', '.contact-form', '.cycle', '.lead', '.prose'
-    ].join(',');
-
-    /* сетки: дети выезжают друг за другом */
-    var STAGGER = [
-      '.solutions-grid', '.process-grid', '.projects-grid', '.models-grid',
-      '.audience-grid', '.choose-grid', '.whatis-grid', '.pick-grid',
-      '.control__grid', '.about-showcase__cards', '.grid'
-    ].join(',');
-
-    document.documentElement.classList.add('has-motion');
-
-    PARALLAX.forEach(function (pair) {
-      document.querySelectorAll(pair[0]).forEach(function (el) {
-        el.setAttribute('data-parallax', pair[1]);
-      });
-    });
-
-    document.querySelectorAll(REVEAL).forEach(function (el) {
-      el.setAttribute('data-reveal', '');
-    });
-
-    document.querySelectorAll(STAGGER).forEach(function (grid) {
-      grid.setAttribute('data-reveal-stagger', '');
-      Array.prototype.forEach.call(grid.children, function (child, i) {
-        child.setAttribute('data-reveal', '');
-        child.style.setProperty('--reveal-delay', Math.min(i, 4) * 0.08 + 's');
-      });
-    });
-
-    /* --- появление ------------------------------------------------- */
-    var targets = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
-
-    /* то, что уже на экране, показываем сразу и без перехода — иначе при
-       загрузке первый экран собирается на глазах */
-    var vh0 = window.innerHeight;
-    targets.forEach(function (el) {
-      if (el.getBoundingClientRect().top < vh0 * 0.9) {
-        el.classList.add('is-instant', 'is-in');
-      }
-    });
-
-    if ('IntersectionObserver' in window) {
-      var revealIO = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-in');
-          revealIO.unobserve(entry.target);
-        });
-      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
-
-      targets.forEach(function (el) {
-        if (!el.classList.contains('is-in')) revealIO.observe(el);
-      });
-    } else {
-      targets.forEach(function (el) { el.classList.add('is-in'); });
-    }
-
-    /* --- параллакс -------------------------------------------------- */
-    var layers = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'))
-      .map(function (el) {
-        return { el: el, kind: el.getAttribute('data-parallax'),
-                 amount: parseFloat(getComputedStyle(el).getPropertyValue('--px')) || 24 };
-      });
-
-    if (layers.length) {
-      var pending = false;
-
-      var paint = function () {
-        pending = false;
-        var vh = window.innerHeight;
-
-        /* сначала все чтения, потом все записи — иначе браузер пересчитывает
-           геометрию на каждом элементе по очереди */
-        var boxes = layers.map(function (l) { return l.el.getBoundingClientRect(); });
-
-        layers.forEach(function (l, i) {
-          var box = boxes[i];
-          if (box.bottom < -240 || box.top > vh + 240) return;
-
-          var shift;
-          if (l.kind === 'hero') {
-            /* герой стоит наверху: при нулевом скролле смещения нет */
-            shift = clamp(-box.top / vh, 0, 1) * l.amount;
-          } else {
-            /* остальные: −amount на входе в экран, +amount на выходе */
-            var progress = (vh - box.top) / (vh + box.height);
-            shift = (clamp(progress, 0, 1) * 2 - 1) * l.amount;
-          }
-
-          l.el.style.setProperty('--py', shift.toFixed(1) + 'px');
-        });
-      };
-
-      var schedule = function () {
-        if (pending) return;
-        pending = true;
-        window.requestAnimationFrame(paint);
-      };
-
-      window.addEventListener('scroll', schedule, { passive: true });
-      window.addEventListener('resize', schedule);
-      paint();
-    }
-  }
-
-  function clamp(v, min, max) { return v < min ? min : v > max ? max : v; }
-
-  /* ---------------------------------------------------------------- */
   /* YouTube facade — the iframe is only created on demand             */
   /* ---------------------------------------------------------------- */
+  function stopVideo(scope) {
+    scope.querySelectorAll('.showcase__iframe').forEach(function (frame) {
+      var holder = frame.parentElement;
+      frame.remove();
+      if (holder) holder.classList.remove('is-playing');
+    });
+  }
+
   document.querySelectorAll('[data-youtube]').forEach(function (holder) {
     var id = holder.dataset.youtube;
     if (!id) return;
@@ -373,6 +670,13 @@
       frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
       frame.referrerPolicy = 'strict-origin-when-cross-origin';
       frame.allowFullscreen = true;
+      /* кадр проявляется только когда действительно загрузился — обложка
+         в это время гаснет, и между ними не остаётся голой картинки.
+         Таймер на случай, если `load` так и не придёт: показать пустой
+         плеер лучше, чем оставить прозрачную дыру на месте обложки. */
+      var show = function () { frame.classList.add('is-ready'); };
+      var safety = setTimeout(show, 2500);
+      frame.addEventListener('load', function () { clearTimeout(safety); show(); });
       holder.appendChild(frame);
       holder.classList.add('is-playing');
     });
@@ -391,6 +695,20 @@
       var label = btn.querySelector('[data-expand-label]');
       if (label) label.textContent = expanded ? btn.dataset.labelLess || 'Згорнути' : btn.dataset.labelMore || 'Показати всі';
       btn.classList.toggle('is-expanded', expanded);
+
+      /* проявление — только на разворот и только один раз */
+      if (expanded) {
+        var rows = Array.prototype.slice.call(target.querySelectorAll('.compare-table__extra'));
+        rows.forEach(function (row) { row.classList.remove('is-row-in'); });
+        void target.offsetWidth;                     // один рефлоу на всю пачку
+        rows.forEach(function (row) {
+          row.classList.add('is-row-in');
+          row.addEventListener('animationend', function done() {
+            row.classList.remove('is-row-in');
+            row.removeEventListener('animationend', done);
+          });
+        });
+      }
 
       var counter = document.getElementById('compare-shown');
       if (counter) {

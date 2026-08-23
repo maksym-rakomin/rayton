@@ -385,11 +385,14 @@
   color: var(--c-navy);
 }
 
+/* Раскрытие ответа — крупное движение (панели бывают под 700px), поэтому
+   берёт --dur-lg. Шеврон обязан ехать столько же: на 0.25s он успевал
+   довернуться раньше, чем текст доезжал, и жест распадался на два. */
 .accordion__trigger svg {
   flex: 0 0 23px;
   width: 23px;
   height: 23px;
-  transition: transform var(--dur) var(--ease);
+  transition: transform var(--dur-lg) var(--ease);
 }
 
 .accordion__item.is-open .accordion__trigger svg { transform: rotate(90deg); }
@@ -397,7 +400,7 @@
 .accordion__panel {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows var(--dur) var(--ease);
+  transition: grid-template-rows var(--dur-lg) var(--ease);
 }
 
 .accordion__item.is-open .accordion__panel { grid-template-rows: 1fr; }
@@ -409,7 +412,13 @@
   font-size: var(--fs-m);
   line-height: var(--lh-m);
   color: var(--c-navy);
+  /* без этого первые кадры показывали строки, срезанные пополам краем
+     overflow: hidden — текст «выползал» из-под ножа */
+  opacity: 0;
+  transition: opacity var(--dur-lg) var(--ease);
 }
+
+.accordion__item.is-open .accordion__content { opacity: 1; }
 
 /* --------------------------------------------------------------------- */
 /* Tabs                                                                   */
@@ -433,6 +442,19 @@
 
 .tabs--light .tabs__btn { background: rgba(69, 69, 69, 0.14); border-color: rgba(69, 69, 69, 0.14); color: var(--c-white); }
 .tabs--light .tabs__btn.is-active { background: var(--c-white); border-color: var(--c-white); color: var(--c-black); }
+
+/* Панели переключаются через display: none, анимировать это нельзя. Поэтому
+   ту, что стала видимой, main.js помечает на время появления — и она
+   проявляется ровно столько же, сколько заливается сама кнопка. Раньше
+   кнопка ехала 250 мс, а полкадра контента подменялось встык. */
+[data-tab-panel].is-tab-in {
+  animation: tab-in var(--dur) var(--ease) both;
+}
+
+@keyframes tab-in {
+  from { opacity: 0; transform: translate3d(0, 6px, 0); }
+  to   { opacity: 1; transform: none; }
+}
 
 /* --------------------------------------------------------------------- */
 /* Form fields (calculator)                                               */
@@ -789,7 +811,9 @@
 .post-card:hover { border-color: var(--c-grey); box-shadow: 0 12px 32px rgba(17, 19, 26, 0.08); }
 
 .post-card__media { position: relative; aspect-ratio: 416 / 234; overflow: hidden; background: var(--c-grey-light); }
-.post-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s var(--ease); }
+/* рамка, тень и зум фото — один жест, значит один таймер: раньше рамка
+   останавливалась на 250 мс, а фото продолжало расти ещё 150 мс */
+.post-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur) var(--ease); }
 .post-card:hover .post-card__media img { transform: scale(1.04); }
 .post-card__media .tag { position: absolute; z-index: 2; top: 12px; left: 12px; }
 

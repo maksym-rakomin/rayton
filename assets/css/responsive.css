@@ -31,7 +31,11 @@
   .hero__inner { padding-top: 180px; padding-bottom: 100px; }
 
   .about-showcase { aspect-ratio: auto; }
-  .about-showcase__bg { height: 420px; }
+  /* высота фиксируется в пикселях, запаса 6% сверху и снизу больше нет —
+     нижний край фотографии оказывается внутри рамки, и параллакс возит по
+     блоку видимый горизонтальный шов. Ход гасим (--px перечитывается
+     в main.js при resize, поэтому переключение работает вживую). */
+  .about-showcase__bg { height: 420px; --px: 0px; }
   .about-showcase__cards { position: static; padding: 24px; grid-template-columns: repeat(2, 1fr); }
   .about-showcase { background: var(--c-navy); }
 
@@ -76,34 +80,114 @@
   .is-nav-open .site-header { background: var(--c-navy); }
   .is-nav-open .site-logo, .is-nav-open .header__burger { color: var(--c-white); }
 
+  /* Панель раньше открывалась через display: none → block, то есть возникала
+     за один кадр, пока крестик бургера и фон шапки ехали 250 мс. Теперь она
+     на том же таймере.
+
+     Раскрываем «шторкой» (grid-template-rows 0fr → 1fr, как у аккордеона), а
+     не проявлением: панель непрозрачна на всех кадрах. Кроссфейд поверх
+     фотографии героя давал призрак — сквозь пункты меню читался заголовок.
+
+     Позиционируем от шапки (`absolute` внутри fixed-шапки), а не от вьюпорта:
+     у шапки стоит backdrop-filter, из-за которого `fixed` внутри неё всё
+     равно считался от шапки — и панель отрывалась от бара на величину
+     прокрутки. */
   .nav {
-    position: fixed;
-    inset: var(--header-h) auto auto 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
     width: 100%;
-    display: none;
-    padding: 24px var(--gutter) 32px;
     background: var(--c-navy);
     box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;                 /* этим и режется «шторка» */
+
+    visibility: hidden;
+    pointer-events: none;
+    transition: grid-template-rows var(--dur) var(--ease),
+                visibility 0s linear var(--dur);
   }
 
-  .is-nav-open .nav { display: block; overflow-y: auto; max-height: calc(100vh - var(--header-h)); }
-  .nav__list { flex-direction: column; align-items: stretch; gap: 4px; }
+  /* Вертикальные отступы живут на содержимом, а не на обёртке: padding
+     grid-элемента не схлопывается вместе со строкой 0fr, и под шапкой
+     оставалась бы видимая полоса фона в 56px высотой. Горизонтальный на
+     высоту не влияет и остаётся здесь.
+
+     Прокрутка тоже здесь, а не на .nav: строка грида упирается в max-height
+     панели, и переполнение возникает уже внутри обёртки. `overflow-y: auto`
+     заодно даёт grid-элементу нулевой минимальный размер — без этого строка
+     0fr не схлопнулась бы. */
+  .nav__inner {
+    display: block;
+
+    /* Высота своя, а не по строке грида. Если растягивать обёртку по строке,
+       её скролл-порт «растёт» вместе со шторкой: пока панель раскрывается,
+       содержимое в неё не влезает и на все 250 мс выскакивает полоса
+       прокрутки, дёргая список по горизонтали. С `align-self: start`
+       обёртка сразу нужного размера, а строка её просто открывает. */
+    align-self: start;
+    max-height: calc(100vh - var(--header-h));
+    max-height: calc(100svh - var(--header-h));   /* без учёта адресной строки */
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    padding-inline: var(--gutter);
+  }
+
+  .is-nav-open .nav {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+  .nav__list { flex-direction: column; align-items: stretch; gap: 4px; padding-top: 24px; }
   .nav__item { flex-wrap: wrap; }
   .nav__link { flex: 1 1 auto; padding: 10px 0; color: var(--c-white); font-size: var(--fs-m); }
   .nav__toggle { display: flex; color: var(--c-white); }
   .nav__item--has-menu > .nav__link::after { display: none; }
 
-  /* mega panels collapse into the burger menu */
+  /* mega panels collapse into the burger menu
+
+     Внутри бургера панель раскрывается тем же приёмом, что и аккордеон
+     (grid-template-rows 0fr → 1fr), на тех же 250 мс, что и поворот шеврона.
+     Раньше список выпадал мгновенно и стрелка докручивалась уже после. */
   .mega {
     position: static;
     order: 2;
     flex: 1 1 100%;
-    padding: 8px 0 16px;
+    padding: 0;
     background: transparent;
     box-shadow: none;
+
+    display: grid;
+    grid-template-rows: 0fr;
+    transform: none;
+    transition: grid-template-rows var(--dur) var(--ease),
+                opacity var(--dur) var(--ease),
+                visibility 0s linear var(--dur);
   }
 
-  .mega__inner { flex-direction: column; gap: 24px; padding-inline: 0; }
+  .mega[hidden] { display: grid; }
+
+  .nav__item--open > .mega { grid-template-rows: 1fr; }
+
+  .mega__inner {
+    flex-direction: column;
+    gap: 24px;
+    /* 4px запаса, скомпенсированные отрицательным margin: клип не должен
+       срезать левую сторону фокусной рамки на ссылках подменю */
+    padding: 0 4px;
+    margin-inline: -4px;
+    overflow: hidden;
+  }
+
+  /* отступы — маржинами внутри клипа, иначе каждая закрытая панель
+     оставляла бы 24px пустоты в своём пункте списка */
+  .mega__inner > :first-child { margin-top: 8px; }
+  .mega__inner > :last-child { margin-bottom: 16px; }
   .mega__group--wide, .mega__group--list { flex: 1 1 auto; }
   .mega__cols { grid-template-columns: minmax(0, 1fr); gap: 4px; }
   .mega__link { padding: 8px 0; }
@@ -112,7 +196,7 @@
   .mega__link-title, .mega__link-note, .mega__list a { color: var(--c-white); }
   .mega-backdrop { display: none; }
 
-  .btn.nav__cta { display: inline-flex; margin-top: 20px; }
+  .btn.nav__cta { display: inline-flex; margin: 20px 0 32px; }
 
   .section-head-row { flex-direction: column; align-items: flex-start; gap: 24px; }
   .section-head-row__aside { flex-basis: auto; max-width: 640px; }

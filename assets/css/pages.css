@@ -180,10 +180,11 @@
 .about-showcase__cards .glass-card { min-height: 294px; }
 .glass-card__head { display: flex; flex-direction: column; gap: 6px; }
 
+/* один таймер на весь ховер: фон, рамка, подъём и тень приезжают вместе */
 .about-showcase__cards .glass-card {
   transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
-              color var(--dur) var(--ease), transform 0.35s var(--ease),
-              box-shadow 0.35s var(--ease);
+              backdrop-filter var(--dur) var(--ease), color var(--dur) var(--ease),
+              transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 
 .about-showcase__cards .glass-card:hover {
@@ -194,6 +195,11 @@
   transform: translateY(-6px) rotate(-1.2deg);
   box-shadow: 0 22px 44px rgba(0, 0, 0, 0.35);
 }
+
+/* текст внутри перекрашивается вместе с фоном, а не мгновенно на его фоне */
+.about-showcase__cards .glass-card__num,
+.about-showcase__cards .glass-card__title,
+.about-showcase__cards .glass-card__text { transition: color var(--dur) var(--ease); }
 
 .about-showcase__cards .glass-card:hover .glass-card__num,
 .about-showcase__cards .glass-card:hover .glass-card__title,
@@ -246,8 +252,13 @@
 
 .process-grid > .step {
   border-radius: var(--r-md);
-  transition: background var(--dur) var(--ease), transform 0.35s var(--ease);
+  transition: background var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
+
+/* иначе цифра и текст становились чёрными за кадр, пока фон был ещё белым */
+.process-grid > .step .step__num,
+.process-grid > .step .step__title,
+.process-grid > .step .step__text { transition: color var(--dur) var(--ease); }
 
 .process-grid > .step:not(.step--accent):hover {
   background: var(--c-yellow);
@@ -319,9 +330,6 @@
   border: 0;
 }
 
-.showcase__feature.is-playing .showcase__play,
-.showcase__feature.is-playing .showcase__feature-body { display: none; }
-
 .showcase__play {
   position: absolute;
   top: 50%;
@@ -329,13 +337,42 @@
   transform: translate(-50%, -50%);
   width: 79px;
   height: 79px;
-  transition: transform var(--dur) var(--ease);
+  transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
 }
 
 .showcase__play:hover { transform: translate(-50%, -50%) scale(1.06); }
 .showcase__play svg { width: 100%; height: 100%; }
 
-.showcase__feature-body { display: flex; flex-direction: column; gap: 8px; max-width: 458px; }
+.showcase__feature-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 458px;
+  transition: opacity var(--dur) var(--ease);
+}
+
+/* Раньше постер и кнопка исчезали за кадр (display: none), а плеер появлялся
+   только когда YouTube догрузится, — между ними была голая картинка. Теперь
+   обложка гаснет ровно столько же, сколько проявляется iframe. */
+.showcase__feature.is-playing .showcase__play,
+.showcase__feature.is-playing .showcase__feature-body {
+  opacity: 0;
+  pointer-events: none;
+  /* кнопка «play» — настоящий <button>: после того как обложка погасла, она
+     не должна оставаться в порядке табуляции и в дереве доступности.
+     visibility переключается по завершении затухания, поэтому переход
+     переопределён целиком, а не одной задержкой. */
+  visibility: hidden;
+  transition: opacity var(--dur) var(--ease),
+              visibility 0s linear var(--dur);
+}
+
+.showcase__iframe {
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.showcase__iframe.is-ready { opacity: 1; }
 .showcase__feature-title { font-size: var(--fs-h4); line-height: var(--lh-h4); font-weight: 600; }
 .showcase__feature-text { font-size: var(--fs-m); line-height: var(--lh-m); color: var(--c-grey); }
 
@@ -718,7 +755,7 @@
   overflow: hidden;
 }
 
-.project-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s var(--ease); }
+.project-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur) var(--ease); }
 .project-card:hover .project-card__media img { transform: scale(1.04); }
 
 .project-card__media::after {
@@ -874,8 +911,25 @@
 .compare-table__model { font-weight: 600; white-space: nowrap; }
 .compare-table__accent { color: var(--c-yellow); font-weight: 600; white-space: nowrap; }
 
-.compare-table__extra { display: none; }
-.compare-table.is-expanded .compare-table__extra { display: table-row; }
+/* Через :not(...) — иначе `display: table-row` в развёрнутом состоянии
+   перебивал мобильную раскладку таблицы «карточками» (там tr становится
+   блоком) и восемь строк оставались нечитаемой кашей. Теперь в раскрытом
+   виде display не задаётся вовсе, и медиазапрос работает как задумано. */
+.compare-table:not(.is-expanded) .compare-table__extra { display: none; }
+
+/* Строки нельзя раскрыть по высоте, но проявить их за те же 250 мс, что
+   крутится шеврон, — можно. Класс одноразовый и ставится на клик: если
+   держать анимацию на `.is-expanded`, она проигрывается и при загрузке —
+   таблица УЗЕ приходит уже раскрытой, и восемь строк проявлялись сами по
+   себе, хотя никто ничего не нажимал. */
+.compare-table__extra.is-row-in {
+  animation: row-in var(--dur) var(--ease) both;
+}
+
+@keyframes row-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 .compare-table td { height: 70px; padding-block: 0; }
 
 .btn-line--sm { min-height: 40px; padding: 8px 14px; }
