@@ -1,12 +1,31 @@
 # Rayton — вёрстка сайта
 
-Статическая вёрстка трёх страниц по макету Figma «Rayton – new website»,
+Статическая вёрстка сайта по макету Figma «Rayton – new website»,
 подготовленная под последующую натяжку на WordPress-тему.
 
+Три страницы (главная, СЕС, УЗЕ) свёрстаны попиксельно по макету. Остальные
+перенесены по структуре прототипа на Base44 и собраны из тех же компонентов —
+макета для них нет, поэтому сверять их с Figma нечего.
+
 ```
-index.html          Головна
-ses.html            СЕС для бізнесу
-uze.html            УЗЕ
+index.html            Головна
+solutions.html        Рішення (хаб)
+ses.html              СЕС для бізнесу
+ses-industrial.html   Промислові СЕС
+ses-roof.html         Дахові СЕС
+ses-consumption.html  СЕС для власного споживання
+uze.html              УЗЕ
+hybrid.html           Гібридні системи
+autonomous.html       Автономні рішення
+services.html         Послуги (8 якорных блоков)
+financing.html        Фінансування
+projects.html         Проєкти          project.html — образец кейса
+blog.html             Блог             article.html — образец статьи
+youtube.html          Rayton TV
+about.html            Про нас
+contacts.html         Контакти
+calculator.html       Калькулятор окупності
+faq.html              Запитання та відповіді
 assets/
   css/              fonts → base → layout → components → pages → motion → responsive
   js/main.js        шапка, мега-меню, бургер, аккордеоны, табы, счётчики,
@@ -27,6 +46,50 @@ python3 tools/serve.py 4173
 Это тот же статический сервер, но с `Cache-Control: no-store` — правки CSS/JS
 видны по обычному F5. Подойдёт и `python3 -m http.server 4173`, только тогда
 придётся сбрасывать кеш вручную.
+
+---
+
+## Страницы, перенесённые из прототипа Base44
+
+Прототип: `rayton-solar-grid.base44.app` (доступ по логину). Из него взята
+**только структура** — состав и порядок секций, тексты, наборы карточек.
+Оформление целиком наше: те же токены, компоненты и сетки, что и на трёх
+страницах по макету.
+
+| Наш файл | Раздел прототипа |
+|---|---|
+| `solutions.html` | `/solutions` — хаб решений + таблица сравнения |
+| `ses-industrial.html` | `/solutions/industrial-solar` |
+| `ses-roof.html` | `/solutions/rooftop-solar` |
+| `ses-consumption.html` | `/solutions/self-consumption-solar` |
+| `hybrid.html` | `/solutions/hybrid-systems` |
+| `autonomous.html` | `/solutions/autonomous-energy` |
+| `services.html` | `/services` — восемь блоков с якорями |
+| `financing.html` | `/financing` |
+| `projects.html`, `project.html` | `/projects`, `/projects/1` |
+| `blog.html`, `article.html` | `/blog`, `/blog/kyivguma-case` |
+| `youtube.html` | `/youtube` |
+| `about.html` | `/about` |
+| `contacts.html` | `/contacts` |
+| `calculator.html` | `/calculator` |
+| `faq.html` | `/faq` |
+
+`project.html` и `article.html` — по одному образцу детальной страницы
+(кейс и статья). В WP это `single-project.php` и `single-post.php`.
+
+**Дубли в прототипе, которые сюда не переносились.** В Base44 два параллельных
+набора страниц решений: полный (`/solutions/business-solar`, `industrial-solar`,
+`rooftop-solar`, `self-consumption-solar`, `industrial-energy-storage`,
+`hybrid-systems`, `autonomous-energy` — на них ведёт мега-меню) и урезанный
+(`/solutions/business`, `industrial`, `roof`, `consumption`, `uze` — на них ведут
+футер и блоки внутри страниц). Перенесён полный набор. Кроме того `/uze`
+дублирует `/solutions/industrial-energy-storage`, а `/contact` дублирует
+`/contacts` — у нас это по одной странице.
+
+**Перелинковка.** Мега-меню, футер и блоки внутри страниц сведены на реальные
+файлы: каждая страница получает входящие ссылки со всех остальных, «сирот» нет.
+Заглушки `href="#"` остались только у соцсетей, юридических страниц и внешних
+сайтов банков-партнёров.
 
 ---
 
@@ -79,6 +142,19 @@ xs 12/16 · xxs 9/16 UPPER +2%.
 уменьшен на 1 px (`.btn--outline`, `.btn-line`, `.tag`, `.tabs__btn`, карточки) —
 внешние габариты при этом совпадают с макетом.
 
+**Компоненты внутренних страниц.** Под перенесённые разделы в `components.css`
+и `pages.css` добавлен набор блоков — на тех же токенах, без новых цветов
+и размеров: сетки-утилиты `.grid--2…6`, `.check-list`, `.callout`, `.num-card`,
+`.stat-tile`, `.person-card`, `.bank-card`, `.dept-card`, `.post-card`,
+`.post-feature`, `.prose`, `.share`, `.comment`, `.cycle`, `.split-cta`,
+`.cta-wide`, `.map-block`, `.service-block`, `.article`, `.contact-form`,
+`.contact-list`, светлая форма `.field--light`, светлая таблица сравнения
+`.compare--light` и варианты героя `.hero--compact` (620 px) и `.hero--plain`
+(без фото, для статьи, кейса и FAQ).
+
+Страницы собираются только из этого набора: ни одна перенесённая страница
+не содержит `<style>`, инлайновых стилей или классов вне этого списка.
+
 ---
 
 ## Адаптив
@@ -106,7 +182,10 @@ xs 12/16 · xxs 9/16 UPPER +2%.
 | `<!--@sprite-->` (инлайн SVG-спрайт) | `template-parts/sprite.php` |
 | секции внутри `<main>` | `template-parts/section-*.php` |
 | `index.html` | `front-page.php` |
-| `ses.html`, `uze.html` | `page-ses.php`, `page-uze.php` или `page.php` + ACF |
+| страницы решений, послуг, фінансування, про нас, контакти, FAQ, калькулятор | `page-*.php` или `page.php` + ACF |
+| `projects.html` / `project.html` | `archive-project.php` / `single-project.php` |
+| `blog.html` / `article.html` | `home.php` (или `archive.php`) / `single.php` |
+| `youtube.html` | `page-youtube.php` + CPT «відео» |
 
 Подключение стилей (порядок важен):
 

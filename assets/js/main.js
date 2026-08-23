@@ -247,14 +247,16 @@
       '.section-head', '.section-head-row__aside', '.posts__lead', '.models__lead',
       '.projects__lead', '.control__lead', '.about-showcase', '.cta-banner',
       '.showcase__feature', '.showcase__list', '.posts', '.calc', '.calc__disclaimer',
-      '.quote', '.compare', '.seo__text', '.seo__faq', '.control__scheme', '.benefits'
+      '.quote', '.compare', '.seo__text', '.seo__faq', '.control__scheme', '.benefits',
+      '.post-feature', '.split-cta', '.cta-wide', '.map-block', '.article__cta',
+      '.service-block', '.contact-form', '.cycle', '.lead', '.prose'
     ].join(',');
 
     /* сетки: дети выезжают друг за другом */
     var STAGGER = [
       '.solutions-grid', '.process-grid', '.projects-grid', '.models-grid',
       '.audience-grid', '.choose-grid', '.whatis-grid', '.pick-grid',
-      '.control__grid', '.about-showcase__cards'
+      '.control__grid', '.about-showcase__cards', '.grid'
     ].join(',');
 
     document.documentElement.classList.add('has-motion');
