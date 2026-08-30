@@ -19,6 +19,7 @@ hybrid.html           Гібридні системи
 autonomous.html       Автономні рішення
 services.html         Послуги (8 якорных блоков)
 financing.html        Фінансування
+financing-raiffeisen.html  Фінансування — Райффайзен Банк
 projects.html         Проєкти          project.html — образец кейса
 blog.html             Блог             article.html — образец статьи
 youtube.html          Rayton TV
@@ -66,6 +67,7 @@ python3 tools/serve.py 4173
 | `autonomous.html` | `/solutions/autonomous-energy` |
 | `services.html` | `/services` — восемь блоков с якорями |
 | `financing.html` | `/financing` |
+| `financing-raiffeisen.html` | `/financing/raiffeisen` (окрема сторінка банку-партнера) |
 | `projects.html`, `project.html` | `/projects`, `/projects/1` |
 | `blog.html`, `article.html` | `/blog`, `/blog/kyivguma-case` |
 | `youtube.html` | `/youtube` |
@@ -103,6 +105,8 @@ python3 tools/serve.py 4173
 | Головна | 7353 px | 7344 px | −9 px |
 | СЕС     | 8223 px | ~8270 px | +47 px |
 | УЗЕ     | 6689 px | ~6650 px | −39 px |
+| Фінансування | 6929 px | 6929 px | 0 px |
+| Райффайзен Банк | 6020 px | 6020 px | 0 px |
 
 Остаточные расхождения — это длина текста в блоках, где в макете стоял
 placeholder (см. ниже). Границы и высоты самих секций совпадают в пределах 1–4 px.
