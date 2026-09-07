@@ -155,7 +155,8 @@
   var STAGGER_SEL = [
     '.solutions-grid', '.process-grid', '.projects-grid', '.models-grid',
     '.audience-grid', '.choose-grid', '.whatis-grid', '.pick-grid',
-    '.control__grid', '.about-showcase__cards', '.grid', '.posts__grid'
+    '.control__grid', '.about-showcase__cards', '.grid', '.posts__grid',
+    '.company-owners__grid', '.company-mission__grid', '.company-contact__grid', '.company-stats'
   ].join(',');
 
   /* блоки, которые не должны разъезжаться на части и не должны появляться
@@ -191,7 +192,7 @@
       el.setAttribute('data-reveal', '');
     }
 
-    var roots = Array.prototype.slice.call(document.querySelectorAll('.section > .container > *'));
+    var roots = Array.prototype.slice.call(document.querySelectorAll('.section > .container > *, .company-owners > .container > *, .company-mission > .container > *, .company-contact > .container > *'));
     var vhPlan = window.innerHeight || document.documentElement.clientHeight || 0;
 
     /* Высоты снимаем одним проходом заранее: решения ниже на них опираются, а

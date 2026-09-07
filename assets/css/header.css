@@ -63,3 +63,9 @@
  .rh-contact-button > [data-i18n] { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
  .rh-contact-panel { position:fixed; top:calc(var(--header-h) + 8px); right:16px; width:min(269px, calc(100vw - 32px)); }
 }
+/* Frame 422: secondary link to the full contacts page. */
+.rh-contacts-page { border:1px solid var(--c-yellow); background:transparent; color:var(--c-white); }
+.rh-contacts-page img { filter:invert(1); }
+.rh-panel .rh-contacts-page:hover { color:var(--c-black); background:var(--c-yellow); }
+.rh-contacts-page:hover img { filter:none; }
+.rh-contact-panel { max-height:calc(100dvh - var(--header-h) - 32px); overflow-y:auto; }
