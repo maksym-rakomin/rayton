@@ -18,6 +18,7 @@
    успевает показать блоки, а потом гасит их под анимацию */
 if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("has-motion");</script>
 <link rel="stylesheet" href="assets/css/header.css?v=1788764427">
+<link rel="stylesheet" href="assets/css/calculator.css">
 </head>
 <body class="page page--calculator">
 
@@ -67,82 +68,6 @@ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElem
 
 <main>
 
-  <!-- ==================== HERO ==================== -->
-  <section class="hero hero--sub hero--compact">
-    <div class="hero__media">
-      <img src="assets/img/hero-uze.jpg" alt="" width="1672" height="941" fetchpriority="high">
-      <img class="hero__media-blur" src="assets/img/hero-uze.jpg" alt="" aria-hidden="true" width="1672" height="941">
-    </div>
-
-    <div class="container hero__inner">
-      <ol class="breadcrumbs">
-        <li><a href="index.html">Головна</a></li>
-        <li><span aria-current="page">Розрахунок окупності СЕС</span></li>
-      </ol>
-
-      <div class="hero__content">
-        <p class="hero__eyebrow"><span class="dot"></span>Калькулятор</p>
-
-        <h1 class="hero__title">Розрахунок окупності <span class="accent">СЕС для бізнесу</span></h1>
-
-        <p class="hero__lead">Порахуйте попередню вартість, економію та окупність сонячної
-          електростанції за власні кошти або в кредит.</p>
-
-        <ul class="check-list check-list--light">
-          <li>Розрахунок за споживанням або сумою в рахунку</li>
-          <li>Порівняння власних коштів і кредитних сценаріїв</li>
-          <li>Щомісячна економія по кожному місяцю року</li>
-          <li>Консультація з інженером Rayton</li>
-        </ul>
-
-        <div class="hero__actions">
-          <a class="btn btn--primary" href="#calc">
-            Почати розрахунок
-            <span class="btn__icon"><svg><use href="#i-arrow-ur"></use></svg></span>
-          </a>
-          <a class="btn btn--outline-light" href="contacts.html">
-            Зв’язатися з Rayton
-            <span class="btn__icon"><svg><use href="#i-arrow-ur"></use></svg></span>
-          </a>
-        </div>
-      </div>
-
-      <div class="hero__panel">
-        <p class="eyebrow">Попередній приклад</p>
-
-        <ul class="grid grid--4 grid--tight grid--flush">
-          <li>
-            <div class="stat-tile stat-tile--dark">
-              <span class="stat-tile__label">Потужність СЕС</span>
-              <span class="stat-tile__value">85 кВт</span>
-            </div>
-          </li>
-          <li>
-            <div class="stat-tile stat-tile--dark">
-              <span class="stat-tile__label">Вартість</span>
-              <span class="stat-tile__value">2 125 000 грн</span>
-            </div>
-          </li>
-          <li>
-            <div class="stat-tile stat-tile--dark">
-              <span class="stat-tile__label">Економія / рік</span>
-              <span class="stat-tile__value">510 000 грн</span>
-            </div>
-          </li>
-          <li>
-            <div class="stat-tile stat-tile--dark">
-              <span class="stat-tile__label">Окупність</span>
-              <span class="stat-tile__value">~4.2 р.</span>
-            </div>
-          </li>
-        </ul>
-
-        <p class="hero__note">* Ілюстративний приклад. Точні цифри залежать від об’єкта,
-          тарифу та конфігурації системи.</p>
-      </div>
-    </div>
-  </section>
-
   <!-- ==================== КАЛЬКУЛЯТОР ==================== -->
   <section class="section section-calc" id="calc">
       <div class="section-bg" aria-hidden="true">
@@ -154,8 +79,8 @@ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElem
       <div class="section-head-row calc__head">
         <div class="section-head">
           <p class="eyebrow">Розрахунок</p>
-          <h2 class="section-head__title calc__title">Калькулятор окупності
-            <span class="mark mark--dark">сонячної електростанції</span></h2>
+          <h1 class="section-head__title calc__title">Калькулятор окупності
+            <span class="mark mark--dark">сонячної електростанції</span></h1>
         </div>
         <p class="section-head-row__aside calc__aside">Введіть середньомісячне споживання або суму витрат
           на електроенергію, щоб отримати попередній розрахунок вартості, економії, окупності
@@ -209,6 +134,16 @@ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElem
       <p class="calc__disclaimer">Розрахунок є попереднім. Точні параметри залежать від об’єкта, графіку
         споживання, тарифу, обладнання, умов фінансування та технічного рішення.</p>
 
+    </div>
+  </section>
+
+  <section class="solar-results" id="solar-results" aria-labelledby="solar-results-title" hidden>
+    <div class="container">
+      <p class="solar-results__eyebrow">Результати розрахунку</p>
+      <h2 class="solar-results__heading" id="solar-results-title" tabindex="-1">Результати розрахунку <span>сонячної електростанції</span></h2>
+      <div class="solar-results__grid"></div>
+      <div class="solar-results__summary"></div>
+      <p class="solar-results__note">Усі результати є попередніми та використовуються лише для первинної оцінки. Для точного розрахунку Rayton проводить аналіз об’єкта, графіку споживання та технічних умов.</p>
     </div>
   </section>
 
@@ -441,8 +376,11 @@ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElem
 </footer>
 
 <script src="assets/js/locales/header.js?v=1788764427" defer></script>
+<script src="assets/js/locales/calculator.js?v=20260907" defer></script>
 <script src="assets/js/i18n.js" defer></script>
 <script src="assets/js/header.js?v=1788764427" defer></script>
 <script src="assets/js/main.js?v=1788764427" defer></script>
+<script src="assets/js/solar-calc.js" defer></script>
+<script src="assets/js/calculator.js" defer></script>
 </body>
 </html>
