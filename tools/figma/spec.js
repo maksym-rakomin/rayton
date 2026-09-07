@@ -19,7 +19,7 @@ const A = { MIN: 'start', MAX: 'end', CENTER: 'center', STRETCH: 'stretch', BASE
 
 function paintStr(p) {
   if (p.type === 'SOLID') return p.color + (p.opacity < 1 ? `/${p.opacity}` : '');
-  if (p.type === 'IMAGE') return `img(${p.image.slice(0, 8)},${p.scaleMode})`;
+  if (p.type === 'IMAGE') return `img(${p.image?.slice(0, 8) || 'unavailable'},${p.scaleMode})`;
   if (p.type.startsWith('GRADIENT')) return `${p.type.replace('GRADIENT_', '').toLowerCase()}(${(p.stops || []).map(s => s.color + '@' + (s.pos * 100).toFixed(0)).join(' ')})`;
   return p.type;
 }

@@ -673,7 +673,7 @@
 
 .benefits__swoosh { position: absolute; width: 77px; height: auto; pointer-events: none; }
 .benefits__swoosh--top { top: 0; left: 295px; }
-.benefits__swoosh--bottom { bottom: 0; right: 277px; transform: scaleY(-1); }
+.benefits__swoosh--bottom { bottom: 0; right: 277px; }
 
 .benefits__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 38px; }
 

@@ -21,7 +21,7 @@ function ovKey(arr) { return arr.join('/'); }
 // Build override maps for an instance placed at `prefix`
 function instanceMaps(inst, prefix) {
   const symId = inst.symbolData ? key(inst.symbolData.symbolID) : null;
-  const overrides = new Map(), derived = new Map();
+  const overrides = new Map(), derived = new Map(), assignments = new Map();
   const add = (map, entry) => {
     if (!entry.guidPath || !entry.guidPath.guids) return;
     const g = entry.guidPath.guids.map(key);
@@ -33,7 +33,8 @@ function instanceMaps(inst, prefix) {
   };
   if (inst.symbolData && inst.symbolData.symbolOverrides) for (const e of inst.symbolData.symbolOverrides) add(overrides, e);
   if (inst.derivedSymbolData) for (const e of inst.derivedSymbolData) add(derived, e);
-  return { overrides, derived };
+  for (const a of inst.componentPropAssignments || []) assignments.set(key(a.defID), a.value || {});
+  return { overrides, derived, assignments };
 }
 
 let uid = 0;
@@ -52,6 +53,16 @@ function resolve(master, chain, selfKey, ovList) {
     const o = ovList[i].overrides.get(k);
     if (o) p = Object.assign(p, baseProps(o));
   }
+  // Component properties can swap a nested icon instance (or its text)
+  // without producing a regular symbolOverrides entry.
+  let assignedSymbolID = null;
+  for (const ref of master.componentPropRefs || []) {
+    let value = null;
+    for (let i = ovList.length - 1; i >= 0 && !value; i--) value = ovList[i].assignments.get(key(ref.defID));
+    if (!value) continue;
+    if (ref.componentPropNodeField === 'OVERRIDDEN_SYMBOL_ID' && value.guidValue) assignedSymbolID = key(value.guidValue);
+    if (ref.componentPropNodeField === 'TEXT_DATA' && value.textValue) p.textData = value.textValue;
+  }
   for (let i = ovList.length - 1; i >= 0; i--) {
     const d = ovList[i].derived.get(k);
     if (d) {
@@ -66,7 +77,7 @@ function resolve(master, chain, selfKey, ovList) {
   const node = { id: 'n' + (uid++), srcGuid: key(master.guid), props: p, type: p.type, name: p.name, children: [] };
 
   if (p.type === 'INSTANCE') {
-    let symGuid = null;
+    let symGuid = assignedSymbolID;
     for (let i = ovList.length - 1; i >= 0; i--) {
       const o = ovList[i].overrides.get(k);
       if (o && o.overriddenSymbolID) { symGuid = key(o.overriddenSymbolID); break; }
@@ -107,7 +118,7 @@ function paint(p) {
   if (p.color) { o.color = rgba(p.color); o.hex = hex(p.color); o.alpha = +(p.color.a ?? 1).toFixed(3); }
   if (p.stops) o.stops = p.stops.map(s => ({ color: rgba(s.color), pos: +s.position.toFixed(4) }));
   if (p.transform) o.transform = p.transform;
-  if (p.image) o.image = imgHash(p.image);
+  if (p.image || p.imageThumbnail) o.image = imgHash(p.image || p.imageThumbnail);
   if (p.imageScaleMode) o.scaleMode = p.imageScaleMode;
   if (p.video) o.video = imgHash(p.video);
   return o;
@@ -208,7 +219,7 @@ function flatten(node, parentAbs, out, depth, parentId) {
   const abs = MUL(parentAbs, t);
   const rotated = !(Math.abs(t.m00 - 1) < 1e-6 && Math.abs(t.m01) < 1e-6 && Math.abs(t.m10) < 1e-6 && Math.abs(t.m11 - 1) < 1e-6);
   const r = {
-    id: node.id, parent: parentId, depth, type: node.type, name: node.name,
+    id: node.id, srcGuid: node.srcGuid, parent: parentId, depth, type: node.type, name: node.name,
     symbol: node.symbol,
     x: r2(abs.m02), y: r2(abs.m12),           // absolute origin
     lx: r2(t.m02), ly: r2(t.m12),             // translation inside the parent
