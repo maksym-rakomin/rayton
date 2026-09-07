@@ -7,16 +7,17 @@
 <meta name="description" content="Промислові системи накопичення електроенергії Rayton: резерв живлення, стабільна робота та інтеграція з СЕС.">
 <link rel="preload" href="assets/fonts/montserrat-cyrillic-600.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/montserrat-cyrillic-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/fonts.css?v=1787332495">
-<link rel="stylesheet" href="assets/css/base.css?v=1787332495">
-<link rel="stylesheet" href="assets/css/layout.css?v=1787332495">
-<link rel="stylesheet" href="assets/css/components.css?v=1787332495">
-<link rel="stylesheet" href="assets/css/pages.css?v=1787332495">
-<link rel="stylesheet" href="assets/css/motion.css?v=1787332495">
-<link rel="stylesheet" href="assets/css/responsive.css?v=1787332495">
+<link rel="stylesheet" href="assets/css/fonts.css?v=1788764427">
+<link rel="stylesheet" href="assets/css/base.css?v=1788764427">
+<link rel="stylesheet" href="assets/css/layout.css?v=1788764427">
+<link rel="stylesheet" href="assets/css/components.css?v=1788764427">
+<link rel="stylesheet" href="assets/css/pages.css?v=1788764427">
+<link rel="stylesheet" href="assets/css/motion.css?v=1788764427">
+<link rel="stylesheet" href="assets/css/responsive.css?v=1788764427">
 <script>/* класс ставим до первой отрисовки: если ждать defer-скрипт, страница
    успевает показать блоки, а потом гасит их под анимацию */
 if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("has-motion");</script>
+<link rel="stylesheet" href="assets/css/header.css?v=1788764427">
 </head>
 <body class="page page--uze">
 
@@ -25,259 +26,46 @@ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElem
 
 <!-- ==================== HEADER (WP: header.php) ==================== -->
 <header class="site-header" id="site-header">
-  <div class="container site-header__inner">
-
-    <a class="site-logo" href="index.html" aria-label="Rayton — на головну">
-      <svg><use href="#i-logo-white"></use></svg>
-    </a>
-
-    <nav class="nav" aria-label="Головне меню">
-      <!-- обёртка нужна бургер-меню: в ней происходит clip при раскрытии
-           (grid-template-rows 0fr → 1fr). На десктопе она display: contents
-           и на раскладку не влияет. -->
-      <div class="nav__inner">
-      <ul class="nav__list">
-        <li class="nav__item nav__item--has-menu">
-          <a class="nav__link nav__link--dot" href="ses.html" data-menu="menu-ses" aria-expanded="false" aria-controls="menu-ses">СЕС</a>
-          <button class="nav__toggle" type="button" data-menu-toggle="menu-ses" aria-label="Розгорнути розділ СЕС">
-            <svg><use href="#i-arrow-down"></use></svg>
-          </button>
-        <div class="mega" id="menu-ses" hidden>
-          <div class="container mega__inner">
-            <div class="mega__group mega__group--wide">
-              <p class="mega__title">Енергетичні рішення</p>
-              <div class="mega__cols">
-                <a class="mega__link" href="ses.html">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-solar.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">СЕС для бізнесу</span>
-                    <span class="mega__link-note">Власна генерація для підприємства</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="ses-industrial.html">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-industry.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Промислові СЕС</span>
-                    <span class="mega__link-note">Для виробництва та великих об’єктів</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="ses-roof.html">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-panel.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Дахові СЕС</span>
-                    <span class="mega__link-note">Генерація на покрівлі будівлі</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="ses-consumption.html">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-chart.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">СЕС для власного споживання</span>
-                    <span class="mega__link-note">Компенсація денного навантаження</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="autonomous.html">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-bolt.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Автономні рішення</span>
-                    <span class="mega__link-note">Менша залежність від мережі</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="hybrid.html">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-modules.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Гібридні системи</span>
-                    <span class="mega__link-note">СЕС + УЗЕ + мережа + генератор</span>
-                  </span>
-                </a>
-              </div>
-            </div>
-
-            <div class="mega__group mega__group--list">
-              <p class="mega__title">Галузеві рішення</p>
-              <div class="mega__list">
-                <a href="ses.html">Агропідприємства</a>
-                <a href="ses-industrial.html">Виробництва</a>
-                <a href="ses-roof.html">Склади та логістика</a>
-                <a href="ses-consumption.html">ТРЦ та офісні центри</a>
-                <a href="ses.html">АЗС / СТО / автомийка</a>
-                <a href="ses-consumption.html">Готелі та ресторани</a>
-                <a href="ses-industrial.html">Харчові промисловості</a>
-                <a href="ses-roof.html">Паркінги / сонячні навіси</a>
-              </div>
-            </div>
-          </div>
+  <div class="rh-inner">
+    <a class="rh-logo" href="index.html" aria-label="Rayton"><img class="" src="assets/icons/header/871-28883-imgRaytonWhiteLogo.svg" alt="" width="24" height="24"></a>
+    <nav class="rh-nav" id="header-navigation" aria-label="Головне меню" data-i18n-aria="header.navigation">
+      <div class="rh-primary"><a class="rh-link rh-link--dot" href="ses.html"><img class="rh-dot" src="assets/icons/header/871-28883-imgEllipse9.svg" alt="" width="24" height="24"><span data-i18n="header.solar"><b>СЕС</b> для бізнесу</span></a>
+<a class="rh-link rh-link--dot" href="uze.html"><img class="rh-dot" src="assets/icons/header/871-28883-imgEllipse9.svg" alt="" width="24" height="24"><span data-i18n="header.storage"><b>УЗЕ</b> для бізнесу</span></a>
+<a class="rh-link " href="projects.html"><span data-i18n="header.projects">Проєкти</span></a>
+<a class="rh-link " href="financing.html"><span data-i18n="header.financing">Кредитування</span></a>
+<a class="rh-link " href="contacts.html"><span data-i18n="header.investors">Для інвесторів</span></a></div>
+      <div class="rh-dropdown rh-media">
+        <button class="rh-link rh-trigger" type="button" aria-expanded="false" aria-controls="header-media"><span data-i18n="header.media">Медіа</span><img class="rh-chevron" src="assets/icons/header/871-28883-imgChevronDown.svg" alt="" width="24" height="24"></button>
+        <div class="rh-panel rh-media-panel" id="header-media" hidden>
+          <a href="blog.html"><img class="" src="assets/icons/header/871-28970-imgFileText.svg" alt="" width="24" height="24"><span data-i18n="header.blog">Блог</span></a>
+          <hr>
+          <a href="youtube.html"><img class="" src="assets/icons/header/871-28970-imgPlayCircle.svg" alt="" width="24" height="24"><span>Rayton TV</span></a>
         </div>
-        </li>
-        <li class="nav__item nav__item--has-menu">
-          <a class="nav__link nav__link--dot" href="uze.html" data-menu="menu-uze" aria-expanded="false" aria-controls="menu-uze">УЗЕ</a>
-          <button class="nav__toggle" type="button" data-menu-toggle="menu-uze" aria-label="Розгорнути розділ УЗЕ">
-            <svg><use href="#i-arrow-down"></use></svg>
-          </button>
-        <div class="mega" id="menu-uze" hidden>
-          <div class="container mega__inner">
-            <div class="mega__group mega__group--wide">
-              <p class="mega__title">Рішення на базі УЗЕ</p>
-              <div class="mega__cols">
-                <a class="mega__link" href="uze.html">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-shield.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">УЗЕ для бізнесу</span>
-                    <span class="mega__link-note">Накопичення енергії для підприємства</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="#models">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-modules.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Промислові УЗЕ</span>
-                    <span class="mega__link-note">Моделі від 125 до 1725 кВт</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="autonomous.html">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-bolt.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Резервне живлення</span>
-                    <span class="mega__link-note">Підтримка критичних процесів</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="uze.html#choose">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-chart.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Зрізання пікових навантажень</span>
-                    <span class="mega__link-note">Стабілізація енергоспоживання</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="hybrid.html">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-panel.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">УЗЕ разом із СЕС</span>
-                    <span class="mega__link-note">Зберігання денної генерації</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="hybrid.html">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-scale.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Гібридні енергосистеми</span>
-                    <span class="mega__link-note">УЗЕ + генератор + мережа</span>
-                  </span>
-                </a>
-              </div>
-            </div>
-
-            <div class="mega__group mega__group--list">
-              <p class="mega__title">Галузеві рішення</p>
-              <div class="mega__list">
-                <a href="uze.html">Агропідприємства</a>
-                <a href="autonomous.html">Виробництва</a>
-                <a href="hybrid.html">Склади та логістика</a>
-                <a href="uze.html#models">ТРЦ та офісні центри</a>
-                <a href="autonomous.html">АЗС / СТО / автомийка</a>
-                <a href="hybrid.html">Готелі та ресторани</a>
-                <a href="uze.html#compare">Харчові промисловості</a>
-                <a href="uze.html">Дата-центри</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        </li>
-        <li class="nav__item nav__item--has-menu">
-          <a class="nav__link nav__link--dot" href="services.html" data-menu="menu-services" aria-expanded="false" aria-controls="menu-services">Послуги</a>
-          <button class="nav__toggle" type="button" data-menu-toggle="menu-services" aria-label="Розгорнути розділ Послуги">
-            <svg><use href="#i-arrow-down"></use></svg>
-          </button>
-        <div class="mega" id="menu-services" hidden>
-          <div class="container mega__inner">
-            <div class="mega__group mega__group--wide">
-              <p class="mega__title">Послуги</p>
-              <div class="mega__cols">
-                <a class="mega__link" href="services.html#audit">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-search.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Аудит об’єкта</span>
-                    <span class="mega__link-note">Аналіз споживання та потенціалу</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="services.html#design">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-list.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Проєктування СЕС</span>
-                    <span class="mega__link-note">Технічна модель під реальні параметри</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="services.html#construction">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-industry.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Будівництво СЕС</span>
-                    <span class="mega__link-note">Повний комплекс монтажних робіт</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="services.html#installation">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-modules.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Монтаж</span>
-                    <span class="mega__link-note">Панелі, інвертори, кріплення, кабелі</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="services.html#commissioning">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-bolt.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Пусконалагодження</span>
-                    <span class="mega__link-note">Тестування та запуск системи</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="services.html#service">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-service.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Сервіс</span>
-                    <span class="mega__link-note">Технічне обслуговування та підтримка</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="services.html#monitoring">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-chart.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Моніторинг</span>
-                    <span class="mega__link-note">Контроль продуктивності 24/7</span>
-                  </span>
-                </a>
-                <a class="mega__link" href="services.html#finance">
-                  <span class="icon-chip icon-chip--yellow"><img src="assets/icons/i-care.svg" alt="" width="24" height="24"></span>
-                  <span class="mega__link-text">
-                    <span class="mega__link-title">Фінансовий супровід</span>
-                    <span class="mega__link-note">Кредитування та підбір фінансування</span>
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        </li>
-        <li class="nav__item"><a class="nav__link" href="financing.html">Фінансування</a></li>
-        <li class="nav__item"><a class="nav__link" href="blog.html">Блог</a></li>
-        <li class="nav__item"><a class="nav__link" href="youtube.html">YouTube</a></li>
-        <li class="nav__item"><a class="nav__link" href="about.html">Про нас</a></li>
-        <li class="nav__item"><a class="nav__link" href="contacts.html">Контакти</a></li>
-      </ul>
-      <a class="btn btn--primary nav__cta" href="calculator.html">
-        Розрахувати проєкт
-        <span class="btn__icon"><svg><use href="#i-arrow-ur"></use></svg></span>
-      </a>
       </div>
+      <a class="rh-link" href="about.html"><span data-i18n="header.about">Про нас</span></a>
     </nav>
-
-    <div class="header__actions">
-      <a class="btn btn--primary header__cta" href="calculator.html">
-        Розрахувати проєкт
-        <span class="btn__icon"><svg><use href="#i-arrow-ur"></use></svg></span>
-      </a>
-      <button class="header__burger" type="button" aria-label="Меню" aria-expanded="false"><span></span></button>
+    <div class="rh-actions">
+      <div class="rh-languages" role="group" aria-label="Мова" data-i18n-aria="header.language">
+        <button type="button" data-locale="uk" aria-pressed="true" lang="uk">UA</button>
+        <button type="button" data-locale="ru" aria-pressed="false" lang="ru">RU</button>
+        <button type="button" data-locale="en" aria-pressed="false" lang="en">EN</button>
+      </div>
+      <div class="rh-dropdown rh-contact">
+        <button class="rh-contact-button rh-trigger" type="button" aria-expanded="false" aria-controls="header-contact"><span data-i18n="header.contact">Зв’язатись</span><span class="rh-arrow"><img class="" src="assets/icons/header/871-28883-imgDownArrow34787511.svg" alt="" width="24" height="24"></span></button>
+        <div class="rh-panel rh-contact-panel" id="header-contact" hidden>
+          <div class="rh-panel-heading"><strong><span data-i18n="header.contactTitle">Зв’язатись з нами</span></strong><button type="button" class="rh-close" aria-label="Закрити" data-i18n-aria="header.close"><img class="" src="assets/icons/header/871-28945-imgX.svg" alt="" width="24" height="24"></button></div>
+          <p><span data-i18n="header.contactDescription">Отримайте консультацію або розрахунок вашого проєкту.</span></p>
+          <hr>
+          <a class="rh-contact-link" href="tel:+380732422343"><img class="" src="assets/icons/header/871-28945-imgPhone.svg" alt="" width="24" height="24"><span>+38 (073) 242-23-43</span></a>
+          <a class="rh-calculate" href="calculator.html"><span data-i18n="header.calculate">Розрахувати проєкт</span><img class="" src="assets/icons/header/871-28945-imgDownArrow34787511.svg" alt="" width="24" height="24"></a>
+          <hr>
+          <a class="rh-contact-link" href="mailto:sales@rayton.com.ua"><img class="" src="assets/icons/header/871-28945-imgMail.svg" alt="" width="24" height="24"><span data-i18n="header.write">Написати нам</span></a>
+        </div>
+      </div>
+      <button class="rh-burger" type="button" aria-label="Меню" data-i18n-aria="header.menu" aria-expanded="false" aria-controls="header-navigation"><span></span><span></span><span></span></button>
     </div>
-
   </div>
-
-
-
 </header>
-
-<div class="mega-backdrop" hidden></div>
 
 <main>
 
@@ -879,6 +667,9 @@ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElem
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=1787332495" defer></script>
+<script src="assets/js/locales/header.js?v=1788764427" defer></script>
+<script src="assets/js/i18n.js" defer></script>
+<script src="assets/js/header.js?v=1788764427" defer></script>
+<script src="assets/js/main.js?v=1788764427" defer></script>
 </body>
 </html>

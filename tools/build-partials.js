@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 
+const headerOnly = process.argv.includes('--header-only');
 const root = path.resolve(__dirname, '..');
 const sprite = fs.readFileSync(path.join(root, 'assets/icons/sprite.svg'), 'utf8').trim();
 
@@ -19,7 +20,7 @@ const slice = (from, to) => {
 };
 
 const footer = slice('<footer class="site-footer">', '</footer>');
-const header = slice('<header class="site-header"', '<div class="mega-backdrop" hidden></div>');
+const header = fs.readFileSync(path.join(root, 'assets/partials/header.html'), 'utf8').trim();
 
 const SPRITE_RE = /<!--@sprite-->|<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" width="0" height="0"[\s\S]*?<\/svg>/;
 const FOOTER_RE = /<!--@footer-->|<footer class="site-footer">[\s\S]*?<\/footer>/;
@@ -29,9 +30,9 @@ for (const file of fs.readdirSync(root).filter(f => f.endsWith('.html'))) {
   const p = path.join(root, file);
   let html = fs.readFileSync(p, 'utf8');
   const touched = [];
-  if (SPRITE_RE.test(html)) { html = html.replace(SPRITE_RE, sprite); touched.push('sprite'); }
-  if (file !== 'index.html' && HEADER_RE.test(html)) { html = html.replace(HEADER_RE, header); touched.push('header'); }
-  if (file !== 'index.html' && FOOTER_RE.test(html)) { html = html.replace(FOOTER_RE, footer); touched.push('footer'); }
+  if (!headerOnly && SPRITE_RE.test(html)) { html = html.replace(SPRITE_RE, sprite); touched.push('sprite'); }
+  if (HEADER_RE.test(html)) { html = html.replace(HEADER_RE, header); touched.push('header'); }
+  if (!headerOnly && file !== 'index.html' && FOOTER_RE.test(html)) { html = html.replace(FOOTER_RE, footer); touched.push('footer'); }
   if (touched.length) { fs.writeFileSync(p, html); console.log(file, '←', touched.join(' + ')); }
   else console.log(file, '– nothing to inject');
 }
@@ -48,7 +49,7 @@ if (process.argv.includes('--bump')) {
     const p = path.join(root, file);
     const html = fs.readFileSync(p, 'utf8')
       .replace(/(href="assets\/css\/[a-z]+\.css)(\?v=\d+)?"/g, `$1?v=${stamp}"`)
-      .replace(/(src="assets\/js\/main\.js)(\?v=\d+)?"/g, `$1?v=${stamp}"`);
+      .replace(/(src="assets\/js\/[a-z/-]+\.js)(\?v=\d+)?"/g, `$1?v=${stamp}"`);
     fs.writeFileSync(p, html);
   }
   console.log('asset version →', stamp);
