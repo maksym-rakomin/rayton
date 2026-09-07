@@ -1,0 +1,35 @@
+/* Project pages: keep long names and labels within their own layout cells. */
+.page--projects main, .page--project main { overflow-wrap: anywhere; }
+.page--projects .section-head-row { align-items: flex-start; }
+.page--projects .section-head-row > .section-head { flex: 1 1 40%; min-width: 0; }
+.page--projects .filters { flex: 1 1 60%; min-width: 0; }
+.project-filters .tabs__btn { white-space: normal; text-align: left; min-height: 44px; }
+.page--projects .project-card__type, .page--project .project-card__type { max-width: calc(100% - 40px); }
+.page--projects .project-card__specs, .page--project .project-card__specs { right: 20px; }
+.page--projects .project-card .tag, .page--project .project-card .tag,
+.page--project .hero__tags .tag { white-space: normal; max-width: 100%; overflow-wrap: anywhere; }
+.page--projects .project-card__body, .page--project .project-card__body { min-width: 0; }
+.page--projects .project-card .link-arrow, .page--project .project-card .link-arrow { min-height: 44px; }
+.page--project .breadcrumbs { flex-wrap: wrap; }
+.page--project .breadcrumbs li { min-width: 0; }
+.page--project .breadcrumbs li::before { flex-shrink: 0; }
+.page--project .hero--plain .hero__content { margin-top: 32px; }
+.page--project .feature-card__body { min-width: 0; }
+.page--project [hidden], .page--projects [hidden] { display: none !important; }
+.projects-status { margin-top: 24px; color: var(--c-navy); }
+.projects-status:empty { display: none; }
+.project-cover { margin: 0 0 48px; border-radius: var(--r-md); overflow: hidden; background: var(--c-grey-lighter); }
+.project-cover img { display: block; width: 100%; height: auto; max-height: 560px; object-fit: cover; aspect-ratio: 16 / 9; }
+@media (max-width: 1024px) {
+  .page--projects .filters, .page--projects .section-head-row > .section-head { flex-basis: auto; width: 100%; }
+}
+@media (max-width: 768px) {
+  .page--projects .project-card__media, .page--project .project-card__media { aspect-ratio: 4 / 3; }
+  .page--project .feature-card { padding: 24px; gap: 16px; min-height: 0; }
+  .project-cover { margin-bottom: 32px; }
+  .project-cover img { aspect-ratio: 4 / 3; }
+}
+@media (hover: none) {
+  .page--projects .project-card:hover .project-card__media img,
+  .page--project .project-card:hover .project-card__media img { transform: none; }
+}

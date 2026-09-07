@@ -20,7 +20,7 @@ autonomous.html       Автономні рішення
 services.html         Послуги (8 якорных блоков)
 financing.html        Фінансування
 financing-raiffeisen.html  Фінансування — Райффайзен Банк
-projects.html         Проєкти          project.html — образец кейса
+projects.html         Проєкти          project.html?id=kostopil — выбранный кейс
 blog.html             Блог             article.html — образец статьи
 youtube.html          Rayton TV
 about.html            Про нас
@@ -76,8 +76,13 @@ python3 tools/serve.py 4173
 | `calculator.html` | `/calculator` |
 | `faq.html` | `/faq` |
 
-`project.html` и `article.html` — по одному образцу детальной страницы
-(кейс и статья). В WP это `single-project.php` и `single-post.php`.
+`project.html?id=<slug>` показывает выбранный объект из `assets/js/projects-data.js`;
+без параметра открывается Костопільський завод скловиробів. Каталог содержит 12
+объектов, фильтры типа и региона применяются совместно. Подробное инженерное
+описание есть только у первого объекта; остальные показывают известные параметры.
+Фотографии пока повторяются из четырёх исходных изображений прототипа.
+Данные локальные, подключение CMS здесь ещё не реализовано.
+`article.html` — образец статьи. В WP это `single-project.php` и `single-post.php`.
 
 **Дубли в прототипе, которые сюда не переносились.** В Base44 два параллельных
 набора страниц решений: полный (`/solutions/business-solar`, `industrial-solar`,
