@@ -23,6 +23,7 @@
     root.querySelectorAll('[data-locale]').forEach(function (button) { button.setAttribute('aria-pressed', String(button.dataset.locale === locale)); });
     var header = document.getElementById('site-header');
     if (header) header.lang = locale;
+    document.documentElement.lang = locale;
   }
   function setLocale(next) {
     if (!supported.includes(next)) return;
