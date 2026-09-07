@@ -174,16 +174,6 @@
 .partner-about__numbers-list div { display: flex; flex-direction: column}
 .partner-about__numbers-list b { font-size: 22px;}
 
-.partner-about__quote { position: relative; display: grid; grid-template-columns: 345px 1fr; height: 322px; margin-top: 60px; overflow: hidden; border: 1px solid #2b2b2b; border-radius: 8px; background: #11131a; color: #fff; }
-.partner-about__quote-mark { position: absolute; z-index: 2; left: 304px; top: 48px; width: 78px; height: 66px; color: var(--fin-yellow); filter: drop-shadow(0 0 8px rgba(255,210,31,.45)); }
-.partner-about__quote img { width: 345px; height: 322px; object-fit: cover; object-position: center 18%; }
-.partner-about__quote blockquote { align-self: center; padding: 0 48px; }
-.partner-about__quote p { font-size: 16px; line-height: 24px; }
-.partner-about__quote em { font-style: italic; }
-.partner-about__quote strong { font-weight: 700; }
-.partner-about__quote footer { margin-top: 34px; }
-.partner-about__quote footer b { display: block; font-size: 16px; line-height: 24px; }
-.partner-about__quote footer span { color: var(--c-grey); font-size: 14px; line-height: 24px; }
 
 .partner-solutions { height: 1032px; padding-top: 114px; }
 .partner-solutions__grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; margin-top: 38px; }
@@ -278,11 +268,7 @@
   .partner-project__media { height: 300px; }
   .partner-project__stats { gap: 16px; }
   .partner-project__stat + .partner-project__stat { padding-left: 16px; }
-  .partner-about__quote { grid-template-columns: 1fr; height: auto; }
-  .partner-about__quote-mark { left: 24px; top: 274px; }
-  .partner-about__quote img { width: 100%; height: 300px; }
-  .partner-about__quote blockquote { padding: 40px 28px; }
-  .partner-solutions__grid { grid-template-columns: 1fr; }
+          .partner-solutions__grid { grid-template-columns: 1fr; }
   .partner-solutions__cta { align-items: flex-start; flex-direction: column; gap: 24px; padding: 30px; }
   .partner-posts__head { align-items: flex-start; flex-direction: column; gap: 24px; }
   .partner-post { grid-template-columns: 128px 1fr; height: auto; padding: 16px 0; }

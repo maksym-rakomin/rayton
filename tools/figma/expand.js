@@ -269,6 +269,22 @@ if (require.main === module) {
     if (!n) { console.error('NOT FOUND', name); continue; }
     uid = 0;
     const tree = resolve(n, [], [], []);
+    // Resolve text properties in addition to symbol overrides.
+    function applyTextProperties(node, inherited = new Map()) {
+      const values = new Map(inherited);
+      for (const assignment of node.props.componentPropAssignments || []) {
+        const value = assignment.varValue?.value?.textDataValue || assignment.value?.textValue;
+        if (value) values.set(key(assignment.defID), value);
+      }
+      for (const ref of node.props.componentPropRefs || []) {
+        const value = values.get(key(ref.defID));
+        if (ref.componentPropNodeField === 'TEXT_DATA' && value) {
+          node.props.textData = { ...node.props.textData, ...value };
+        }
+      }
+      for (const child of node.children) applyTextProperties(child, values);
+    }
+    applyTextProperties(tree);
     const flat = flatten(tree, { m00: 1, m01: 0, m02: 0, m10: 0, m11: 1, m12: 0 }, [], 0, null);
     // normalise so the root sits at 0,0
     const ox = flat[0].x, oy = flat[0].y;
