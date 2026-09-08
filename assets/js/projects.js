@@ -15,6 +15,7 @@
     return translations[language][group][project[field]] || project[field];
   }
   function ui(uk, ru, en) { return locale() === 'ru' ? ru : locale() === 'en' ? en : uk; }
+  function power(project) { return locale() === 'en' ? project.power.replace('кВт', 'kW') : project.power; }
   // Rebuild all data-driven labels from their Ukrainian source after a language change.
   // The selected locale is persisted by i18n.js before the reload.
   window.addEventListener('rayton:localechange', function (event) {
@@ -30,7 +31,7 @@
     img.src = project.image; img.alt = localise(project, 'title');
     card.querySelector('.project-card__type').textContent = localise(project, 'category');
     var tags = card.querySelectorAll('.project-card__specs .tag');
-    tags[0].textContent = project.power; tags[1].textContent = localise(project, 'region');
+    tags[0].textContent = power(project); tags[1].textContent = localise(project, 'region');
   }
   if (detail) {
     var id = new URLSearchParams(location.search).get('id');
@@ -47,17 +48,17 @@
       document.title = title + ui(' — проєкт Rayton', ' — проект Rayton', ' — Rayton project');
       document.querySelector('.hero__title').textContent = title;
       document.querySelector('.breadcrumbs [aria-current]').textContent = title;
-      var lead = ui('Сонячна електростанція потужністю ', 'Солнечная электростанция мощностью ', 'Solar power plant with a capacity of ') + project.power + '. ' + localise(project, 'category') + ' · ' + localise(project, 'region') + '.';
+      var lead = ui('Сонячна електростанція потужністю ', 'Солнечная электростанция мощностью ', 'Solar power plant with a capacity of ') + power(project) + '. ' + localise(project, 'category') + ' · ' + localise(project, 'region') + '.';
       document.querySelector('.hero__lead').textContent = lead;
       document.querySelector('meta[name="description"]').content = title + '. ' + lead;
       var tags = document.querySelectorAll('.hero__tags .tag');
-      [project.power, localise(project, 'category'), localise(project, 'region')].forEach(function (text, i) { tags[i].textContent = text; });
+      [power(project), localise(project, 'category'), localise(project, 'region')].forEach(function (text, i) { tags[i].textContent = text; });
       // Only the original case has an engineering description in the source.
       if (project !== projects[0]) {
         var section = document.querySelector('main > .section');
         section.querySelector('.section-head__title').textContent = ui('Про реалізований об’єкт', 'О реализованном объекте', 'About this project');
         var items = section.querySelectorAll('.grid > li');
-        [[ui('Потужність станції','Мощность станции','Plant capacity'), project.power], [ui('Тип об’єкта','Тип объекта','Project type'), localise(project, 'category')], [ui('Регіон','Регион','Region'), localise(project, 'region')]].forEach(function (pair, i) {
+        [[ui('Потужність станції','Мощность станции','Plant capacity'), power(project)], [ui('Тип об’єкта','Тип объекта','Project type'), localise(project, 'category')], [ui('Регіон','Регион','Region'), localise(project, 'region')]].forEach(function (pair, i) {
           items[i].querySelector('h3').textContent = pair[0];
           items[i].querySelector('p').textContent = pair[1];
         });
