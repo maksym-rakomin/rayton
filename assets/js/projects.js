@@ -10,7 +10,7 @@
   function localise(project, field) {
     var language = locale();
     if (language === 'uk' || !translations[language]) return project[field];
-    if (field === 'title') return translations[language].titles[project.id] || project.title;
+    if (field === 'title') return translations[language].categories[project.category] || project.title;
     var group = field === 'category' ? 'categories' : 'regions';
     return translations[language][group][project[field]] || project[field];
   }

@@ -865,10 +865,10 @@
 .section-compare .eyebrow { color: #cccccc; }
 .section-compare .section-head-row__aside { color: var(--c-white); }
 
-.compare__tabs { margin-top: 38px; }
+.compare__tabs { display: none; }
 
 .compare {
-  margin-top: 12px;
+  margin-top: 20px;
   padding: 34px;
   border: 1px solid #454545;
   border-radius: var(--r-md);
