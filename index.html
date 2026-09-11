@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
 <title>Rayton — сонячні електростанції та промислові УЗЕ під ключ</title>
 <meta name="description" content="Rayton проєктує, будує та запускає сонячні електростанції і промислові системи накопичення енергії для українського бізнесу.">
 <link rel="preload" href="assets/fonts/montserrat-cyrillic-600.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/montserrat-cyrillic-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/fonts.css?v=1788764427">
-<link rel="stylesheet" href="assets/css/base.css?v=1788764427">
+<link rel="stylesheet" href="assets/css/base.css?v=1788764428">
 <link rel="stylesheet" href="assets/css/layout.css?v=1788764427">
 <link rel="stylesheet" href="assets/css/components.css?v=1788764427">
 <link rel="stylesheet" href="assets/css/pages.css?v=1788764427">
@@ -629,14 +630,14 @@ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElem
       </div>
 
       <div class="calc">
-        <form class="calc__card">
+        <form class="calc__card" action="calculator.html" method="get">
           <p class="calc__variant"><span class="dot"></span>Варіант розрахунку 1</p>
 
           <div class="calc__fields">
             <label class="field">
               <span class="field__label">Середньомісячне споживання</span>
               <span class="field__control">
-                <input type="text" inputmode="decimal" placeholder="Наприклад: 5000">
+                <input type="text" name="monthlyConsumptionKwh" inputmode="decimal" placeholder="Наприклад: 5000">
                 <span class="field__unit">кВт·год</span>
               </span>
             </label>
@@ -644,7 +645,7 @@ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElem
             <label class="field">
               <span class="field__label">Поточний тариф із розподілом, передачею та ПДВ</span>
               <span class="field__control">
-                <input type="text" inputmode="decimal" placeholder="Наприклад: 4.32">
+                <input type="text" name="tariff" inputmode="decimal" placeholder="Наприклад: 4.32">
                 <span class="field__unit">грн/кВт·год</span>
               </span>
             </label>
@@ -653,14 +654,14 @@ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElem
           <button class="btn btn--primary calc__submit" type="submit">Розрахувати</button>
         </form>
 
-        <form class="calc__card">
+        <form class="calc__card" action="calculator.html" method="get">
           <p class="calc__variant"><span class="dot"></span>Варіант розрахунку 2</p>
 
           <div class="calc__fields">
             <label class="field">
               <span class="field__label">Середньомісячні витрати на електроенергію</span>
               <span class="field__control">
-                <input type="text" inputmode="decimal" placeholder="Наприклад: 25000">
+                <input type="text" name="monthlyCostUAH" inputmode="decimal" placeholder="Наприклад: 25000">
                 <span class="field__unit">грн</span>
               </span>
             </label>
@@ -836,5 +837,7 @@ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElem
 <script src="assets/js/i18n.js" defer></script>
 <script src="assets/js/header.js?v=1788764427" defer></script>
 <script src="assets/js/main.js?v=1788770001" defer></script>
+<script src="assets/js/solar-calc.js?v=20260912" defer></script>
+<script src="assets/js/calculator.js?v=20260912" defer></script>
 </body>
 </html>

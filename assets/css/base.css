@@ -73,6 +73,9 @@
 * { margin: 0; padding: 0; }
 
 html {
+  /* The site has one authored palette, including intentionally dark sections.
+     Prevent Android browsers and in-app WebViews from auto-recoloring it. */
+  color-scheme: only light;
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
   overflow-x: hidden;

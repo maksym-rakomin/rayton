@@ -36,6 +36,14 @@
     var cleaned = value.trim().replace(/[\s\u00a0\u202f]/g, '').replace(',', '.');
     return /^(?:\d+(?:\.\d*)?|\.\d+)$/.test(cleaned) ? Number(cleaned) : NaN;
   }
+  function inputFromForm(form) {
+    var monthlyCost = form.querySelector('[name="monthlyCostUAH"]');
+    if (monthlyCost) return { monthlyCostUAH: parse(monthlyCost.value) };
+    return {
+      monthlyConsumptionKwh: parse(form.querySelector('[name="monthlyConsumptionKwh"]').value),
+      tariff: parse(form.querySelector('[name="tariff"]').value)
+    };
+  }
   function row(label, value, accent) {
     return '<div class="solar-card__row' + (accent ? ' solar-card__row--accent' : '') + '"><dt>' + label + '</dt><dd>' + value + '</dd></div>';
   }
@@ -137,7 +145,7 @@
         invalid.focus();
         return;
       }
-      var input = inputs.length === 2 ? { monthlyConsumptionKwh: parse(inputs[0].value), tariff: parse(inputs[1].value) } : { monthlyCostUAH: parse(inputs[0].value) };
+      var input = inputFromForm(form);
       var checked = model.calculateSolarPayback(input);
       if (checked.powerKw <= 0 || checked.annualSavings <= 0) {
         error.textContent = t('tooSmall');
@@ -158,9 +166,11 @@
   ['monthlyConsumptionKwh', 'tariff', 'monthlyCostUAH'].forEach(function (key) { if (params.has(key)) input[key] = parse(params.get(key)); });
   var valid = Object.keys(input).length && Object.values(input).every(function (v) { return Number.isFinite(v) && v > 0 && v <= 1e12; }) && (input.monthlyCostUAH || (input.monthlyConsumptionKwh && input.tariff));
   if (valid) {
-    var fields = forms[0].querySelectorAll('input');
-    if (input.monthlyCostUAH) forms[1].querySelector('input').value = input.monthlyCostUAH;
-    else { fields[0].value = input.monthlyConsumptionKwh; fields[1].value = input.tariff; }
+    if (input.monthlyCostUAH) document.querySelector('[name="monthlyCostUAH"]').value = input.monthlyCostUAH;
+    else {
+      document.querySelector('[name="monthlyConsumptionKwh"]').value = input.monthlyConsumptionKwh;
+      document.querySelector('[name="tariff"]').value = input.tariff;
+    }
     if (render(input)) requestAnimationFrame(function () { results.scrollIntoView({ block: 'start' }); });
   }
   window.addEventListener('rayton:localechange', function (event) {
