@@ -54,6 +54,7 @@
 .inv-step:last-child .inv-step-top { flex-direction:row-reverse; }
 .inv-step h3 { font-size:20px; line-height:24px; font-weight:600; margin-top:20px; }
 .inv-note { margin:38px 23px 0 0; padding:24px 24px 24px 68px; position:relative; background:var(--c-navy); border-radius:8px; font-size:20px; line-height:24px; font-weight:600; color:white; }
+.inv-note--mb { margin:38px 23px 38px 0; }
 .inv-note::before { content:''; position:absolute; left:24px; top:24px; bottom:24px; width:7px; background:var(--c-yellow); }
 .inv-control .control__text .section-head { gap:8px; }
 .inv-control .control__text { gap:38px; }

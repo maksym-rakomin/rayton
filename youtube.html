@@ -27,40 +27,93 @@ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElem
 
 <header class="site-header" id="site-header">
   <div class="rh-inner">
-    <a class="rh-logo" href="index.html" aria-label="Rayton"><img class="" src="assets/icons/header/871-28883-imgRaytonWhiteLogo.svg" alt="" width="24" height="24"></a>
+    <a class="rh-logo" href="index.html" aria-label="Rayton"><img src="assets/icons/header/871-28883-imgRaytonWhiteLogo.svg" alt="" width="155" height="39"></a>
     <nav class="rh-nav" id="header-navigation" aria-label="Головне меню" data-i18n-aria="header.navigation">
-      <div class="rh-primary"><a class="rh-link rh-link--dot" href="ses.html"><img class="rh-dot" src="assets/icons/header/871-28883-imgEllipse9.svg" alt="" width="24" height="24"><span data-i18n="header.solar"><b>СЕС</b> для бізнесу</span></a>
-<a class="rh-link rh-link--dot" href="uze.html"><img class="rh-dot" src="assets/icons/header/871-28883-imgEllipse9.svg" alt="" width="24" height="24"><span data-i18n="header.storage"><b>УЗЕ</b> для бізнесу</span></a>
-<a class="rh-link " href="projects.html"><span data-i18n="header.projects">Проєкти</span></a>
-<a class="rh-link " href="financing.html"><span data-i18n="header.financing">Кредитування</span></a>
-<a class="rh-link " href="investments.html"><span data-i18n="header.investors">Для інвесторів</span></a></div>
+      <div class="rh-primary">
+        <a class="rh-link rh-link--dot" href="ses.html"><img class="rh-dot" src="assets/icons/header/871-28883-imgEllipse9.svg" alt="" width="10" height="10"><span data-i18n="header.solar"><b>СЕС</b> для бізнесу</span></a>
+        <span class="rh-divider" aria-hidden="true"></span>
+        <a class="rh-link rh-link--dot" href="uze.html"><img class="rh-dot" src="assets/icons/header/871-28883-imgEllipse9.svg" alt="" width="10" height="10"><span data-i18n="header.storage"><b>УЗЕ</b> для бізнесу</span></a>
+        <span class="rh-divider" aria-hidden="true"></span>
+        <a class="rh-link" href="projects.html"><span data-i18n="header.projects">Проєкти</span></a>
+        <span class="rh-divider" aria-hidden="true"></span>
+        <a class="rh-link" href="financing.html"><span data-i18n="header.financing">Кредитування</span></a>
+        <span class="rh-divider" aria-hidden="true"></span>
+        <a class="rh-link" href="investments.html"><span data-i18n="header.investors">Для інвесторів</span></a>
+      </div>
       <div class="rh-dropdown rh-media">
-        <button class="rh-link rh-trigger" type="button" aria-expanded="false" aria-controls="header-media"><span data-i18n="header.media">Медіа</span><img class="rh-chevron" src="assets/icons/header/871-28883-imgChevronDown.svg" alt="" width="24" height="24"></button>
+        <button class="rh-link rh-trigger" type="button" aria-expanded="false" aria-controls="header-media"><span data-i18n="header.media">Медіа</span><img class="rh-chevron" src="assets/icons/header/871-28883-imgChevronDown.svg" alt="" width="11" height="11"></button>
         <div class="rh-panel rh-media-panel" id="header-media" hidden>
-          <a href="blog.html"><img class="" src="assets/icons/header/871-28970-imgFileText.svg" alt="" width="24" height="24"><span data-i18n="header.blog">Блог</span></a>
+          <img class="rh-panel-pointer" src="assets/icons/header/896-22689-imgPolygon2.svg" alt="" width="14" height="10">
+          <a href="blog.html"><img src="assets/icons/header/871-28970-imgFileText.svg" alt="" width="24" height="24"><span data-i18n="header.blog">Блог</span></a>
           <hr>
-          <a href="youtube.html" aria-current="page"><img class="" src="assets/icons/header/871-28970-imgPlayCircle.svg" alt="" width="24" height="24"><span>Rayton TV</span></a>
+          <a href="youtube.html"><img src="assets/icons/header/871-28970-imgPlayCircle.svg" alt="" width="24" height="24"><span>Rayton TV</span></a>
         </div>
       </div>
       <a class="rh-link" href="about.html"><span data-i18n="header.about">Про нас</span></a>
+      <span class="rh-nav-divider" aria-hidden="true"></span>
     </nav>
     <div class="rh-actions">
+      <div class="rh-dropdown rh-notifications">
+        <button class="rh-notification-button rh-trigger" type="button" aria-expanded="false" aria-controls="header-notifications" aria-label="Новини" data-i18n-aria="header.notifications">
+          <img class="rh-bell rh-bell--new" src="assets/icons/header/896-22555-imgBell.svg" alt="" width="24" height="24">
+          <img class="rh-bell rh-bell--open" src="assets/icons/header/896-22663-imgBellOpen.svg" alt="" width="24" height="24">
+        </button>
+        <div class="rh-panel rh-notifications-panel" id="header-notifications" hidden>
+          <img class="rh-panel-pointer" src="assets/icons/header/896-22689-imgPolygon2.svg" alt="" width="14" height="10">
+          <div class="rh-panel-heading">
+            <strong><span data-i18n="header.latestMedia">Останні новини та відео</span></strong>
+            <button type="button" class="rh-close" aria-label="Закрити" data-i18n-aria="header.close"><img src="assets/icons/header/871-28945-imgX.svg" alt="" width="19" height="19"></button>
+          </div>
+          <a class="rh-news-card" href="articles/yak-otrymaty-litsenziyu-na-prodazh-elektroenergiyi-v-ukrayini.html">
+            <img class="rh-news-card__image" src="assets/img/media/article-8673.jpg" alt="" width="135" height="90">
+            <span class="rh-news-card__body">
+              <span class="rh-news-card__type"><img src="assets/icons/header/871-28970-imgFileText.svg" alt="" width="24" height="24"><span data-i18n="header.blog">Блог</span></span>
+              <span class="rh-news-card__title">Як отримати ліцензію на продаж електроенергії в Україні</span>
+              <time class="rh-news-card__date" datetime="2026-09-04">04 вересня 2026</time>
+            </span>
+            <span class="rh-news-card__arrow" aria-hidden="true">›</span>
+          </a>
+          <hr>
+          <a class="rh-news-card" href="https://www.youtube.com/watch?v=zd-Ys6yoXh0" target="_blank" rel="noopener noreferrer">
+            <span class="rh-news-card__visual">
+              <img class="rh-news-card__image" src="https://i.ytimg.com/vi/zd-Ys6yoXh0/hq720.jpg?sqp=-oaymwEXCNAFEJQDSFryq4qpAwkIARUAAIhCGAE=&amp;rs=AOn4CLA5VfefUb4bFAEbfiB8xRI9493MHQ" alt="" width="135" height="90">
+              <span class="rh-news-card__play" aria-hidden="true">
+                <img class="rh-news-card__play-circle" src="assets/icons/header/896-22718-imgVideoPlayCircle.svg" alt="">
+                <img class="rh-news-card__play-triangle" src="assets/icons/header/896-22719-imgVideoPlayTriangle.svg" alt="">
+              </span>
+            </span>
+            <span class="rh-news-card__body">
+              <span class="rh-news-card__type"><img src="assets/icons/header/871-28970-imgPlayCircle.svg" alt="" width="24" height="24"><span>Rayton TV</span></span>
+              <span class="rh-news-card__title">897кВт сонця + 2090кВт•год накопичення: безшовний перехід між мережею, СЕС, генератором і УЗЕ</span>
+              <span class="rh-news-card__date">Rayton Sun · 1:05</span>
+            </span>
+            <span class="rh-news-card__arrow" aria-hidden="true">›</span>
+          </a>
+          <hr>
+          <a class="rh-all-media" href="blog.html"><span data-i18n="header.viewMedia">Перейти до медіа</span><span aria-hidden="true">›</span></a>
+        </div>
+      </div>
       <div class="rh-languages" role="group" aria-label="Мова" data-i18n-aria="header.language">
         <button type="button" data-locale="uk" aria-pressed="true" lang="uk">UA</button>
-        <button type="button" data-locale="ru" aria-pressed="false" lang="ru">RU</button>
         <button type="button" data-locale="en" aria-pressed="false" lang="en">EN</button>
       </div>
       <div class="rh-dropdown rh-contact">
-        <button class="rh-contact-button rh-trigger" type="button" aria-expanded="false" aria-controls="header-contact"><span data-i18n="header.contact">Зв’язатись</span><span class="rh-arrow"><img class="" src="assets/icons/header/871-28883-imgDownArrow34787511.svg" alt="" width="24" height="24"></span></button>
+        <button class="rh-contact-button rh-trigger" type="button" aria-expanded="false" aria-controls="header-contact"><span data-i18n="header.contact">Зв’язатись</span><span class="rh-arrow"><img src="assets/icons/header/871-28883-imgDownArrow34787511.svg" alt="" width="13" height="13"></span></button>
         <div class="rh-panel rh-contact-panel" id="header-contact" hidden>
-          <div class="rh-panel-heading"><strong><span data-i18n="header.contactTitle">Зв’язатись з нами</span></strong><button type="button" class="rh-close" aria-label="Закрити" data-i18n-aria="header.close"><img class="" src="assets/icons/header/871-28945-imgX.svg" alt="" width="24" height="24"></button></div>
+          <img class="rh-panel-pointer" src="assets/icons/header/896-22689-imgPolygon2.svg" alt="" width="14" height="10">
+          <div class="rh-panel-heading"><strong><span data-i18n="header.contactTitle">Зв’язатись з нами</span></strong><button type="button" class="rh-close" aria-label="Закрити" data-i18n-aria="header.close"><img src="assets/icons/header/871-28945-imgX.svg" alt="" width="19" height="19"></button></div>
           <p><span data-i18n="header.contactDescription">Отримайте консультацію або розрахунок вашого проєкту.</span></p>
           <hr>
-          <a class="rh-contact-link" href="tel:+380732422343"><img class="" src="assets/icons/header/871-28945-imgPhone.svg" alt="" width="24" height="24"><span>+38 (073) 242-23-43</span></a>
-          <a class="rh-calculate" href="calculator.html"><span data-i18n="header.calculate">Розрахувати проєкт</span><img class="" src="assets/icons/header/871-28945-imgDownArrow34787511.svg" alt="" width="24" height="24"></a>
-          <a class="rh-calculate rh-contacts-page" href="contacts.html"><span data-i18n="header.contacts">Контакти</span><img src="assets/icons/header/871-28945-imgDownArrow34787511.svg" alt="" width="13" height="13"></a>
+          <a class="rh-contact-link" href="tel:+380732422343"><img src="assets/icons/header/871-28945-imgPhone.svg" alt="" width="24" height="24"><span>+38 (073) 242-23-43</span></a>
+          <a class="rh-calculate" href="calculator.html"><span data-i18n="header.calculate">Розрахувати проєкт</span><img src="assets/icons/header/871-28945-imgDownArrow34787511.svg" alt="" width="13" height="13"></a>
           <hr>
-          <a class="rh-contact-link" href="mailto:sales@rayton.com.ua"><img class="" src="assets/icons/header/871-28945-imgMail.svg" alt="" width="24" height="24"><span data-i18n="header.write">Написати нам</span></a>
+          <div class="rh-socials" aria-label="Соціальні мережі" data-i18n-aria="header.socials">
+            <a href="https://www.facebook.com/raytonFEE" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-social-1"></use></svg></a>
+            <a href="https://www.instagram.com/rayton_sun/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-social-2"></use></svg></a>
+            <a href="https://www.linkedin.com/company/73173918/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg aria-hidden="true"><use href="#i-social-3"></use></svg></a>
+            <a href="https://www.youtube.com/@RaytonSun" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg aria-hidden="true"><use href="#i-social-4"></use></svg></a>
+          </div>
+          <a class="rh-contact-link" href="mailto:sales@rayton.com.ua"><img src="assets/icons/header/871-28945-imgMail.svg" alt="" width="24" height="24"><span data-i18n="header.write">Написати нам</span></a>
         </div>
       </div>
       <button class="rh-burger" type="button" aria-label="Меню" data-i18n-aria="header.menu" aria-expanded="false" aria-controls="header-navigation"><span></span><span></span><span></span></button>
@@ -139,7 +192,9 @@ if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElem
 <!-- media:videos:end --></ul><p class="media-results" aria-live="polite">7 відео</p><div class="media-channel-link"><a class="btn btn--outline" href="https://www.youtube.com/@RaytonSun/videos" target="_blank" rel="noopener noreferrer">Усі відео на YouTube ↗</a></div>
 
     </div>
-  </section><section class="media-team"><div class="container"><img src="assets/img/media/team.webp" alt="Команда Rayton" width="1296" height="732" loading="lazy"><a class="btn btn--primary" href="calculator.html">Розрахувати фінансування <span class="btn__icon"><svg><use href="#i-arrow-ur"></use></svg></span></a></div></section><div class="media-tv-lower"><section class="section section-soft">
+  </section>
+  <div class="media-tv-lower">
+    <section class="section section-soft">
     <div class="container">
 
       <div class="section-head">

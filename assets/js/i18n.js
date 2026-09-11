@@ -2,7 +2,8 @@
 (function () {
   'use strict';
   var messages = window.RaytonMessages || {};
-  var supported = ['uk', 'ru', 'en'];
+  // Russian copy stays available in the source dictionary, but is not exposed on the site.
+  var supported = ['uk', 'en'];
   var locale = 'uk';
   function lookup(language, key) {
     return key.split('.').reduce(function (value, part) { return value && value[part]; }, messages[language]);

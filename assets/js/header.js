@@ -1,4 +1,4 @@
-/* Shared header: hover for Media, click for contacts, keyboard and touch. */
+/* Shared header: hover menus on desktop; click, keyboard and touch everywhere. */
 (function () {
   'use strict';
   var header = document.getElementById('site-header');
@@ -7,6 +7,11 @@
   var nav = header.querySelector('.rh-nav');
   var burger = header.querySelector('.rh-burger');
   var dropdowns = Array.from(header.querySelectorAll('.rh-dropdown'));
+  function opensOnDesktopHover(dropdown) {
+    return dropdown.classList.contains('rh-media') ||
+      dropdown.classList.contains('rh-notifications') ||
+      dropdown.classList.contains('rh-contact');
+  }
   function setOpen(dropdown, open) {
     dropdown.querySelector('.rh-trigger').setAttribute('aria-expanded', String(open));
     dropdown.querySelector('.rh-panel').hidden = !open;
@@ -23,12 +28,12 @@
     var trigger = dropdown.querySelector('.rh-trigger');
     trigger.addEventListener('click', function (event) {
       var open = trigger.getAttribute('aria-expanded') !== 'true';
-      // A mouse click after pointerenter must keep the hover menu open.
-      if (dropdown.classList.contains('rh-media') && !compact.matches && event.detail > 0 && event.pointerType !== 'touch') open = true;
+      // A mouse click after pointerenter must keep a desktop hover menu open.
+      if (opensOnDesktopHover(dropdown) && !compact.matches && event.detail > 0 && event.pointerType !== 'touch') open = true;
       closeAll(dropdown);
       setOpen(dropdown, open);
     });
-    if (dropdown.classList.contains('rh-media')) {
+    if (opensOnDesktopHover(dropdown)) {
       dropdown.addEventListener('pointerenter', function (event) {
         if (event.pointerType === 'touch' || compact.matches) return;
         closeAll(dropdown);
