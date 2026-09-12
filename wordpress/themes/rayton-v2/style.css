@@ -1,0 +1,41 @@
+/*
+Theme Name: Rayton V2
+Description: Standalone classic theme for the Rayton redesign.
+Version: 0.1.0
+Text Domain: rayton-v2
+*/
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+}
+
+.site-main,
+.site-header__inner,
+.site-footer__inner {
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+}
+
+.site-main {
+  padding-block: 2rem;
+}
+
+.rayton-enquiry {
+  min-width: 0;
+}
+
+.rayton-enquiry__fallback {
+  padding: 1.5rem;
+  border: 1px solid currentColor;
+  border-radius: 1rem;
+}

@@ -1,0 +1,708 @@
+{
+  "assets": [
+    {
+      "source": "assets/css/base.css",
+      "destination": "assets/css/base.css"
+    },
+    {
+      "source": "assets/css/business.css",
+      "destination": "assets/css/business.css"
+    },
+    {
+      "source": "assets/css/calculator.css",
+      "destination": "assets/css/calculator.css"
+    },
+    {
+      "source": "assets/css/company.css",
+      "destination": "assets/css/company.css"
+    },
+    {
+      "source": "assets/css/components.css",
+      "destination": "assets/css/components.css"
+    },
+    {
+      "source": "assets/css/financing-figma.css",
+      "destination": "assets/css/financing-figma.css"
+    },
+    {
+      "source": "assets/css/fonts.css",
+      "destination": "assets/css/fonts.css"
+    },
+    {
+      "source": "assets/css/header.css",
+      "destination": "assets/css/header.css"
+    },
+    {
+      "source": "assets/css/investments.css",
+      "destination": "assets/css/investments.css"
+    },
+    {
+      "source": "assets/css/layout.css",
+      "destination": "assets/css/layout.css"
+    },
+    {
+      "source": "assets/css/media.css",
+      "destination": "assets/css/media.css"
+    },
+    {
+      "source": "assets/css/motion.css",
+      "destination": "assets/css/motion.css"
+    },
+    {
+      "source": "assets/css/pages.css",
+      "destination": "assets/css/pages.css"
+    },
+    {
+      "source": "assets/css/projects.css",
+      "destination": "assets/css/projects.css"
+    },
+    {
+      "source": "assets/css/quote.css",
+      "destination": "assets/css/quote.css"
+    },
+    {
+      "source": "assets/css/responsive.css",
+      "destination": "assets/css/responsive.css"
+    },
+    {
+      "source": "assets/fonts/montserrat-cyrillic-400.woff2",
+      "destination": "assets/fonts/montserrat-cyrillic-400.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-cyrillic-500.woff2",
+      "destination": "assets/fonts/montserrat-cyrillic-500.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-cyrillic-600.woff2",
+      "destination": "assets/fonts/montserrat-cyrillic-600.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-cyrillic-700.woff2",
+      "destination": "assets/fonts/montserrat-cyrillic-700.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-cyrillic-ext-400.woff2",
+      "destination": "assets/fonts/montserrat-cyrillic-ext-400.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-cyrillic-ext-500.woff2",
+      "destination": "assets/fonts/montserrat-cyrillic-ext-500.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-cyrillic-ext-600.woff2",
+      "destination": "assets/fonts/montserrat-cyrillic-ext-600.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-cyrillic-ext-700.woff2",
+      "destination": "assets/fonts/montserrat-cyrillic-ext-700.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-latin-400.woff2",
+      "destination": "assets/fonts/montserrat-latin-400.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-latin-500.woff2",
+      "destination": "assets/fonts/montserrat-latin-500.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-latin-600.woff2",
+      "destination": "assets/fonts/montserrat-latin-600.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-latin-700.woff2",
+      "destination": "assets/fonts/montserrat-latin-700.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-latin-ext-400.woff2",
+      "destination": "assets/fonts/montserrat-latin-ext-400.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-latin-ext-500.woff2",
+      "destination": "assets/fonts/montserrat-latin-ext-500.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-latin-ext-600.woff2",
+      "destination": "assets/fonts/montserrat-latin-ext-600.woff2"
+    },
+    {
+      "source": "assets/fonts/montserrat-latin-ext-700.woff2",
+      "destination": "assets/fonts/montserrat-latin-ext-700.woff2"
+    },
+    {
+      "source": "assets/icons/business/ses-n522.svg",
+      "destination": "assets/icons/business/ses-n522.svg"
+    },
+    {
+      "source": "assets/icons/business/ses-n532.svg",
+      "destination": "assets/icons/business/ses-n532.svg"
+    },
+    {
+      "source": "assets/icons/business/ses-n545.svg",
+      "destination": "assets/icons/business/ses-n545.svg"
+    },
+    {
+      "source": "assets/icons/business/ses-n553.svg",
+      "destination": "assets/icons/business/ses-n553.svg"
+    },
+    {
+      "source": "assets/icons/business/ses-n563.svg",
+      "destination": "assets/icons/business/ses-n563.svg"
+    },
+    {
+      "source": "assets/icons/business/ses-n569.svg",
+      "destination": "assets/icons/business/ses-n569.svg"
+    },
+    {
+      "source": "assets/icons/business/ses-n575.svg",
+      "destination": "assets/icons/business/ses-n575.svg"
+    },
+    {
+      "source": "assets/icons/business/ses-n585.svg",
+      "destination": "assets/icons/business/ses-n585.svg"
+    },
+    {
+      "source": "assets/icons/business/ses-n667.svg",
+      "destination": "assets/icons/business/ses-n667.svg"
+    },
+    {
+      "source": "assets/icons/business/ses-n675.svg",
+      "destination": "assets/icons/business/ses-n675.svg"
+    },
+    {
+      "source": "assets/icons/business/ses-n689.svg",
+      "destination": "assets/icons/business/ses-n689.svg"
+    },
+    {
+      "source": "assets/icons/business/ses-n703.svg",
+      "destination": "assets/icons/business/ses-n703.svg"
+    },
+    {
+      "source": "assets/icons/business/uze-n147.svg",
+      "destination": "assets/icons/business/uze-n147.svg"
+    },
+    {
+      "source": "assets/icons/business/uze-n155.svg",
+      "destination": "assets/icons/business/uze-n155.svg"
+    },
+    {
+      "source": "assets/icons/business/uze-n162.svg",
+      "destination": "assets/icons/business/uze-n162.svg"
+    },
+    {
+      "source": "assets/icons/business/uze-n171.svg",
+      "destination": "assets/icons/business/uze-n171.svg"
+    },
+    {
+      "source": "assets/icons/business/uze-n209.svg",
+      "destination": "assets/icons/business/uze-n209.svg"
+    },
+    {
+      "source": "assets/icons/business/uze-n215.svg",
+      "destination": "assets/icons/business/uze-n215.svg"
+    },
+    {
+      "source": "assets/icons/business/uze-n222.svg",
+      "destination": "assets/icons/business/uze-n222.svg"
+    },
+    {
+      "source": "assets/icons/business/uze-n228.svg",
+      "destination": "assets/icons/business/uze-n228.svg"
+    },
+    {
+      "source": "assets/icons/business/uze-n435.svg",
+      "destination": "assets/icons/business/uze-n435.svg"
+    },
+    {
+      "source": "assets/icons/business/uze-n446.svg",
+      "destination": "assets/icons/business/uze-n446.svg"
+    },
+    {
+      "source": "assets/icons/business/uze-n457.svg",
+      "destination": "assets/icons/business/uze-n457.svg"
+    },
+    {
+      "source": "assets/icons/business/uze-n465.svg",
+      "destination": "assets/icons/business/uze-n465.svg"
+    },
+    {
+      "source": "assets/icons/company/logo.svg",
+      "destination": "assets/icons/company/logo.svg"
+    },
+    {
+      "source": "assets/icons/company/mail.svg",
+      "destination": "assets/icons/company/mail.svg"
+    },
+    {
+      "source": "assets/icons/company/map-pin.svg",
+      "destination": "assets/icons/company/map-pin.svg"
+    },
+    {
+      "source": "assets/icons/company/mission.svg",
+      "destination": "assets/icons/company/mission.svg"
+    },
+    {
+      "source": "assets/icons/company/phone.svg",
+      "destination": "assets/icons/company/phone.svg"
+    },
+    {
+      "source": "assets/icons/company/x-circle.svg",
+      "destination": "assets/icons/company/x-circle.svg"
+    },
+    {
+      "source": "assets/icons/financing/cr-dit-agricole-2020-logo-1.svg",
+      "destination": "assets/icons/financing/cr-dit-agricole-2020-logo-1.svg"
+    },
+    {
+      "source": "assets/icons/financing/cr-dit-agricole-2020-logo-2.svg",
+      "destination": "assets/icons/financing/cr-dit-agricole-2020-logo-2.svg"
+    },
+    {
+      "source": "assets/icons/financing/embleme-white.svg",
+      "destination": "assets/icons/financing/embleme-white.svg"
+    },
+    {
+      "source": "assets/icons/financing/embleme.svg",
+      "destination": "assets/icons/financing/embleme.svg"
+    },
+    {
+      "source": "assets/icons/financing/frame-230-2.svg",
+      "destination": "assets/icons/financing/frame-230-2.svg"
+    },
+    {
+      "source": "assets/icons/financing/frame-230.svg",
+      "destination": "assets/icons/financing/frame-230.svg"
+    },
+    {
+      "source": "assets/icons/financing/frame-243.svg",
+      "destination": "assets/icons/financing/frame-243.svg"
+    },
+    {
+      "source": "assets/icons/financing/frame-261.svg",
+      "destination": "assets/icons/financing/frame-261.svg"
+    },
+    {
+      "source": "assets/icons/financing/frame-262.svg",
+      "destination": "assets/icons/financing/frame-262.svg"
+    },
+    {
+      "source": "assets/icons/financing/group-2.svg",
+      "destination": "assets/icons/financing/group-2.svg"
+    },
+    {
+      "source": "assets/icons/financing/industry.svg",
+      "destination": "assets/icons/financing/industry.svg"
+    },
+    {
+      "source": "assets/icons/financing/mtb-bank.svg",
+      "destination": "assets/icons/financing/mtb-bank.svg"
+    },
+    {
+      "source": "assets/icons/financing/procredit-bank.svg",
+      "destination": "assets/icons/financing/procredit-bank.svg"
+    },
+    {
+      "source": "assets/icons/financing/pumb-bank-321-1.svg",
+      "destination": "assets/icons/financing/pumb-bank-321-1.svg"
+    },
+    {
+      "source": "assets/icons/financing/unex-bank.svg",
+      "destination": "assets/icons/financing/unex-bank.svg"
+    },
+    {
+      "source": "assets/icons/header/871-28883-imgRaytonWhiteLogo.svg",
+      "destination": "assets/icons/header/871-28883-imgRaytonWhiteLogo.svg"
+    },
+    {
+      "source": "assets/icons/i-bolt.svg",
+      "destination": "assets/icons/i-bolt.svg"
+    },
+    {
+      "source": "assets/icons/i-care.svg",
+      "destination": "assets/icons/i-care.svg"
+    },
+    {
+      "source": "assets/icons/i-chart.svg",
+      "destination": "assets/icons/i-chart.svg"
+    },
+    {
+      "source": "assets/icons/i-industry-grey.svg",
+      "destination": "assets/icons/i-industry-grey.svg"
+    },
+    {
+      "source": "assets/icons/i-industry.svg",
+      "destination": "assets/icons/i-industry.svg"
+    },
+    {
+      "source": "assets/icons/i-list.svg",
+      "destination": "assets/icons/i-list.svg"
+    },
+    {
+      "source": "assets/icons/i-modules.svg",
+      "destination": "assets/icons/i-modules.svg"
+    },
+    {
+      "source": "assets/icons/i-panel.svg",
+      "destination": "assets/icons/i-panel.svg"
+    },
+    {
+      "source": "assets/icons/i-scale.svg",
+      "destination": "assets/icons/i-scale.svg"
+    },
+    {
+      "source": "assets/icons/i-search.svg",
+      "destination": "assets/icons/i-search.svg"
+    },
+    {
+      "source": "assets/icons/i-service.svg",
+      "destination": "assets/icons/i-service.svg"
+    },
+    {
+      "source": "assets/icons/i-shield.svg",
+      "destination": "assets/icons/i-shield.svg"
+    },
+    {
+      "source": "assets/icons/i-solar.svg",
+      "destination": "assets/icons/i-solar.svg"
+    },
+    {
+      "source": "assets/icons/i-team.svg",
+      "destination": "assets/icons/i-team.svg"
+    },
+    {
+      "source": "assets/icons/investments/check.svg",
+      "destination": "assets/icons/investments/check.svg"
+    },
+    {
+      "source": "assets/icons/investments/n136.svg",
+      "destination": "assets/icons/investments/n136.svg"
+    },
+    {
+      "source": "assets/icons/investments/n147.svg",
+      "destination": "assets/icons/investments/n147.svg"
+    },
+    {
+      "source": "assets/icons/investments/n161.svg",
+      "destination": "assets/icons/investments/n161.svg"
+    },
+    {
+      "source": "assets/icons/investments/n175.svg",
+      "destination": "assets/icons/investments/n175.svg"
+    },
+    {
+      "source": "assets/icons/investments/n186.svg",
+      "destination": "assets/icons/investments/n186.svg"
+    },
+    {
+      "source": "assets/icons/investments/n250.svg",
+      "destination": "assets/icons/investments/n250.svg"
+    },
+    {
+      "source": "assets/icons/investments/n283.svg",
+      "destination": "assets/icons/investments/n283.svg"
+    },
+    {
+      "source": "assets/icons/swoosh-1.svg",
+      "destination": "assets/icons/swoosh-1.svg"
+    },
+    {
+      "source": "assets/icons/swoosh-2.svg",
+      "destination": "assets/icons/swoosh-2.svg"
+    },
+    {
+      "source": "assets/img/about-company.jpg",
+      "destination": "assets/img/about-company.jpg"
+    },
+    {
+      "source": "assets/img/article-1.jpg",
+      "destination": "assets/img/article-1.jpg"
+    },
+    {
+      "source": "assets/img/article-2.jpg",
+      "destination": "assets/img/article-2.jpg"
+    },
+    {
+      "source": "assets/img/article-3.jpg",
+      "destination": "assets/img/article-3.jpg"
+    },
+    {
+      "source": "assets/img/benefits-bg.jpg",
+      "destination": "assets/img/benefits-bg.jpg"
+    },
+    {
+      "source": "assets/img/business-storage-system.png",
+      "destination": "assets/img/business-storage-system.png"
+    },
+    {
+      "source": "assets/img/calculator-bg.jpg",
+      "destination": "assets/img/calculator-bg.jpg"
+    },
+    {
+      "source": "assets/img/company/hero.webp",
+      "destination": "assets/img/company/hero.webp"
+    },
+    {
+      "source": "assets/img/financing/bank-credit-dnipro.png",
+      "destination": "assets/img/financing/bank-credit-dnipro.png"
+    },
+    {
+      "source": "assets/img/financing/bank-lviv.png",
+      "destination": "assets/img/financing/bank-lviv.png"
+    },
+    {
+      "source": "assets/img/financing/bank-pivdenny.png",
+      "destination": "assets/img/financing/bank-pivdenny.png"
+    },
+    {
+      "source": "assets/img/financing/bizbank.png",
+      "destination": "assets/img/financing/bizbank.png"
+    },
+    {
+      "source": "assets/img/financing/creditwest.png",
+      "destination": "assets/img/financing/creditwest.png"
+    },
+    {
+      "source": "assets/img/financing/hero-financing.png",
+      "destination": "assets/img/financing/hero-financing.png"
+    },
+    {
+      "source": "assets/img/financing/kredobank.png",
+      "destination": "assets/img/financing/kredobank.png"
+    },
+    {
+      "source": "assets/img/financing/sense-bank.png",
+      "destination": "assets/img/financing/sense-bank.png"
+    },
+    {
+      "source": "assets/img/financing/ukreximbank.png",
+      "destination": "assets/img/financing/ukreximbank.png"
+    },
+    {
+      "source": "assets/img/financing/ukrgasbank.png",
+      "destination": "assets/img/financing/ukrgasbank.png"
+    },
+    {
+      "source": "assets/img/hero-home.jpg",
+      "destination": "assets/img/hero-home.jpg"
+    },
+    {
+      "source": "assets/img/hero-ses.jpg",
+      "destination": "assets/img/hero-ses.jpg"
+    },
+    {
+      "source": "assets/img/hero-uze-alt.jpg",
+      "destination": "assets/img/hero-uze-alt.jpg"
+    },
+    {
+      "source": "assets/img/hero-uze.jpg",
+      "destination": "assets/img/hero-uze.jpg"
+    },
+    {
+      "source": "assets/img/investments/hero.png",
+      "destination": "assets/img/investments/hero.png"
+    },
+    {
+      "source": "assets/img/media-1.jpg",
+      "destination": "assets/img/media-1.jpg"
+    },
+    {
+      "source": "assets/img/media-2.jpg",
+      "destination": "assets/img/media-2.jpg"
+    },
+    {
+      "source": "assets/img/media-3.jpg",
+      "destination": "assets/img/media-3.jpg"
+    },
+    {
+      "source": "assets/img/media-4.jpg",
+      "destination": "assets/img/media-4.jpg"
+    },
+    {
+      "source": "assets/img/media-5.jpg",
+      "destination": "assets/img/media-5.jpg"
+    },
+    {
+      "source": "assets/img/media-6.jpg",
+      "destination": "assets/img/media-6.jpg"
+    },
+    {
+      "source": "assets/img/media-7.jpg",
+      "destination": "assets/img/media-7.jpg"
+    },
+    {
+      "source": "assets/img/media-8.jpg",
+      "destination": "assets/img/media-8.jpg"
+    },
+    {
+      "source": "assets/img/media/article-8270.jpg",
+      "destination": "assets/img/media/article-8270.jpg"
+    },
+    {
+      "source": "assets/img/media/article-8466.jpg",
+      "destination": "assets/img/media/article-8466.jpg"
+    },
+    {
+      "source": "assets/img/media/article-8521.jpg",
+      "destination": "assets/img/media/article-8521.jpg"
+    },
+    {
+      "source": "assets/img/media/article-8660.jpg",
+      "destination": "assets/img/media/article-8660.jpg"
+    },
+    {
+      "source": "assets/img/media/article-8663.jpg",
+      "destination": "assets/img/media/article-8663.jpg"
+    },
+    {
+      "source": "assets/img/media/article-8673.jpg",
+      "destination": "assets/img/media/article-8673.jpg"
+    },
+    {
+      "source": "assets/img/media/article-8676.jpg",
+      "destination": "assets/img/media/article-8676.jpg"
+    },
+    {
+      "source": "assets/img/media/article-8677.jpg",
+      "destination": "assets/img/media/article-8677.jpg"
+    },
+    {
+      "source": "assets/img/media/article-8678.jpg",
+      "destination": "assets/img/media/article-8678.jpg"
+    },
+    {
+      "source": "assets/img/media/hero.webp",
+      "destination": "assets/img/media/hero.webp"
+    },
+    {
+      "source": "assets/img/project-1.jpg",
+      "destination": "assets/img/project-1.jpg"
+    },
+    {
+      "source": "assets/img/project-2.jpg",
+      "destination": "assets/img/project-2.jpg"
+    },
+    {
+      "source": "assets/img/project-3.jpg",
+      "destination": "assets/img/project-3.jpg"
+    },
+    {
+      "source": "assets/img/project-4.jpg",
+      "destination": "assets/img/project-4.jpg"
+    },
+    {
+      "source": "assets/img/projects-video.jpg",
+      "destination": "assets/img/projects-video.jpg"
+    },
+    {
+      "source": "assets/img/projects/ast.jpg",
+      "destination": "assets/img/projects/ast.jpg"
+    },
+    {
+      "source": "assets/img/projects/berdychiv.jpg",
+      "destination": "assets/img/projects/berdychiv.jpg"
+    },
+    {
+      "source": "assets/img/projects/horstal.jpg",
+      "destination": "assets/img/projects/horstal.jpg"
+    },
+    {
+      "source": "assets/img/projects/karpatski-vody.jpg",
+      "destination": "assets/img/projects/karpatski-vody.jpg"
+    },
+    {
+      "source": "assets/img/projects/kostopil.jpg",
+      "destination": "assets/img/projects/kostopil.jpg"
+    },
+    {
+      "source": "assets/img/projects/kyivguma.jpg",
+      "destination": "assets/img/projects/kyivguma.jpg"
+    },
+    {
+      "source": "assets/img/projects/radekhiv.jpg",
+      "destination": "assets/img/projects/radekhiv.jpg"
+    },
+    {
+      "source": "assets/img/projects/reveha.jpg",
+      "destination": "assets/img/projects/reveha.jpg"
+    },
+    {
+      "source": "assets/img/projects/svit-mebliv.jpg",
+      "destination": "assets/img/projects/svit-mebliv.jpg"
+    },
+    {
+      "source": "assets/img/projects/tascom.jpg",
+      "destination": "assets/img/projects/tascom.jpg"
+    },
+    {
+      "source": "assets/img/projects/termo-pak.jpg",
+      "destination": "assets/img/projects/termo-pak.jpg"
+    },
+    {
+      "source": "assets/img/projects/tribo.jpg",
+      "destination": "assets/img/projects/tribo.jpg"
+    },
+    {
+      "source": "assets/img/quote-author.jpg",
+      "destination": "assets/img/quote-author.jpg"
+    },
+    {
+      "source": "assets/img/rayton-control.png",
+      "destination": "assets/img/rayton-control.png"
+    },
+    {
+      "source": "assets/img/ress-1000-4180.png",
+      "destination": "assets/img/ress-1000-4180.png"
+    },
+    {
+      "source": "assets/img/ress-125-261.png",
+      "destination": "assets/img/ress-125-261.png"
+    },
+    {
+      "source": "assets/img/ress-2500-5015.png",
+      "destination": "assets/img/ress-2500-5015.png"
+    },
+    {
+      "source": "assets/img/solution-1.jpg",
+      "destination": "assets/img/solution-1.jpg"
+    },
+    {
+      "source": "assets/img/solution-2.jpg",
+      "destination": "assets/img/solution-2.jpg"
+    },
+    {
+      "source": "assets/img/solution-3.jpg",
+      "destination": "assets/img/solution-3.jpg"
+    },
+    {
+      "source": "assets/img/solution-4.jpg",
+      "destination": "assets/img/solution-4.jpg"
+    },
+    {
+      "source": "assets/img/uze-cta-bg.jpg",
+      "destination": "assets/img/uze-cta-bg.jpg"
+    },
+    {
+      "source": "assets/img/uze-model-1.jpg",
+      "destination": "assets/img/uze-model-1.jpg"
+    },
+    {
+      "source": "assets/img/uze-model-2.jpg",
+      "destination": "assets/img/uze-model-2.jpg"
+    },
+    {
+      "source": "assets/img/uze-model-3.jpg",
+      "destination": "assets/img/uze-model-3.jpg"
+    },
+    {
+      "source": "assets/js/business.js",
+      "destination": "assets/js/business.js"
+    },
+    {
+      "source": "assets/js/main.js",
+      "destination": "assets/js/main.js"
+    },
+    {
+      "source": "assets/js/media.js",
+      "destination": "assets/js/media.js"
+    }
+  ]
+}
