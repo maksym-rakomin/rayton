@@ -252,13 +252,17 @@ test('converted theme code contains no static-site routing or document metadata'
   assert.doesNotMatch(joined, /project\.html\?id=/i);
 });
 
-test('projects use the current local catalogue on the Projects Page hash route', () => {
+test('projects use the current local catalogue without exposing detail navigation', () => {
   const projects = read('template-parts/pages/projects.php');
+  const projectsScript = read('assets/js/projects.js');
   const assets = read('inc/assets.php');
   assert.match(projects, /projects-grid/);
+  assert.doesNotMatch(projects, /project-card__media[^>]+href=/);
+  assert.doesNotMatch(projects, /class=["']link-arrow["'][^>]*>Детальніше/);
+  assert.doesNotMatch(projectsScript, /project-hash-detail|hashchange/);
   assert.match(assets, /projects-data\.js/);
   assert.match(assets, /projects\.js/);
-  assert.match(assets, /['"]projectsUrl['"]\s*=>\s*rayton_v2_page_url/);
+  assert.match(assets, /['"]assetsUrl['"]\s*=>\s*untrailingslashit/);
   assert.match(assets, /wp_localize_script\s*\(/);
 });
 
@@ -274,6 +278,5 @@ test('theme PHP uses only project hashes backed by the local dataset', () => {
   assert.doesNotMatch(php, /#project-slug/);
 
   const hashes = [...php.matchAll(/rayton_v2_page_url\(\s*'projects'\s*,\s*'#([^']+)'\s*\)/g)].map(match => match[1]);
-  assert.ok(hashes.length > 0, 'projects page exposes concrete hash details');
   for (const hash of hashes) assert.ok(projectIds.has(hash), `unknown project hash: ${hash}`);
 });

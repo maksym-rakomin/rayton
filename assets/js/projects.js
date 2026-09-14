@@ -23,9 +23,7 @@
     url.searchParams.set('lang', event.detail.locale);
     location.replace(url.href);
   });
-  function href(project) { return 'project.html?id=' + encodeURIComponent(project.id); }
   function fillCard(card, project) {
-    card.querySelectorAll('a').forEach(function (a) { a.href = href(project); });
     card.querySelector('.project-card__title').textContent = localise(project, 'title');
     var img = card.querySelector('img');
     img.src = project.image; img.alt = localise(project, 'title');

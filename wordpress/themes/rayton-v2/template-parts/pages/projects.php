@@ -68,193 +68,181 @@
       <ul class="projects-grid">
         <li>
           <article class="project-card">
-            <a class="project-card__media" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#kostopil' ) ); ?>">
+            <div class="project-card__media">
               <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/projects/kostopil.jpg' ) ); ?>" alt="Виробництво" width="612" height="886" loading="lazy">
               <span class="tag tag--solid tag--glass project-card__type">Виробництво</span>
               <span class="project-card__specs">
                 <span class="tag tag--solid tag--yellow">1405 кВт</span>
                 <span class="tag tag--solid tag--glass">Рівненська область</span>
               </span>
-            </a>
+            </div>
             <div class="project-card__body">
               <h3 class="project-card__title">Виробництво</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#kostopil' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
             </div>
           </article>
         </li>
         <li>
           <article class="project-card">
-            <a class="project-card__media" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#ast' ) ); ?>">
+            <div class="project-card__media">
               <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/projects/ast.jpg' ) ); ?>" alt="Виробництво" width="612" height="886" loading="lazy">
               <span class="tag tag--solid tag--glass project-card__type">Виробництво</span>
               <span class="project-card__specs">
                 <span class="tag tag--solid tag--yellow">825 кВт</span>
                 <span class="tag tag--solid tag--glass">Київська область</span>
               </span>
-            </a>
+            </div>
             <div class="project-card__body">
               <h3 class="project-card__title">Виробництво</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#ast' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
             </div>
           </article>
         </li>
         <li>
           <article class="project-card">
-            <a class="project-card__media" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#radekhiv' ) ); ?>">
+            <div class="project-card__media">
               <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/projects/radekhiv.jpg' ) ); ?>" alt="Агро" width="612" height="886" loading="lazy">
               <span class="tag tag--solid tag--glass project-card__type">Агро</span>
               <span class="project-card__specs">
                 <span class="tag tag--solid tag--yellow">725 кВт</span>
                 <span class="tag tag--solid tag--glass">Львівська область</span>
               </span>
-            </a>
+            </div>
             <div class="project-card__body">
               <h3 class="project-card__title">Агро</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#radekhiv' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
             </div>
           </article>
         </li>
         <li>
           <article class="project-card">
-            <a class="project-card__media" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#tribo' ) ); ?>">
+            <div class="project-card__media">
               <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/projects/tribo.jpg' ) ); ?>" alt="Виробництво" width="612" height="886" loading="lazy">
               <span class="tag tag--solid tag--glass project-card__type">Виробництво</span>
               <span class="project-card__specs">
                 <span class="tag tag--solid tag--yellow">554,4 кВт</span>
                 <span class="tag tag--solid tag--glass">Київська область</span>
               </span>
-            </a>
+            </div>
             <div class="project-card__body">
               <h3 class="project-card__title">Виробництво</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#tribo' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
             </div>
           </article>
         </li>
         <li>
           <article class="project-card">
-            <a class="project-card__media" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#tascom' ) ); ?>">
+            <div class="project-card__media">
               <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/projects/tascom.jpg' ) ); ?>" alt="Склади" width="612" height="886" loading="lazy">
               <span class="tag tag--solid tag--glass project-card__type">Склади</span>
               <span class="project-card__specs">
                 <span class="tag tag--solid tag--yellow">531 кВт</span>
                 <span class="tag tag--solid tag--glass">Київська область</span>
               </span>
-            </a>
+            </div>
             <div class="project-card__body">
               <h3 class="project-card__title">Склади</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#tascom' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
             </div>
           </article>
         </li>
         <li>
           <article class="project-card">
-            <a class="project-card__media" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#kyivguma' ) ); ?>">
+            <div class="project-card__media">
               <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/projects/kyivguma.jpg' ) ); ?>" alt="Виробництво" width="612" height="886" loading="lazy">
               <span class="tag tag--solid tag--glass project-card__type">Виробництво</span>
               <span class="project-card__specs">
                 <span class="tag tag--solid tag--yellow">505 кВт</span>
                 <span class="tag tag--solid tag--glass">Київська область</span>
               </span>
-            </a>
+            </div>
             <div class="project-card__body">
               <h3 class="project-card__title">Виробництво</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#kyivguma' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
             </div>
           </article>
         </li>
         <li>
           <article class="project-card">
-            <a class="project-card__media" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#berdychiv' ) ); ?>">
+            <div class="project-card__media">
               <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/projects/berdychiv.jpg' ) ); ?>" alt="Харчова промисловість" width="612" height="886" loading="lazy">
               <span class="tag tag--solid tag--glass project-card__type">Харчова промисловість</span>
               <span class="project-card__specs">
                 <span class="tag tag--solid tag--yellow">355 кВт</span>
                 <span class="tag tag--solid tag--glass">Інші регіони</span>
               </span>
-            </a>
+            </div>
             <div class="project-card__body">
               <h3 class="project-card__title">Харчова промисловість</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#berdychiv' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
             </div>
           </article>
         </li>
         <li>
           <article class="project-card">
-            <a class="project-card__media" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#horstal' ) ); ?>">
+            <div class="project-card__media">
               <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/projects/horstal.jpg' ) ); ?>" alt="Виробництво" width="612" height="886" loading="lazy">
               <span class="tag tag--solid tag--glass project-card__type">Виробництво</span>
               <span class="project-card__specs">
                 <span class="tag tag--solid tag--yellow">325 кВт</span>
                 <span class="tag tag--solid tag--glass">Інші регіони</span>
               </span>
-            </a>
+            </div>
             <div class="project-card__body">
               <h3 class="project-card__title">Виробництво</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#horstal' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
             </div>
           </article>
         </li>
         <li>
           <article class="project-card">
-            <a class="project-card__media" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#karpatski-vody' ) ); ?>">
+            <div class="project-card__media">
               <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/projects/karpatski-vody.jpg' ) ); ?>" alt="Харчова промисловість" width="612" height="886" loading="lazy">
               <span class="tag tag--solid tag--glass project-card__type">Харчова промисловість</span>
               <span class="project-card__specs">
                 <span class="tag tag--solid tag--yellow">287 кВт</span>
                 <span class="tag tag--solid tag--glass">Львівська область</span>
               </span>
-            </a>
+            </div>
             <div class="project-card__body">
               <h3 class="project-card__title">Харчова промисловість</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#karpatski-vody' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
             </div>
           </article>
         </li>
         <li>
           <article class="project-card">
-            <a class="project-card__media" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#reveha' ) ); ?>">
+            <div class="project-card__media">
               <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/projects/reveha.jpg' ) ); ?>" alt="Агро" width="612" height="886" loading="lazy">
               <span class="tag tag--solid tag--glass project-card__type">Агро</span>
               <span class="project-card__specs">
                 <span class="tag tag--solid tag--yellow">275 кВт</span>
                 <span class="tag tag--solid tag--glass">Рівненська область</span>
               </span>
-            </a>
+            </div>
             <div class="project-card__body">
               <h3 class="project-card__title">Агро</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#reveha' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
             </div>
           </article>
         </li>
         <li>
           <article class="project-card">
-            <a class="project-card__media" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#svit-mebliv' ) ); ?>">
+            <div class="project-card__media">
               <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/projects/svit-mebliv.jpg' ) ); ?>" alt="Виробництво" width="612" height="886" loading="lazy">
               <span class="tag tag--solid tag--glass project-card__type">Виробництво</span>
               <span class="project-card__specs">
                 <span class="tag tag--solid tag--yellow">246 кВт</span>
                 <span class="tag tag--solid tag--glass">Інші регіони</span>
               </span>
-            </a>
+            </div>
             <div class="project-card__body">
               <h3 class="project-card__title">Виробництво</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#svit-mebliv' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
             </div>
           </article>
         </li>
         <li>
           <article class="project-card">
-            <a class="project-card__media" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#termo-pak' ) ); ?>">
+            <div class="project-card__media">
               <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/projects/termo-pak.jpg' ) ); ?>" alt="Виробництво" width="612" height="886" loading="lazy">
               <span class="tag tag--solid tag--glass project-card__type">Виробництво</span>
               <span class="project-card__specs">
                 <span class="tag tag--solid tag--yellow">231 кВт</span>
                 <span class="tag tag--solid tag--glass">Інші регіони</span>
               </span>
-            </a>
+            </div>
             <div class="project-card__body">
               <h3 class="project-card__title">Виробництво</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '#termo-pak' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
             </div>
           </article>
         </li>

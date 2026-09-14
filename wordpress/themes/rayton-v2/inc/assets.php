@@ -91,8 +91,7 @@ function rayton_v2_enqueue_assets() {
 			'rayton-v2-projects',
 			'raytonV2',
 			array(
-				'projectsUrl' => rayton_v2_page_url( 'projects' ),
-				'assetsUrl'   => untrailingslashit( rayton_v2_asset_url( 'assets' ) ),
+				'assetsUrl' => untrailingslashit( rayton_v2_asset_url( 'assets' ) ),
 			)
 		);
 	}

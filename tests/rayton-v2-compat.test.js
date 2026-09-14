@@ -95,12 +95,12 @@ test('packaged interactive scripts use injected WordPress URLs and no static rou
   assert.match(assets, /rayton-v2-solar-calc/);
   assert.match(assets, /rayton-v2-calculator/);
   assert.match(assets, /['"]calculatorUrl['"]\s*=>\s*rayton_v2_page_url\(\s*'calculator'/);
-  assert.match(assets, /['"]projectsUrl['"]\s*=>\s*rayton_v2_page_url\(\s*'projects'/);
+  assert.match(assets, /['"]assetsUrl['"]\s*=>\s*untrailingslashit/);
 
   const scripts = filesBelow(path.join(theme, 'assets/js')).map(file => fs.readFileSync(file, 'utf8')).join('\n');
   assert.doesNotMatch(scripts, /calculator\.html|project\.html|\?id=/i);
   assert.match(read('assets/js/calculator.js'), /config\.calculatorUrl/);
-  assert.match(read('assets/js/projects.js'), /config\.projectsUrl/);
+  assert.match(read('assets/js/projects.js'), /config\.assetsUrl/);
 
   const routes = read('inc/routes.php');
   assert.match(routes, /'financing'\s*=>\s*array\(\s*'slugs'\s*=>\s*array\(\s*'calculator'/);
