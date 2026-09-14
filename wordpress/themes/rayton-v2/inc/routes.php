@@ -147,6 +147,14 @@ function rayton_v2_current_page_key() {
 	}
 
 	$current_id   = (int) get_queried_object_id();
+	$front_id     = (int) get_option( 'page_on_front' );
+	if ( $front_id && function_exists( 'pll_get_post' ) ) {
+		$translated_front_id = (int) pll_get_post( $front_id, rayton_v2_current_locale() );
+		if ( $translated_front_id && $translated_front_id === $current_id ) {
+			return 'home';
+		}
+	}
+
 	$current_slug = get_post_field( 'post_name', $current_id );
 	foreach ( rayton_v2_page_map() as $key => $definition ) {
 		if ( empty( $definition['part'] ) || empty( $definition['slugs'] ) ) {
@@ -182,6 +190,9 @@ function rayton_v2_virtual_page_key() {
 	$segments = array_values( array_filter( explode( '/', $request_path ) ) );
 	if ( $segments && in_array( $segments[0], array( 'uk', 'en' ), true ) ) {
 		array_shift( $segments );
+	}
+	if ( ! $segments ) {
+		return 'home';
 	}
 	if (
 		isset( $segments[0] )
@@ -260,6 +271,18 @@ function rayton_v2_virtual_page_template( $template ) {
 }
 add_filter( 'template_include', 'rayton_v2_virtual_page_template' );
 
+/** Keep the packaged locale root instead of redirecting to a legacy front Page slug. */
+function rayton_v2_keep_language_home_route( $redirect ) {
+	return 'home' === rayton_v2_virtual_page_key() && rayton_v2_use_packaged_page() ? false : $redirect;
+}
+add_filter( 'pll_redirect_home', 'rayton_v2_keep_language_home_route' );
+
+/** Prevent WordPress core from canonicalizing /en/ to /en/home-eng/. */
+function rayton_v2_keep_language_home_canonical( $redirect_url ) {
+	return 'home' === rayton_v2_virtual_page_key() && rayton_v2_use_packaged_page() ? false : $redirect_url;
+}
+add_filter( 'redirect_canonical', 'rayton_v2_keep_language_home_canonical' );
+
 /**
  * Return the Polylang language directory, not the translated static front
  * page. pll_home_url( 'en' ) is /en/home-eng/ on production and therefore
@@ -282,20 +305,7 @@ function rayton_v2_page_url_for_locale( $key, $locale, $fragment = '' ) {
 	$locale = in_array( $locale, array( 'uk', 'en' ), true ) ? $locale : 'uk';
 	$base_url = rayton_v2_language_base_url( $locale );
 	if ( 'home' === $key ) {
-		$page_id = (int) get_option( 'page_on_front' );
-		if ( $page_id ) {
-			if ( function_exists( 'pll_get_post' ) ) {
-				$translated_id = pll_get_post( $page_id, $locale );
-				if ( $translated_id ) {
-					$page_id = (int) $translated_id;
-				} elseif ( $locale !== rayton_v2_current_locale() ) {
-					return trailingslashit( $base_url ) . $fragment;
-				}
-			}
-			$url = get_permalink( $page_id );
-		} else {
-			$url = $base_url;
-		}
+		$url = $base_url;
 	} elseif ( 'blog' === $key && get_option( 'page_for_posts' ) ) {
 		$page_id = (int) get_option( 'page_for_posts' );
 		if ( function_exists( 'pll_get_post' ) ) {

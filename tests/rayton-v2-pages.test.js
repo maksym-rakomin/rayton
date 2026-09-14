@@ -75,6 +75,20 @@ test('home and internal URLs resolve the linked Polylang page', () => {
   assert.match(routes, /pll_the_languages\s*\(\s*array\s*\(\s*['"]raw['"]\s*=>\s*1\s*\)\s*\)/);
 });
 
+test('homepage uses the clean locale root and never the legacy home-eng permalink', () => {
+	const routes = read('inc/routes.php');
+	const homeBranch = routes.slice(
+		routes.indexOf("if ( 'home' === $key )"),
+		routes.indexOf("} elseif ( 'blog' === $key")
+	);
+	assert.match(homeBranch, /\$url\s*=\s*\$base_url/);
+	assert.doesNotMatch(homeBranch, /get_permalink|pll_get_post|page_on_front/);
+	assert.match(routes, /if\s*\(\s*!\s*\$segments\s*\)\s*\{\s*return\s+['"]home['"]/);
+	assert.match(routes, /add_filter\s*\(\s*['"]pll_redirect_home['"]\s*,\s*['"]rayton_v2_keep_language_home_route['"]/);
+	assert.match(routes, /add_filter\s*\(\s*['"]redirect_canonical['"]\s*,\s*['"]rayton_v2_keep_language_home_canonical['"]/);
+	assert.doesNotMatch(homeBranch, /home-eng/);
+});
+
 test('production Page aliases are resolved in explicit priority order', () => {
   const routes = read('inc/routes.php');
   const aliases = {
