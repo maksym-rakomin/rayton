@@ -48,11 +48,11 @@
 .company-mission__card--brand { background:white; border-color:white; }
 .company-mission__card--brand>img { width:195px; height:44px; }
 .company-mission__card--brand p { color:var(--c-black); }
-[data-company-page="about"] .section-showcase { padding-block:114px; }
-[data-company-page="about"] .section-posts .posts__lead { color:var(--c-grey); }
-[data-company-page="about"] .section-posts .post-row__title { color:white; }
-[data-company-page="about"] .section-posts .post-row__text { color:var(--c-grey); }
-[data-company-page="about"] .section-posts .post-row { border-color:#373737; }
+.page--about .section-showcase { padding-block:114px; }
+.page--about .section-posts .posts__lead { color:var(--c-grey); }
+.page--about .section-posts .post-row__title { color:white; }
+.page--about .section-posts .post-row__text { color:var(--c-grey); }
+.page--about .section-posts .post-row { border-color:#373737; }
 .company-contact { background:var(--c-black); color:white; padding:114px 0; }
 .company-contact__head { max-width:569px; margin-top:57px; }
 .company-contact .eyebrow { color:var(--c-grey); margin-bottom:8px; }
@@ -70,6 +70,33 @@
 .company-form__note { min-height:51px; max-width:430px; font-size:12px; line-height:18px; color:var(--c-grey); }
 .company-form__status { font-size:14px; line-height:22px; }
 .company-form__status a { color:var(--c-yellow); text-decoration:underline; }
+/* The WordPress page renders Caldera's form markup instead of the static
+   .company-form prototype. Keep the same visual contract for plugin fields. */
+.company-contact .rayton-enquiry--contact { min-width:0; }
+.company-contact .rayton-enquiry--contact .caldera-grid,
+.company-contact .rayton-enquiry--contact form { width:100%; }
+.company-contact .rayton-enquiry--contact .form-group { margin-bottom:12px; }
+.company-contact .rayton-enquiry--contact .control-label,
+.company-contact .rayton-enquiry--contact label { display:block; margin-bottom:6px; color:white; font:400 16px/24px var(--font); }
+.company-contact .rayton-enquiry--contact input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+.company-contact .rayton-enquiry--contact textarea,
+.company-contact .rayton-enquiry--contact select {
+ width:100%; min-height:46px; border:1px solid #373737; border-radius:8px;
+ background:rgba(17,19,26,.52); color:white; box-shadow:none;
+ font:400 16px/24px var(--font); padding:10px 14px;
+}
+.company-contact .rayton-enquiry--contact textarea { height:103px; min-height:103px; resize:vertical; }
+.company-contact .rayton-enquiry--contact select option { color:var(--c-black); background:white; }
+.company-contact .rayton-enquiry--contact input:focus,
+.company-contact .rayton-enquiry--contact textarea:focus,
+.company-contact .rayton-enquiry--contact select:focus { border-color:var(--c-yellow); outline:2px solid var(--c-yellow); outline-offset:2px; box-shadow:none; }
+.company-contact .rayton-enquiry--contact button[type="submit"],
+.company-contact .rayton-enquiry--contact input[type="submit"] {
+ width:100%; min-height:44px; border:0; border-radius:8px; padding:10px;
+ background:var(--c-yellow); color:#14181f; font:700 16px/24px var(--font); cursor:pointer;
+}
+.company-contact .rayton-enquiry--contact button[type="submit"]:hover,
+.company-contact .rayton-enquiry--contact input[type="submit"]:hover { background:var(--c-yellow-light); }
 .company-contact-card { padding:48px 52px 54px; border:1px solid #373737; border-radius:8px; background:rgba(17,19,26,.52); min-height:453px; }
 .company-contact-card h2 { font-size:20px; line-height:24px; font-weight:700; }
 .company-contact-card dl { display:flex; flex-direction:column; gap:36px; margin-top:25px; padding-left:26px; }
@@ -132,21 +159,21 @@
  .company-contact-card dl { grid-template-columns:1fr; }
  .company-contact-card { padding:28px 24px; }
  .company-location { padding:48px 0; }
- [data-company-page="about"] .section-showcase { padding-block:64px; }
+ .page--about .section-showcase { padding-block:64px; }
 }
 @media(min-width:1201px) {
- [data-company-page="about"] .showcase__list { height:741px; }
- [data-company-page="about"] .section-seo { min-height:620px; }
+ .page--about .showcase__list { height:741px; }
+ .page--about .section-seo { min-height:620px; }
  .company-location { padding-top:89px; }
 }
 @media(max-width:600px) {
- [data-company-page="about"] .section-head__title { overflow-wrap:anywhere; }
+ .page--about .section-head__title { overflow-wrap:anywhere; }
 }
-[data-company-page="about"] .section-posts .btn-line,
-[data-company-page="about"] .section-posts .icon-btn { color:white; border-color:var(--c-steel); }
-[data-company-page="about"] .section-posts .post-row__date { color:var(--c-grey); }
-[data-company-page="about"] .section-posts .btn-line:hover,
-[data-company-page="about"] .section-posts .icon-btn:hover { color:var(--c-black); background:var(--c-yellow); border-color:var(--c-yellow); }
+.page--about .section-posts .btn-line,
+.page--about .section-posts .icon-btn { color:white; border-color:var(--c-steel); }
+.page--about .section-posts .post-row__date { color:var(--c-grey); }
+.page--about .section-posts .btn-line:hover,
+.page--about .section-posts .icon-btn:hover { color:var(--c-black); background:var(--c-yellow); border-color:var(--c-yellow); }
 /* Use the existing reveal keyframes and reduced-motion rules. */
 .has-motion .company-hero__copy { animation:reveal-in var(--reveal-dur) var(--ease-out) both; }
 .has-motion .company-stats { animation:reveal-in var(--reveal-dur) var(--ease-out) .14s both; }

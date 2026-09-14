@@ -68,7 +68,7 @@ test('document hooks and safe content fallbacks are present', () => {
   assert.match(frontPage, /get_header\s*\(\s*\)/);
   assert.match(frontPage, /get_footer\s*\(\s*\)/);
   assert.match(frontPage, /have_posts\s*\(\s*\)/);
-  assert.match(frontPage, /template-parts\/pages\/home/);
+  assert.match(frontPage, /rayton_v2_render_packaged_page\(\s*'home'\s*\)/);
 
   const page = read('page.php');
   assert.match(page, /get_header\s*\(\s*\)/);
@@ -77,7 +77,7 @@ test('document hooks and safe content fallbacks are present', () => {
   assert.match(page, /template-parts\/content/);
   assert.match(read('template-parts/content-page.php'), /the_content\s*\(\s*\)/);
 
-  for (const file of ['home.php', 'archive.php', 'search.php']) {
+  for (const file of ['archive.php', 'search.php']) {
     const template = read(file);
     assert.match(template, /get_header\s*\(\s*\)/, file);
     assert.match(template, /get_footer\s*\(\s*\)/, file);
@@ -85,6 +85,13 @@ test('document hooks and safe content fallbacks are present', () => {
     assert.match(template, /the_excerpt\s*\(\s*\)/, file);
     assert.doesNotMatch(template, /is_singular\s*\(/, file);
   }
+
+  const home = read('home.php');
+  assert.match(home, /get_header\s*\(\s*\)/);
+  assert.match(home, /get_footer\s*\(\s*\)/);
+  assert.match(home, /rayton_v2_render_packaged_page\(\s*'blog'\s*\)/);
+  assert.match(read('template-parts/pages/blog.php'), /new\s+WP_Query\s*\(/);
+  assert.match(read('template-parts/pages/blog.php'), /the_excerpt\s*\(\s*\)/);
 
   assert.match(read('404.php'), /get_header\s*\(\s*\)/);
   assert.match(read('404.php'), /get_footer\s*\(\s*\)/);

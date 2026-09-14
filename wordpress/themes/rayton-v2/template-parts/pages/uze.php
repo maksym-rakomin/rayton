@@ -84,7 +84,7 @@
         <li>
           <article class="model-card">
             <div class="model-card__media">
-              
+              <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/ress-1125-2170.png' ) ); ?>" alt="RESS 125-261" width="612" height="394" loading="lazy">
               <span class="model-card__specs">
                 <span class="tag tag--solid tag--glass">125 кВт</span>
                 <span class="tag tag--solid tag--glass">261 кВт·год</span>

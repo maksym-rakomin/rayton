@@ -61,8 +61,9 @@ function phpRoute(route, hash = '') {
 
 function transform(markup) {
   markup = markup.replace(/<img\b[^>]*\bsrc=["'](assets\/[^"'?#]+)(?:\?[^"']*)?["'][^>]*>/gi, match => {
-    const asset = match.match(/\bsrc=["'](assets\/[^"'?#]+)/i)[1];
-    return fs.existsSync(path.join(root, asset)) ? match : '';
+    const rawAsset = match.match(/\bsrc=["'](assets\/[^"'?#]+)/i)[1];
+    const asset = rawAsset.trim();
+    return fs.existsSync(path.join(root, asset)) ? match.replace(rawAsset, asset) : '';
   });
   markup = markup.replace(/assets\/[^\s"')?,]+/g, asset => phpAsset(asset));
   markup = markup.replace(/href=["']project\.html\?id=([^"'&]+)["']/gi, (match, id) => `href="${phpRoute('projects', `#${id}`)}"`);

@@ -11,4 +11,4 @@ if ( ! $page_key || empty( $page_map[ $page_key ]['part'] ) || ! rayton_v2_use_p
 	return;
 }
 
-get_template_part( 'template-parts/pages/' . $page_map[ $page_key ]['part'] );
+rayton_v2_render_packaged_page( $page_map[ $page_key ]['part'] );

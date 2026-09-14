@@ -8,4 +8,5 @@
 require_once get_theme_file_path( 'inc/theme.php' );
 require_once get_theme_file_path( 'inc/assets.php' );
 require_once get_theme_file_path( 'inc/routes.php' );
+require_once get_theme_file_path( 'inc/i18n.php' );
 require_once get_theme_file_path( 'inc/forms.php' );

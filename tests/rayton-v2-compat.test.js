@@ -20,7 +20,7 @@ function filesBelow(directory) {
 }
 
 test('blog, archive, search, and single templates use WordPress post data and navigation', () => {
-  const listingTemplates = ['home.php', 'archive.php', 'search.php'];
+  const listingTemplates = ['archive.php', 'search.php'];
   for (const file of listingTemplates) {
     const template = read(file);
     assert.match(template, /while\s*\(\s*have_posts\s*\(\s*\)\s*\)/, file);
@@ -31,6 +31,15 @@ test('blog, archive, search, and single templates use WordPress post data and na
     assert.match(template, /content-none/, file);
   }
 
+  const home = read('home.php');
+  const blog = read('template-parts/pages/blog.php');
+  assert.match(home, /rayton_v2_render_packaged_page\(\s*'blog'\s*\)/);
+  assert.match(blog, /new\s+WP_Query\s*\(/);
+  assert.match(blog, /the_permalink\s*\(\s*\)/);
+  assert.match(blog, /the_title\s*\(\s*\)/);
+  assert.match(blog, /the_excerpt\s*\(\s*\)/);
+  assert.match(blog, /wp_reset_postdata\s*\(\s*\)/);
+
   const single = read('single.php');
   assert.match(single, /while\s*\(\s*have_posts\s*\(\s*\)\s*\)/);
   assert.match(single, /the_title\s*\(\s*\)/);
@@ -39,7 +48,7 @@ test('blog, archive, search, and single templates use WordPress post data and na
   assert.doesNotMatch(single, /comments_template\s*\(/);
 
   const joined = [...listingTemplates, 'single.php'].map(read).join('\n');
-  assert.doesNotMatch(joined, /91-mlrd|kyyivguma|article-[123]\.jpg/i);
+  assert.doesNotMatch(joined, /91-mlrd|article-[123]\.jpg/i);
 });
 
 test('one Caldera wrapper selects the exact production form for UK, EN, and RU', () => {

@@ -23,7 +23,7 @@ test('all 22 top-level sources have a redesign part or an explicit WordPress des
   const redesignParts = [
     'home', 'solutions', 'ses', 'ses-industrial', 'ses-roof', 'ses-consumption',
     'uze', 'hybrid', 'autonomous', 'services', 'financing', 'projects', 'youtube',
-    'about', 'contacts', 'calculator', 'faq', 'investments'
+    'blog', 'about', 'contacts', 'calculator', 'faq', 'investments'
   ];
 
   for (const page of redesignParts) {
@@ -36,7 +36,7 @@ test('all 22 top-level sources have a redesign part or an explicit WordPress des
     'ses-consumption.html': 'ses-consumption', 'uze.html': 'uze', 'hybrid.html': 'hybrid',
     'autonomous.html': 'autonomous', 'services.html': 'services', 'financing.html': 'financing',
     'financing-raiffeisen.html': 'wordpress-content', 'projects.html': 'projects',
-    'project.html': 'projects-hash-detail', 'blog.html': 'wordpress-posts',
+    'project.html': 'projects-hash-detail', 'blog.html': 'blog',
     'article.html': 'wordpress-posts', 'youtube.html': 'youtube', 'about.html': 'about',
     'contacts.html': 'contacts', 'calculator.html': 'calculator', 'faq.html': 'faq',
     'investments.html': 'investments'
@@ -61,7 +61,7 @@ test('locale routing keeps the packaged redesign for Ukrainian and English', () 
   assert.match(routes, /in_array\(\s*rayton_v2_current_locale\s*\(\s*\)\s*,\s*array\(\s*['"]uk['"]\s*,\s*['"]en['"]/);
   assert.match(content, /!\s*rayton_v2_use_packaged_page\s*\(\s*\)/);
   assert.match(content, /the_content\s*\(\s*\)/);
-  assert.match(content, /get_template_part\s*\(/);
+  assert.match(content, /rayton_v2_render_packaged_page\s*\(/);
   assert.match(read('front-page.php'), /rayton_v2_use_packaged_page\s*\(\s*\)/);
   assert.match(read('front-page.php'), /the_content\s*\(\s*\)/);
   assert.match(routes, /if\s*\(\s*\$key\s*\)\s*\{[\s\S]{0,120}page--/);
@@ -123,9 +123,28 @@ test('Rayton TV has an internal route fallback and header links stay inside the 
 test('theme routes and language links stay on packaged pages when WordPress mappings are incomplete', () => {
   const routes = read('inc/routes.php');
   assert.match(routes, /function\s+rayton_v2_page_url_for_locale\s*\(/);
-  assert.match(routes, /function\s+rayton_v2_prepare_blog_query\s*\(/);
-  assert.match(routes, /['"]blog['"]\s*===\s*\$virtual_key[\s\S]{0,180}home\.php/);
+  assert.match(routes, /function\s+rayton_v2_language_base_url\s*\(/);
+  assert.match(routes, /home_url\(\s*'\/'\s*\.\s*\$locale\s*\.\s*'\/'\s*\)/);
+  assert.doesNotMatch(routes, /\$base_url\s*=\s*function_exists\(\s*'pll_home_url'/);
+  assert.match(routes, /'blog'\s*=>\s*array\([^\n]*'part'\s*=>\s*'blog'/);
+  assert.doesNotMatch(routes, /['"]blog['"]\s*===\s*\$virtual_key[\s\S]{0,180}home\.php/);
   assert.match(routes, /rayton_v2_page_url_for_locale\(\s*\$current_key\s*,\s*\$language\['slug'\]/);
+});
+
+test('English packaged pages use server-rendered approved redesign dictionaries', () => {
+  const i18n = read('inc/i18n.php');
+  const translations = JSON.parse(read('assets/i18n/en.json'));
+  assert.match(read('functions.php'), /inc\/i18n\.php/);
+  assert.match(i18n, /function\s+rayton_v2_translate_page_markup\s*\(/);
+  assert.match(i18n, /'en'\s*!==\s*rayton_v2_current_locale\s*\(\s*\)/);
+  assert.match(i18n, /assets\/i18n\/en\.json/);
+  assert.ok(Object.keys(translations.common || {}).length > 100);
+  for (const page of ['home', 'solutions', 'ses', 'ses-industrial', 'ses-roof', 'ses-consumption', 'uze', 'hybrid', 'autonomous', 'services', 'financing', 'projects', 'youtube', 'about', 'contacts', 'calculator', 'faq', 'investments']) {
+    assert.ok(Object.hasOwn(translations.pages || {}, page), page);
+  }
+  assert.match(read('template-parts/content-page.php'), /rayton_v2_render_packaged_page\s*\(/);
+  assert.match(read('front-page.php'), /rayton_v2_render_packaged_page\s*\(/);
+  assert.match(read('template-virtual-page.php'), /rayton_v2_render_packaged_page\s*\(/);
 });
 
 test('packaged Page routes bypass an incorrect posts-index classification', () => {

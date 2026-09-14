@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 	<?php while ( have_posts() ) : the_post(); ?>
 		<?php if ( rayton_v2_use_packaged_page() ) : ?>
-			<?php get_template_part( 'template-parts/pages/home' ); ?>
+			<?php rayton_v2_render_packaged_page( 'home' ); ?>
 		<?php else : ?>
 			<main class="site-main site-main--wordpress-content">
 				<?php the_content(); ?>

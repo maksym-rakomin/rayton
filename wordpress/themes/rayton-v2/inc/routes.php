@@ -130,7 +130,7 @@ function rayton_v2_page_map() {
 		'faq'             => array( 'slugs' => array( 'q_a', 'faq' ), 'part' => 'faq' ),
 		'investments'     => array( 'slugs' => array( 'investments' ), 'part' => 'investments', 'required' => true ),
 		'bank-content'    => array( 'slugs' => array( 'financing-raiffeisen' ), 'destination' => 'wordpress-content' ),
-		'blog'            => array( 'slugs' => array( 'blogs', 'blog' ), 'destination' => 'wordpress-posts', 'required' => true ),
+		'blog'            => array( 'slugs' => array( 'blogs', 'blog' ), 'part' => 'blog', 'destination' => 'wordpress-posts', 'required' => true ),
 	);
 }
 
@@ -183,6 +183,16 @@ function rayton_v2_virtual_page_key() {
 	if ( $segments && in_array( $segments[0], array( 'uk', 'en' ), true ) ) {
 		array_shift( $segments );
 	}
+	if (
+		isset( $segments[0] )
+		&& in_array( $segments[0], array( 'blogs', 'blog' ), true )
+		&& (
+			( 2 === count( $segments ) && ctype_digit( $segments[1] ) )
+			|| ( 3 === count( $segments ) && 'page' === $segments[1] && ctype_digit( $segments[2] ) )
+		)
+	) {
+		return 'blog';
+	}
 
 	if ( 1 !== count( $segments ) ) {
 		return '';
@@ -205,10 +215,6 @@ function rayton_v2_virtual_page_template( $template ) {
 	$virtual_key = rayton_v2_virtual_page_key();
 	if ( ! $virtual_key || ! rayton_v2_use_packaged_page() ) {
 		return $template;
-	}
-
-	if ( 'blog' === $virtual_key ) {
-		return get_theme_file_path( 'home.php' );
 	}
 
 	$page_map = rayton_v2_page_map();
@@ -234,21 +240,16 @@ function rayton_v2_virtual_page_template( $template ) {
 }
 add_filter( 'template_include', 'rayton_v2_virtual_page_template' );
 
-/** Turn /blogs/ and /blog/ into the real posts index regardless of old Page content. */
-function rayton_v2_prepare_blog_query( $query ) {
-	if ( is_admin() || ! $query->is_main_query() || 'blog' !== rayton_v2_virtual_page_key() ) {
-		return;
-	}
-
-	$query->set( 'post_type', 'post' );
-	$query->set( 'page_id', '' );
-	$query->set( 'pagename', '' );
-	$query->set( 'name', '' );
-	$query->is_page = false;
-	$query->is_404  = false;
-	$query->is_home = true;
+/**
+ * Return the Polylang language directory, not the translated static front
+ * page. pll_home_url( 'en' ) is /en/home-eng/ on production and therefore
+ * cannot be used as the base for a missing route.
+ */
+function rayton_v2_language_base_url( $locale ) {
+	$locale = in_array( $locale, array( 'uk', 'en' ), true ) ? $locale : 'uk';
+	$default_locale = function_exists( 'pll_default_language' ) ? pll_default_language( 'slug' ) : 'uk';
+	return $locale === $default_locale ? home_url( '/' ) : home_url( '/' . $locale . '/' );
 }
-add_action( 'pre_get_posts', 'rayton_v2_prepare_blog_query' );
 
 function rayton_v2_page_url_for_locale( $key, $locale, $fragment = '' ) {
 	$map = rayton_v2_page_map();
@@ -256,7 +257,7 @@ function rayton_v2_page_url_for_locale( $key, $locale, $fragment = '' ) {
 		return '';
 	}
 	$locale = in_array( $locale, array( 'uk', 'en' ), true ) ? $locale : 'uk';
-	$base_url = function_exists( 'pll_home_url' ) ? pll_home_url( $locale ) : home_url( '/' );
+	$base_url = rayton_v2_language_base_url( $locale );
 	if ( 'home' === $key ) {
 		$page_id = (int) get_option( 'page_on_front' );
 		if ( $page_id ) {
