@@ -208,17 +208,26 @@ function rayton_v2_virtual_page_key() {
 }
 
 /**
- * Keep theme-owned routes inside the redesign even when a WP Page or Polylang
- * relation has not been created yet.
+ * Resolve a redesign Page from either its theme-owned URL or its Polylang
+ * relationship. Production translations keep independent legacy slugs, and
+ * some of those Page requests are classified as `single` by the old rewrite
+ * rules, so the raw request path alone is not sufficient here.
  */
-function rayton_v2_virtual_page_template( $template ) {
-	$virtual_key = rayton_v2_virtual_page_key();
-	if ( ! $virtual_key || ! rayton_v2_use_packaged_page() ) {
-		return $template;
+function rayton_v2_packaged_page_key() {
+	if ( ! rayton_v2_use_packaged_page() || is_singular( 'post' ) || is_archive() || is_search() ) {
+		return '';
 	}
 
+	$page_key = rayton_v2_current_page_key();
 	$page_map = rayton_v2_page_map();
-	if ( empty( $page_map[ $virtual_key ]['part'] ) ) {
+
+	return $page_key && ! empty( $page_map[ $page_key ]['part'] ) ? $page_key : '';
+}
+
+/** Keep every resolved redesign Page inside the packaged template. */
+function rayton_v2_virtual_page_template( $template ) {
+	$page_key = rayton_v2_packaged_page_key();
+	if ( ! $page_key ) {
 		return $template;
 	}
 
@@ -235,6 +244,9 @@ function rayton_v2_virtual_page_template( $template ) {
 	$wp_query->is_404        = false;
 	$wp_query->is_home       = false;
 	$wp_query->is_posts_page = false;
+	$wp_query->is_single     = false;
+	$wp_query->is_page       = true;
+	$wp_query->is_singular   = true;
 
 	return get_theme_file_path( 'template-virtual-page.php' );
 }

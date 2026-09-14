@@ -1,4 +1,20 @@
-<?php get_header(); ?>
+<?php
+/**
+ * WordPress/Polylang can classify legacy translated Pages as `single`.
+ * Preserve the redesign even if another template filter leaves that legacy
+ * classification in place.
+ */
+$rayton_page_key = rayton_v2_packaged_page_key();
+$rayton_page_map = rayton_v2_page_map();
+if ( $rayton_page_key && ! empty( $rayton_page_map[ $rayton_page_key ]['part'] ) ) {
+	get_header();
+	rayton_v2_render_packaged_page( $rayton_page_map[ $rayton_page_key ]['part'] );
+	get_footer();
+	return;
+}
+
+get_header();
+?>
 <main class="site-main single-post">
 	<?php while ( have_posts() ) : the_post(); ?>
 		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>

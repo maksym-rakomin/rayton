@@ -149,17 +149,30 @@ test('English packaged pages use server-rendered approved redesign dictionaries'
 
 test('packaged Page routes bypass an incorrect posts-index classification', () => {
   const routes = read('inc/routes.php');
+  assert.match(routes, /function\s+rayton_v2_packaged_page_key\s*\(/);
+  assert.match(routes, /\$page_key\s*=\s*rayton_v2_current_page_key\s*\(\s*\)/);
   const router = routes.slice(
     routes.indexOf('function rayton_v2_virtual_page_template'),
     routes.indexOf("add_filter( 'template_include'")
   );
 
-  assert.match(router, /empty\(\s*\$page_map\[\s*\$virtual_key\s*\]\['part'\]\s*\)/);
+	assert.match(router, /rayton_v2_packaged_page_key\s*\(\s*\)/);
   assert.match(router, /\$wp_query->is_home\s*=\s*false/);
   assert.match(router, /\$wp_query->is_posts_page\s*=\s*false/);
+	assert.match(router, /\$wp_query->is_single\s*=\s*false/);
+	assert.match(router, /\$wp_query->is_page\s*=\s*true/);
+	assert.match(router, /\$wp_query->is_singular\s*=\s*true/);
   assert.match(router, /return\s+get_theme_file_path\(\s*'template-virtual-page\.php'\s*\)/);
   const notFoundBlock = router.slice(router.indexOf('if ( is_404() )'), router.indexOf('/*'));
   assert.doesNotMatch(notFoundBlock, /return\s+get_theme_file_path/);
+});
+
+test('single template recovers Polylang Pages misclassified by production rewrites', () => {
+	const single = read('single.php');
+	assert.match(single, /rayton_v2_packaged_page_key\s*\(\s*\)/);
+	assert.match(single, /rayton_v2_render_packaged_page\s*\(/);
+	assert.match(single, /\$rayton_page_map\[\s*\$rayton_page_key\s*\]\['part'\]/);
+	assert.ok(single.indexOf('rayton_v2_render_packaged_page') < single.indexOf('<main class="site-main single-post">'));
 });
 
 test('desktop Media hover bridge covers the entire panel offset', () => {
