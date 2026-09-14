@@ -28,15 +28,21 @@ $rayton_blog_copy    = $rayton_blog_english
 		'results' => 'матеріалів',
 	);
 
-$rayton_blog_query = new WP_Query(
-	array(
+$rayton_blog_category_id = rayton_v2_blog_category_id();
+$rayton_blog_query_args  = array(
 		'post_type'           => 'post',
 		'post_status'         => 'publish',
 		'posts_per_page'      => 60,
 		'ignore_sticky_posts' => true,
 		'suppress_filters'    => false,
-	)
-);
+	);
+if ( $rayton_blog_category_id ) {
+	$rayton_blog_query_args['cat'] = $rayton_blog_category_id;
+} else {
+	/* Never fill an untranslated blog with legacy portfolio posts. */
+	$rayton_blog_query_args['post__in'] = array( 0 );
+}
+$rayton_blog_query = new WP_Query( $rayton_blog_query_args );
 
 $rayton_case_posts = get_posts(
 	array(
@@ -47,9 +53,17 @@ $rayton_case_posts = get_posts(
 		'suppress_filters' => false,
 	)
 );
-$rayton_case_url = $rayton_case_posts
-	? get_permalink( $rayton_case_posts[0] )
-	: trailingslashit( rayton_v2_page_url( 'blog' ) ) . 'kejs-rayton-yak-my-zabezpechyly-energetychnu-avtonomiyu-dlya-tov-kyyivguma/';
+$rayton_case_url = rayton_v2_page_url( 'blog' );
+if ( $rayton_case_posts ) {
+	$rayton_case_id = (int) $rayton_case_posts[0]->ID;
+	if ( function_exists( 'pll_get_post' ) ) {
+		$rayton_translated_case_id = (int) pll_get_post( $rayton_case_id, rayton_v2_current_locale() );
+		$rayton_case_id = $rayton_translated_case_id ? $rayton_translated_case_id : ( 'uk' === rayton_v2_current_locale() ? $rayton_case_id : 0 );
+	}
+	if ( $rayton_case_id ) {
+		$rayton_case_url = get_permalink( $rayton_case_id );
+	}
+}
 ?>
 <main>
 	<div class="media-blog-hero">

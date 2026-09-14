@@ -1,7 +1,7 @@
 /*
 Theme Name: Rayton V2
 Description: Standalone classic theme for the Rayton redesign.
-Version: 0.1.6
+Version: 0.1.9
 Text Domain: rayton-v2
 */
 
@@ -31,7 +31,6 @@ body {
 }
 
 /* Generic WordPress views must clear the fixed 73px site header. */
-.single-post,
 .archive-index,
 .search-index,
 body.error404 .site-main {
@@ -43,6 +42,31 @@ body.error404 .site-main {
 .search-index img {
   max-width: 100%;
   height: auto;
+}
+
+.rayton-post-navigation .nav-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.rayton-post-navigation .nav-next {
+  text-align: right;
+}
+
+.rayton-post-navigation a {
+  color: var(--c-navy);
+  font-weight: 600;
+}
+
+@media (max-width: 48rem) {
+  .rayton-post-navigation .nav-links {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rayton-post-navigation .nav-next {
+    text-align: left;
+  }
 }
 
 .rayton-enquiry {

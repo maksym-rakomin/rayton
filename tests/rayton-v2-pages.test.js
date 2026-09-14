@@ -89,6 +89,46 @@ test('homepage uses the clean locale root and never the legacy home-eng permalin
 	assert.doesNotMatch(homeBranch, /home-eng/);
 });
 
+test('English homepage company showcase has complete copy', () => {
+  const dictionary = JSON.parse(read('assets/i18n/en.json'));
+  const copy = { ...dictionary.common, ...dictionary.pages.home };
+  const sourceStrings = [
+    'Про компанію',
+    'Rayton будує',
+    'енергонезалежність',
+    'українського бізнесу',
+    'Rayton — інжинірингова компанія, що спеціалізується на сонячних електростанціях та промислових системах накопичення енергії. Ми беремо на себе повний цикл: аудит, проєктування, підбір обладнання, монтаж, запуск, документацію, моніторинг і сервіс.',
+    'Монтаж сонячних панелей командою Rayton',
+    'Повний цикл',
+    'Від першої консультації до запуску та сервісу. Один підрядник — одна відповідальність.',
+    'аудит',
+    'проєкт',
+    'монтаж',
+    'запуск',
+    'сервіс',
+    'Інженерний підхід',
+    'Розрахунок під реальне споживання, дах, графік роботи та пікові навантаження.',
+    'симуляція',
+    'профіль навантаження',
+    'BIM-модель даху',
+    'Фінансовий фокус',
+    'Показуємо економіку проєкту, окупність і можливі варіанти фінансування.',
+    'лізинг',
+    'кредит 5–7–9%',
+    'грант',
+    'Сервіс після запуску',
+    'Моніторинг, перевірки, гарантійна підтримка та технічний супровід.',
+    'моніторинг 24/7',
+    'регламент',
+    'запчастини',
+  ];
+
+  for (const source of sourceStrings) {
+    assert.ok(copy[source], `Missing English homepage translation: ${source}`);
+    assert.notEqual(copy[source], source, `Homepage translation is unchanged: ${source}`);
+  }
+});
+
 test('production Page aliases are resolved in explicit priority order', () => {
   const routes = read('inc/routes.php');
   const aliases = {
@@ -205,7 +245,7 @@ test('single template recovers Polylang Pages misclassified by production rewrit
 	assert.match(single, /rayton_v2_packaged_page_key\s*\(\s*\)/);
 	assert.match(single, /rayton_v2_render_packaged_page\s*\(/);
 	assert.match(single, /\$rayton_page_map\[\s*\$rayton_page_key\s*\]\['part'\]/);
-	assert.ok(single.indexOf('rayton_v2_render_packaged_page') < single.indexOf('<main class="site-main single-post">'));
+	assert.ok(single.indexOf('rayton_v2_render_packaged_page') < single.indexOf('<main class="single-post">'));
 });
 
 test('desktop Media hover bridge covers the entire panel offset', () => {

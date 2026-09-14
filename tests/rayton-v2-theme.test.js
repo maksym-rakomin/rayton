@@ -35,8 +35,8 @@ test('Rayton V2 exposes the required classic-theme files and identity', () => {
   assert.match(read('style.css'), /Theme Name:\s*Rayton V2/i);
 });
 
-test('theme package version is 0.1.6', () => {
-	assert.match(read('style.css'), /^Version:\s*0\.1\.6$/m);
+test('theme package version is 0.1.9', () => {
+	assert.match(read('style.css'), /^Version:\s*0\.1\.9$/m);
 });
 
 test('theme setup and public assets are registered through WordPress hooks', () => {

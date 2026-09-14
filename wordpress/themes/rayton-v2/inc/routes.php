@@ -350,6 +350,24 @@ function rayton_v2_page_url( $key, $fragment = '' ) {
 	return rayton_v2_page_url_for_locale( $key, rayton_v2_current_locale(), $fragment );
 }
 
+/** Resolve the locale-specific category used by the public blog listing. */
+function rayton_v2_blog_category_id( $locale = '' ) {
+	$category = get_category_by_slug( 'blogs' );
+	if ( ! $category ) {
+		return 0;
+	}
+
+	$locale = $locale ? $locale : rayton_v2_current_locale();
+	if ( function_exists( 'pll_get_term' ) ) {
+		$translated_id = (int) pll_get_term( (int) $category->term_id, $locale );
+		if ( $translated_id ) {
+			return $translated_id;
+		}
+	}
+
+	return 'uk' === $locale ? (int) $category->term_id : 0;
+}
+
 function rayton_v2_language_urls() {
 	if ( ! function_exists( 'pll_the_languages' ) ) {
 		return array();
@@ -369,7 +387,18 @@ function rayton_v2_language_urls() {
 	);
 
 	$current_key = rayton_v2_current_page_key();
-	if ( $current_key && ! is_singular( 'post' ) && ! is_archive() && ! is_search() ) {
+	if ( is_singular( 'post' ) ) {
+		$current_post_id = (int) get_queried_object_id();
+		foreach ( $languages as &$language ) {
+			$translated_post_id = function_exists( 'pll_get_post' )
+				? (int) pll_get_post( $current_post_id, $language['slug'] )
+				: 0;
+			$language['url'] = $translated_post_id
+				? get_permalink( $translated_post_id )
+				: rayton_v2_page_url_for_locale( 'blog', $language['slug'] );
+		}
+		unset( $language );
+	} elseif ( $current_key && ! is_archive() && ! is_search() ) {
 		foreach ( $languages as &$language ) {
 			$language['url'] = rayton_v2_page_url_for_locale( $current_key, $language['slug'] );
 		}
