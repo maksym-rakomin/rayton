@@ -364,3 +364,32 @@
   </section>
 
 </main>
+
+<div class="uze-modal" id="uze-modal" hidden>
+  <div class="uze-modal__backdrop" data-uze-modal-close></div>
+  <section class="uze-modal__panel" role="dialog" aria-modal="true" aria-labelledby="uze-modal-title" tabindex="-1">
+    <header class="uze-modal__header">
+      <div>
+        <p class="uze-modal__eyebrow">УЗЕ / СИСТЕМА НАКОПИЧЕННЯ ЕНЕРГІЇ</p>
+        <h2 id="uze-modal-title"></h2>
+        <p class="uze-modal__subtitle"></p>
+      </div>
+      <button class="uze-modal__close" type="button" aria-label="Закрити" data-uze-modal-close>×</button>
+    </header>
+    <div class="uze-modal__scroll">
+      <div class="uze-modal__content">
+        <div class="uze-modal__details">
+          <img class="uze-modal__image" src="" alt="">
+          <section class="uze-modal__specs" aria-labelledby="uze-modal-specs-title">
+            <h3 id="uze-modal-specs-title">Технічні характеристики</h3>
+            <dl></dl>
+          </section>
+        </div>
+        <div class="uze-modal__description"></div>
+      </div>
+      <footer class="uze-modal__footer">
+        <a class="btn btn--primary uze-modal__cta" href="<?php echo esc_url( rayton_v2_page_url( 'contacts' ) ); ?>">Консультуватись з нами <span class="btn__icon"><svg><use href="#i-arrow-right"></use></svg></span></a>
+      </footer>
+    </div>
+  </section>
+</div>

@@ -26,19 +26,21 @@ function rayton_v2_enqueue_assets() {
 		'assets/css/header.css',
 	);
 	$key    = function_exists( 'rayton_v2_current_page_key' ) ? rayton_v2_current_page_key() : '';
+	$packaged_key = function_exists( 'rayton_v2_use_packaged_page' ) && rayton_v2_use_packaged_page() ? $key : '';
 	$extra  = array(
 		'ses'         => array( 'assets/css/business.css', 'assets/css/calculator.css' ),
 		'uze'         => array( 'assets/css/business.css' ),
 		'financing'   => array( 'assets/css/financing-figma.css' ),
 		'projects'    => array( 'assets/css/projects.css' ),
+		'blog'        => array( 'assets/css/financing-figma.css', 'assets/css/media.css' ),
 		'youtube'     => array( 'assets/css/financing-figma.css', 'assets/css/media.css' ),
 		'about'       => array( 'assets/css/company.css' ),
 		'contacts'    => array( 'assets/css/company.css' ),
 		'calculator'  => array( 'assets/css/calculator.css' ),
 		'investments' => array( 'assets/css/investments.css', 'assets/css/quote.css' ),
 	);
-	if ( isset( $extra[ $key ] ) ) {
-		$styles = array_merge( $styles, $extra[ $key ] );
+	if ( isset( $extra[ $packaged_key ] ) ) {
+		$styles = array_merge( $styles, $extra[ $packaged_key ] );
 	}
 
 	$dependency = array();
@@ -52,7 +54,7 @@ function rayton_v2_enqueue_assets() {
 	wp_enqueue_script( 'rayton-v2-header', rayton_v2_asset_url( 'assets/js/header.js' ), array(), rayton_v2_asset_version( 'assets/js/header.js' ), true );
 	wp_enqueue_script( 'rayton-v2-main', rayton_v2_asset_url( 'assets/js/main.js' ), array(), rayton_v2_asset_version( 'assets/js/main.js' ), true );
 
-	if ( in_array( $key, array( 'ses', 'calculator' ), true ) ) {
+	if ( in_array( $packaged_key, array( 'ses', 'calculator' ), true ) ) {
 		wp_enqueue_script( 'rayton-v2-solar-calc', rayton_v2_asset_url( 'assets/js/solar-calc.js' ), array(), rayton_v2_asset_version( 'assets/js/solar-calc.js' ), true );
 		wp_enqueue_script( 'rayton-v2-calculator', rayton_v2_asset_url( 'assets/js/calculator.js' ), array( 'rayton-v2-solar-calc' ), rayton_v2_asset_version( 'assets/js/calculator.js' ), true );
 		wp_localize_script(
@@ -65,13 +67,24 @@ function rayton_v2_enqueue_assets() {
 		);
 	}
 
-	if ( in_array( $key, array( 'ses', 'uze' ), true ) ) {
+	if ( in_array( $packaged_key, array( 'ses', 'uze' ), true ) ) {
 		wp_enqueue_script( 'rayton-v2-business', rayton_v2_asset_url( 'assets/js/business.js' ), array(), rayton_v2_asset_version( 'assets/js/business.js' ), true );
 	}
-	if ( 'youtube' === $key ) {
+	if ( 'uze' === $packaged_key ) {
+		wp_enqueue_script( 'rayton-v2-uze-modal', rayton_v2_asset_url( 'assets/js/uze-modal.js' ), array( 'rayton-v2-business' ), rayton_v2_asset_version( 'assets/js/uze-modal.js' ), true );
+		wp_localize_script(
+			'rayton-v2-uze-modal',
+			'raytonV2',
+			array(
+				'assetsUrl' => untrailingslashit( rayton_v2_asset_url( 'assets' ) ),
+				'locale'    => rayton_v2_current_locale(),
+			)
+		);
+	}
+	if ( in_array( $packaged_key, array( 'blog', 'youtube' ), true ) || 'blog' === $key ) {
 		wp_enqueue_script( 'rayton-v2-media', rayton_v2_asset_url( 'assets/js/media.js' ), array(), rayton_v2_asset_version( 'assets/js/media.js' ), true );
 	}
-	if ( 'projects' === $key ) {
+	if ( 'projects' === $packaged_key ) {
 		wp_enqueue_script( 'rayton-v2-projects-data', rayton_v2_asset_url( 'assets/js/projects-data.js' ), array(), rayton_v2_asset_version( 'assets/js/projects-data.js' ), true );
 		wp_enqueue_script( 'rayton-v2-projects', rayton_v2_asset_url( 'assets/js/projects.js' ), array( 'rayton-v2-projects-data' ), rayton_v2_asset_version( 'assets/js/projects.js' ), true );
 		wp_localize_script(

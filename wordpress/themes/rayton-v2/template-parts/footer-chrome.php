@@ -7,8 +7,7 @@
         <a class="footer__logo" href="<?php echo esc_url( rayton_v2_page_url( 'home', '' ) ); ?>" aria-label="Rayton">
           <svg><use href="#i-logo-white"></use></svg>
         </a>
-        <p class="footer__about">Інжинірингова компанія з проєктування та впровадження
-          СЕС і УЗЕ для бізнесу в Україні</p>
+		<p class="footer__about"><?php echo esc_html( rayton_v2_ui( 'footer_about' ) ); ?></p>
         <div class="socials">
           <a class="socials__link" href="#" aria-label="Facebook"><svg><use href="#i-social-1"></use></svg></a>
           <a class="socials__link" href="#" aria-label="Instagram"><svg><use href="#i-social-2"></use></svg></a>
@@ -21,48 +20,48 @@
         <div class="footer__col">
           <p class="footer__title"><?php echo esc_html( rayton_v2_ui( 'solutions' ) ); ?></p>
           <ul class="footer__links">
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'solutions', '' ) ); ?>">Усі рішення</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses', '' ) ); ?>">СЕС для бізнесу</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-industrial', '' ) ); ?>">Промислові СЕС</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-roof', '' ) ); ?>">Дахові СЕС</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-consumption', '' ) ); ?>">СЕС для власного споживання</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'uze', '' ) ); ?>">УЗЕ</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'hybrid', '' ) ); ?>">Гібридні системи</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'autonomous', '' ) ); ?>">Автономні рішення</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'services', '#monitoring' ) ); ?>">Сервіс і моніторинг</a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'solutions', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'all_solutions' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'solar' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-industrial', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'industrial_solar' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-roof', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'rooftop_solar' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-consumption', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'self_consumption' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'uze', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'storage' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'hybrid', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'hybrid_systems' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'autonomous', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'autonomous_solutions' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'services', '#monitoring' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'service_monitoring' ) ); ?></a></li>
           </ul>
         </div>
 
         <div class="footer__col">
           <p class="footer__title"><?php echo esc_html( rayton_v2_ui( 'business' ) ); ?></p>
           <ul class="footer__links">
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-industrial', '' ) ); ?>">Виробництва</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-roof', '' ) ); ?>">Склади</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-roof', '' ) ); ?>">Логістичні комплекси</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses', '' ) ); ?>">Агропідприємства</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses', '' ) ); ?>">АЗС та автокомплекси</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-consumption', '' ) ); ?>">Торгові центри</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-consumption', '' ) ); ?>">Офісні будівлі</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-consumption', '' ) ); ?>">Готелі й ресторани</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-industrial', '' ) ); ?>">Харчова промисловість</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-industrial', '' ) ); ?>">Металообробка</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'uze', '' ) ); ?>">Дата-центри</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'autonomous', '' ) ); ?>">ОСББ</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'hybrid', '' ) ); ?>">Комунальні підприємства</a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-industrial', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'production' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-roof', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'warehouses' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-roof', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'logistics' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'agriculture' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'fuel_stations' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-consumption', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'shopping_centres' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-consumption', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'offices' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-consumption', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'hotels_restaurants' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-industrial', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'food_industry' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'ses-industrial', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'metalworking' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'uze', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'data_centres' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'autonomous', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'condominiums' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'hybrid', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'utility_companies' ) ); ?></a></li>
           </ul>
         </div>
 
         <div class="footer__col">
           <p class="footer__title"><?php echo esc_html( rayton_v2_ui( 'company' ) ); ?></p>
           <ul class="footer__links">
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'about', '' ) ); ?>">Про нас</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'services', '' ) ); ?>">Послуги</a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'about', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'about' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'services', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'services' ) ); ?></a></li>
             <li><a href="<?php echo esc_url( rayton_v2_page_url( 'projects', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'projects' ) ); ?></a></li>
             <li><a href="<?php echo esc_url( rayton_v2_page_url( 'blog', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'blog' ) ); ?></a></li>
             <li><a href="<?php echo esc_url( rayton_v2_page_url( 'youtube', '' ) ); ?>">YouTube</a></li>
             <li><a href="<?php echo esc_url( rayton_v2_page_url( 'financing', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'financing' ) ); ?></a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'calculator', '' ) ); ?>">Калькулятор окупності</a></li>
-            <li><a href="<?php echo esc_url( rayton_v2_page_url( 'faq', '' ) ); ?>">Запитання та відповіді</a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'calculator', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'payback_calculator' ) ); ?></a></li>
+			<li><a href="<?php echo esc_url( rayton_v2_page_url( 'faq', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'questions_answers' ) ); ?></a></li>
             <li><a href="<?php echo esc_url( rayton_v2_page_url( 'contacts', '' ) ); ?>"><?php echo esc_html( rayton_v2_ui( 'contacts' ) ); ?></a></li>
           </ul>
         </div>
@@ -75,9 +74,9 @@
             <a class="footer__contact" href="mailto:sales@rayton.com.ua">
               <svg><use href="#i-c-mail"></use></svg>sales@rayton.com.ua</a>
             <span class="footer__contact">
-              <svg><use href="#i-c-pin"></use></svg>Київ, вул. Велика Васильківська, 72</span>
+			  <svg><use href="#i-c-pin"></use></svg><?php echo esc_html( rayton_v2_ui( 'address' ) ); ?></span>
             <span class="footer__contact footer__contact--muted">
-              <svg><use href="#i-c-clock"></use></svg>Пн-Пт: 9:00 – 18:00</span>
+			  <svg><use href="#i-c-clock"></use></svg><?php echo esc_html( rayton_v2_ui( 'hours' ) ); ?></span>
           </div>
         </div>
       </div>
@@ -85,10 +84,10 @@
 
     <div class="footer__bottom">
       <div class="footer__bottom-inner">
-        <p>© 2026 Rayton. Усі права захищені</p>
-        <nav class="footer__legal" aria-label="Правова інформація">
-          <a href="#">Політика конфіденційності</a>
-          <a href="#">Умови використання</a>
+		<p><?php echo esc_html( rayton_v2_ui( 'copyright' ) ); ?></p>
+		<nav class="footer__legal" aria-label="<?php echo esc_attr( rayton_v2_ui( 'legal' ) ); ?>">
+		  <a href="#"><?php echo esc_html( rayton_v2_ui( 'privacy' ) ); ?></a>
+		  <a href="#"><?php echo esc_html( rayton_v2_ui( 'terms' ) ); ?></a>
         </nav>
       </div>
     </div>

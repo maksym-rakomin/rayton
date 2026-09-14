@@ -34,23 +34,82 @@ function rayton_v2_ui( $key ) {
 			'financing' => 'Кредитування', 'investors' => 'Для інвесторів', 'media' => 'Медіа',
 			'blog' => 'Блог', 'about' => 'Про нас', 'contact' => 'Зв’язатись', 'solutions' => 'Рішення',
 			'business' => 'Для бізнесу', 'company' => 'Компанія', 'contacts' => 'Контакти',
+			'navigation' => 'Головне меню', 'notifications' => 'Новини', 'latest_media' => 'Останні новини та відео',
+			'close' => 'Закрити', 'view_media' => 'Перейти до медіа', 'language' => 'Мова',
+			'contact_title' => 'Зв’язатись з нами', 'contact_description' => 'Отримайте консультацію або розрахунок вашого проєкту.',
+			'calculate' => 'Розрахувати проєкт', 'socials' => 'Соціальні мережі', 'write' => 'Написати нам', 'menu' => 'Меню',
+			'all_solutions' => 'Усі рішення', 'industrial_solar' => 'Промислові СЕС', 'rooftop_solar' => 'Дахові СЕС',
+			'self_consumption' => 'СЕС для власного споживання', 'hybrid_systems' => 'Гібридні системи',
+			'autonomous_solutions' => 'Автономні рішення', 'service_monitoring' => 'Сервіс і моніторинг',
+			'services' => 'Послуги', 'payback_calculator' => 'Калькулятор окупності', 'questions_answers' => 'Запитання та відповіді',
+			'footer_about' => 'Інжинірингова компанія з проєктування та впровадження СЕС і УЗЕ для бізнесу в Україні',
+			'address' => 'Київ, вул. Велика Васильківська, 72', 'hours' => 'Пн-Пт: 9:00 – 18:00',
+			'copyright' => '© 2026 Rayton. Усі права захищені', 'legal' => 'Правова інформація',
+			'privacy' => 'Політика конфіденційності', 'terms' => 'Умови використання',
+			'production' => 'Виробництва', 'warehouses' => 'Склади', 'logistics' => 'Логістичні комплекси',
+			'agriculture' => 'Агропідприємства', 'fuel_stations' => 'АЗС та автокомплекси', 'shopping_centres' => 'Торгові центри',
+			'offices' => 'Офісні будівлі', 'hotels_restaurants' => 'Готелі й ресторани', 'food_industry' => 'Харчова промисловість',
+			'metalworking' => 'Металообробка', 'data_centres' => 'Дата-центри', 'condominiums' => 'ОСББ',
+			'utility_companies' => 'Комунальні підприємства', 'latest_video_title' => '897кВт сонця + 2090кВт·год накопичення',
 		),
 		'en' => array(
 			'solar' => 'Solar for business', 'storage' => 'Energy storage', 'projects' => 'Projects',
 			'financing' => 'Financing', 'investors' => 'For investors', 'media' => 'Media',
 			'blog' => 'Blog', 'about' => 'About us', 'contact' => 'Contact us', 'solutions' => 'Solutions',
 			'business' => 'For business', 'company' => 'Company', 'contacts' => 'Contacts',
+			'navigation' => 'Main menu', 'notifications' => 'News', 'latest_media' => 'Latest news and videos',
+			'close' => 'Close', 'view_media' => 'View all media', 'language' => 'Language',
+			'contact_title' => 'Contact us', 'contact_description' => 'Get advice or a calculation for your project.',
+			'calculate' => 'Calculate your project', 'socials' => 'Social networks', 'write' => 'Write to us', 'menu' => 'Menu',
+			'all_solutions' => 'All solutions', 'industrial_solar' => 'Industrial solar', 'rooftop_solar' => 'Rooftop solar',
+			'self_consumption' => 'Solar for self-consumption', 'hybrid_systems' => 'Hybrid systems',
+			'autonomous_solutions' => 'Autonomous solutions', 'service_monitoring' => 'Service and monitoring',
+			'services' => 'Services', 'payback_calculator' => 'Payback calculator', 'questions_answers' => 'Questions and answers',
+			'footer_about' => 'Engineering company designing and delivering solar and BESS solutions for businesses in Ukraine',
+			'address' => '72 Velyka Vasylkivska St, Kyiv', 'hours' => 'Mon–Fri: 9:00–18:00',
+			'copyright' => '© 2026 Rayton. All rights reserved', 'legal' => 'Legal information',
+			'privacy' => 'Privacy policy', 'terms' => 'Terms of use',
+			'production' => 'Manufacturing', 'warehouses' => 'Warehouses', 'logistics' => 'Logistics facilities',
+			'agriculture' => 'Agricultural businesses', 'fuel_stations' => 'Fuel and service stations', 'shopping_centres' => 'Shopping centres',
+			'offices' => 'Office buildings', 'hotels_restaurants' => 'Hotels and restaurants', 'food_industry' => 'Food industry',
+			'metalworking' => 'Metalworking', 'data_centres' => 'Data centres', 'condominiums' => 'Condominiums',
+			'utility_companies' => 'Utility companies', 'latest_video_title' => '897 kW solar + 2,090 kWh energy storage',
 		),
 		'ru' => array(
 			'solar' => 'СЭС для бизнеса', 'storage' => 'Накопители энергии', 'projects' => 'Проекты',
 			'financing' => 'Кредитование', 'investors' => 'Для инвесторов', 'media' => 'Медиа',
 			'blog' => 'Блог', 'about' => 'О нас', 'contact' => 'Связаться', 'solutions' => 'Решения',
 			'business' => 'Для бизнеса', 'company' => 'Компания', 'contacts' => 'Контакты',
+			'navigation' => 'Главное меню', 'notifications' => 'Новости', 'latest_media' => 'Последние новости и видео',
+			'close' => 'Закрыть', 'view_media' => 'Перейти к медиа', 'language' => 'Язык',
+			'contact_title' => 'Связаться с нами', 'contact_description' => 'Получите консультацию или расчёт вашего проекта.',
+			'calculate' => 'Рассчитать проект', 'socials' => 'Социальные сети', 'write' => 'Написать нам', 'menu' => 'Меню',
+			'all_solutions' => 'Все решения', 'industrial_solar' => 'Промышленные СЭС', 'rooftop_solar' => 'Крышные СЭС',
+			'self_consumption' => 'СЭС для собственного потребления', 'hybrid_systems' => 'Гибридные системы',
+			'autonomous_solutions' => 'Автономные решения', 'service_monitoring' => 'Сервис и мониторинг',
+			'services' => 'Услуги', 'payback_calculator' => 'Калькулятор окупаемости', 'questions_answers' => 'Вопросы и ответы',
+			'footer_about' => 'Инжиниринговая компания по проектированию и внедрению СЭС и СНЭ для бизнеса в Украине',
+			'address' => 'Киев, ул. Большая Васильковская, 72', 'hours' => 'Пн–Пт: 9:00–18:00',
+			'copyright' => '© 2026 Rayton. Все права защищены', 'legal' => 'Правовая информация',
+			'privacy' => 'Политика конфиденциальности', 'terms' => 'Условия использования',
+			'production' => 'Производства', 'warehouses' => 'Склады', 'logistics' => 'Логистические комплексы',
+			'agriculture' => 'Агропредприятия', 'fuel_stations' => 'АЗС и автокомплексы', 'shopping_centres' => 'Торговые центры',
+			'offices' => 'Офисные здания', 'hotels_restaurants' => 'Гостиницы и рестораны', 'food_industry' => 'Пищевая промышленность',
+			'metalworking' => 'Металлообработка', 'data_centres' => 'Дата-центры', 'condominiums' => 'ОСМД',
+			'utility_companies' => 'Коммунальные предприятия', 'latest_video_title' => '897 кВт солнца + 2090 кВт·ч накопления',
 		),
 	);
 	$locale = rayton_v2_current_locale();
 	$locale = isset( $dictionary[ $locale ] ) ? $locale : 'en';
 	return isset( $dictionary[ $locale ][ $key ] ) ? $dictionary[ $locale ][ $key ] : $key;
+}
+
+/**
+ * The redesign copy currently belongs to the Ukrainian pages. Other locales
+ * retain their independent WordPress/Elementor content linked by Polylang.
+ */
+function rayton_v2_use_packaged_page() {
+	return 'uk' === rayton_v2_current_locale();
 }
 
 function rayton_v2_page_map() {
@@ -79,6 +138,10 @@ function rayton_v2_page_map() {
 }
 
 function rayton_v2_current_page_key() {
+	$virtual_key = rayton_v2_virtual_page_key();
+	if ( $virtual_key ) {
+		return $virtual_key;
+	}
 	if ( is_front_page() ) {
 		return 'home';
 	}
@@ -86,7 +149,8 @@ function rayton_v2_current_page_key() {
 		return 'blog';
 	}
 
-	$current_slug = get_post_field( 'post_name', get_queried_object_id() );
+	$current_id   = (int) get_queried_object_id();
+	$current_slug = get_post_field( 'post_name', $current_id );
 	foreach ( rayton_v2_page_map() as $key => $definition ) {
 		if ( empty( $definition['part'] ) || empty( $definition['slugs'] ) ) {
 			continue;
@@ -95,11 +159,51 @@ function rayton_v2_current_page_key() {
 			if ( $current_slug === $slug ) {
 				return $key;
 			}
+			$source_page = get_page_by_path( $slug );
+			if ( $source_page && function_exists( 'pll_get_post' ) ) {
+				$translated_id = (int) pll_get_post( (int) $source_page->ID, rayton_v2_current_locale() );
+				if ( $translated_id && $translated_id === $current_id ) {
+					return $key;
+				}
+			}
 		}
 	}
 
 	return '';
 }
+
+/**
+ * Resolve theme-owned pages that may not exist in the WordPress database yet.
+ */
+function rayton_v2_virtual_page_key() {
+	$request_path = wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/', PHP_URL_PATH );
+	$request_path = trim( (string) $request_path, '/' );
+	$home_path    = trim( (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
+	if ( $home_path && 0 === strpos( $request_path, $home_path . '/' ) ) {
+		$request_path = substr( $request_path, strlen( $home_path ) + 1 );
+	}
+	$segments = array_values( array_filter( explode( '/', $request_path ) ) );
+	if ( $segments && in_array( $segments[0], array( 'uk', 'en' ), true ) ) {
+		array_shift( $segments );
+	}
+
+	return 1 === count( $segments ) && 'youtube' === $segments[0] ? 'youtube' : '';
+}
+
+/**
+ * Serve the packaged Rayton TV template even before a matching WP Page is created.
+ */
+function rayton_v2_virtual_page_template( $template ) {
+	if ( ! is_404() || 'youtube' !== rayton_v2_virtual_page_key() || ! rayton_v2_use_packaged_page() ) {
+		return $template;
+	}
+
+	global $wp_query;
+	$wp_query->is_404 = false;
+	status_header( 200 );
+	return get_theme_file_path( 'template-virtual-page.php' );
+}
+add_filter( 'template_include', 'rayton_v2_virtual_page_template' );
 
 function rayton_v2_page_url( $key, $fragment = '' ) {
 	$map = rayton_v2_page_map();
@@ -107,9 +211,23 @@ function rayton_v2_page_url( $key, $fragment = '' ) {
 		return '';
 	}
 	if ( 'home' === $key ) {
-		$url = home_url( '/' );
+		$page_id = (int) get_option( 'page_on_front' );
+		if ( $page_id ) {
+			if ( function_exists( 'pll_get_post' ) ) {
+				$translated_id = pll_get_post( $page_id, rayton_v2_current_locale() );
+				$page_id       = $translated_id ? (int) $translated_id : $page_id;
+			}
+			$url = get_permalink( $page_id );
+		} else {
+			$url = function_exists( 'pll_home_url' ) ? pll_home_url( rayton_v2_current_locale() ) : home_url( '/' );
+		}
 	} elseif ( 'blog' === $key && get_option( 'page_for_posts' ) ) {
-		$url = get_permalink( (int) get_option( 'page_for_posts' ) );
+		$page_id = (int) get_option( 'page_for_posts' );
+		if ( function_exists( 'pll_get_post' ) ) {
+			$translated_id = pll_get_post( $page_id, rayton_v2_current_locale() );
+			$page_id       = $translated_id ? (int) $translated_id : $page_id;
+		}
+		$url = get_permalink( $page_id );
 	} else {
 		$page = null;
 		foreach ( $map[ $key ]['slugs'] as $slug ) {
@@ -120,7 +238,8 @@ function rayton_v2_page_url( $key, $fragment = '' ) {
 		}
 		if ( ! $page ) {
 			if ( ! empty( $map[ $key ]['required'] ) && ! empty( $map[ $key ]['slugs'][0] ) ) {
-				return home_url( '/' . trailingslashit( $map[ $key ]['slugs'][0] ) ) . $fragment;
+				$base_url = function_exists( 'pll_home_url' ) ? pll_home_url( rayton_v2_current_locale() ) : home_url( '/' );
+				return trailingslashit( $base_url ) . trailingslashit( $map[ $key ]['slugs'][0] ) . $fragment;
 			}
 			return '';
 		}
@@ -140,12 +259,23 @@ function rayton_v2_language_urls() {
 		return array();
 	}
 	$languages = pll_the_languages( array( 'raw' => 1 ) );
-	return is_array( $languages ) ? $languages : array();
+	if ( ! is_array( $languages ) ) {
+		return array();
+	}
+
+	return array_values(
+		array_filter(
+			$languages,
+			function ( $language ) {
+				return isset( $language['slug'] ) && in_array( $language['slug'], array( 'uk', 'en' ), true );
+			}
+		)
+	);
 }
 
 function rayton_v2_body_classes( $classes ) {
 	$key = rayton_v2_current_page_key();
-	if ( 'uk' === rayton_v2_current_locale() && $key ) {
+	if ( $key ) {
 		$classes[] = 'page--' . sanitize_html_class( $key );
 	}
 	return $classes;

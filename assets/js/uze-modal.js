@@ -1,6 +1,13 @@
 (function () {
   'use strict';
 
+  const config = window.raytonV2 || {};
+
+  function assetUrl(path) {
+    if (!config.assetsUrl) return path;
+    return config.assetsUrl.replace(/\/$/, '') + '/' + path.replace(/^assets\//, '');
+  }
+
   const models = {
     'ress-125-261': {
       name: 'RESS 125-261',
@@ -76,7 +83,10 @@
     en: [['125 kW', 'Small / medium business', 'Backup power, peak-load management and solar integration'], ['1125 kW', 'Medium / large business', 'Peak-load management, consumption optimisation and backup power'], ['from 1000 kW', 'Large enterprises / industrial sites', 'Scalable backup power and peak-load management'], ['2500 kW', 'Large industrial facilities / infrastructure', 'High loads, consumption optimisation and backup power']]
   };
 
-  function locale() { return window.RaytonI18n && window.RaytonI18n.getLocale() === 'en' ? 'en' : 'uk'; }
+  function locale() {
+    if (config.locale === 'en') return 'en';
+    return window.RaytonI18n && window.RaytonI18n.getLocale() === 'en' ? 'en' : 'uk';
+  }
 
   function applyChrome(language) {
     const copy = chrome[language];
@@ -104,7 +114,7 @@
     const copy = locale() === 'en' ? model.en : model;
     title.textContent = model.name;
     subtitle.textContent = copy.subtitle;
-    image.src = model.image;
+    image.src = assetUrl(model.image);
     image.alt = model.name;
     specs.innerHTML = copy.specs.map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join('');
     description.innerHTML = `<p class="uze-modal__intro">${copy.description}</p>${copy.groups.map(group => `<section class="uze-modal__group"><h3>${group.title}</h3><ul>${group.items.map(item => `<li>${item}</li>`).join('')}</ul></section>`).join('')}`;

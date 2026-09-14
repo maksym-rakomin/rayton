@@ -4,8 +4,8 @@
 $page_key = rayton_v2_current_page_key();
 $page_map = rayton_v2_page_map();
 
-if ( rayton_v2_current_locale() !== 'uk' || ! $page_key || empty( $page_map[ $page_key ]['part'] ) ) {
-	echo '<main class="site-main">';
+if ( ! $page_key || empty( $page_map[ $page_key ]['part'] ) || ! rayton_v2_use_packaged_page() ) {
+	echo '<main class="site-main site-main--wordpress-content">';
 	the_content();
 	echo '</main>';
 	return;

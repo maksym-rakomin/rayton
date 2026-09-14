@@ -50,10 +50,10 @@
 .rh-trigger[aria-expanded=true] .rh-chevron { transform:rotate(180deg); }
 .rh-actions { display:flex; align-items:center; gap:6px; flex:none; }
 .rh-languages { display:flex; align-items:center; gap:5px; padding:12px 16px; }
-.rh-languages button { color:var(--c-white); font:400 14px/22px var(--font); background:none; padding:0; cursor:pointer; border:0; }
-.rh-languages button + button { border-left:1px solid #737373; padding-left:5px; }
-.rh-languages button[aria-pressed=true] { color:var(--c-yellow); text-decoration:underline; text-underline-offset:3px; font-weight:700; }
-.rh-languages button:hover { color:var(--c-yellow); }
+.rh-languages button,.rh-languages a { color:var(--c-white); font:400 14px/22px var(--font); background:none; padding:0; cursor:pointer; border:0; }
+.rh-languages button + button,.rh-languages a + a { border-left:1px solid #737373; padding-left:5px; }
+.rh-languages button[aria-pressed=true],.rh-languages a[aria-current=page] { color:var(--c-yellow); text-decoration:underline; text-underline-offset:3px; font-weight:700; }
+.rh-languages button:hover,.rh-languages a:hover { color:var(--c-yellow); }
 .rh-notification-button { display:grid; place-items:center; width:24px; height:24px; padding:0; border:0; background:none; cursor:pointer; }
 .rh-bell { grid-area:1/1; width:24px; height:24px; }
 .rh-bell--open { visibility:hidden; }
@@ -97,6 +97,7 @@
 .rh-panel-pointer { position:absolute; top:-14px; width:14px !important; height:10px !important; }
 .rh-panel hr { border:0; border-top:1px solid #454545; width:100%; margin:0; }
 .rh-media-panel { top:calc(100% + 24px); width:201px; left:-24px; display:flex; flex-direction:column; gap:16px; }
+.rh-media-panel::before { height:26px; }
 .rh-media-panel .rh-panel-pointer { left:47px; }
 .rh-media-panel a { display:flex; align-items:center; gap:18px; font-size:14px; font-weight:700; line-height:24px; white-space:nowrap; }
 .rh-panel a:hover { color:var(--c-yellow); }
@@ -162,8 +163,8 @@
   .rh-logo { width:108px; height:28px; }
   .rh-actions { gap:4px; }
   .rh-languages { padding:0; gap:3px; }
-  .rh-languages button { font-size:12px; padding:0 3px; }
-  .rh-languages button + button { padding-left:4px; }
+  .rh-languages button,.rh-languages a { font-size:12px; padding:0 3px; }
+  .rh-languages button + button,.rh-languages a + a { padding-left:4px; }
   .rh-contact-button { padding:9px; }
   .rh-contact-button > [data-i18n] { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
   .rh-notifications-panel { padding:18px; }

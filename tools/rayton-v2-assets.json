@@ -313,6 +313,58 @@
       "destination": "assets/icons/header/871-28883-imgRaytonWhiteLogo.svg"
     },
     {
+      "source": "assets/icons/header/871-28883-imgEllipse9.svg",
+      "destination": "assets/icons/header/871-28883-imgEllipse9.svg"
+    },
+    {
+      "source": "assets/icons/header/871-28883-imgChevronDown.svg",
+      "destination": "assets/icons/header/871-28883-imgChevronDown.svg"
+    },
+    {
+      "source": "assets/icons/header/896-22555-imgBell.svg",
+      "destination": "assets/icons/header/896-22555-imgBell.svg"
+    },
+    {
+      "source": "assets/icons/header/896-22663-imgBellOpen.svg",
+      "destination": "assets/icons/header/896-22663-imgBellOpen.svg"
+    },
+    {
+      "source": "assets/icons/header/896-22689-imgPolygon2.svg",
+      "destination": "assets/icons/header/896-22689-imgPolygon2.svg"
+    },
+    {
+      "source": "assets/icons/header/871-28970-imgFileText.svg",
+      "destination": "assets/icons/header/871-28970-imgFileText.svg"
+    },
+    {
+      "source": "assets/icons/header/871-28970-imgPlayCircle.svg",
+      "destination": "assets/icons/header/871-28970-imgPlayCircle.svg"
+    },
+    {
+      "source": "assets/icons/header/871-28945-imgX.svg",
+      "destination": "assets/icons/header/871-28945-imgX.svg"
+    },
+    {
+      "source": "assets/icons/header/896-22718-imgVideoPlayCircle.svg",
+      "destination": "assets/icons/header/896-22718-imgVideoPlayCircle.svg"
+    },
+    {
+      "source": "assets/icons/header/896-22719-imgVideoPlayTriangle.svg",
+      "destination": "assets/icons/header/896-22719-imgVideoPlayTriangle.svg"
+    },
+    {
+      "source": "assets/icons/header/871-28945-imgPhone.svg",
+      "destination": "assets/icons/header/871-28945-imgPhone.svg"
+    },
+    {
+      "source": "assets/icons/header/871-28883-imgDownArrow34787511.svg",
+      "destination": "assets/icons/header/871-28883-imgDownArrow34787511.svg"
+    },
+    {
+      "source": "assets/icons/header/871-28945-imgMail.svg",
+      "destination": "assets/icons/header/871-28945-imgMail.svg"
+    },
+    {
       "source": "assets/icons/i-bolt.svg",
       "destination": "assets/icons/i-bolt.svg"
     },
@@ -653,6 +705,10 @@
       "destination": "assets/img/ress-1000-4180.png"
     },
     {
+      "source": "assets/img/ress-1125-2170.png",
+      "destination": "assets/img/ress-1125-2170.png"
+    },
+    {
       "source": "assets/img/ress-125-261.png",
       "destination": "assets/img/ress-125-261.png"
     },
@@ -703,6 +759,10 @@
     {
       "source": "assets/js/media.js",
       "destination": "assets/js/media.js"
+    },
+    {
+      "source": "assets/js/uze-modal.js",
+      "destination": "assets/js/uze-modal.js"
     }
   ]
 }

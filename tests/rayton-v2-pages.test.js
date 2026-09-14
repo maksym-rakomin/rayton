@@ -49,7 +49,7 @@ test('all 22 top-level sources have a redesign part or an explicit WordPress des
   assert.match(routes, /projects-hash-detail/);
 });
 
-test('locale routing renders redesign only for verified Ukrainian pages', () => {
+test('locale routing keeps Ukrainian redesign and independent Polylang page content', () => {
   const routes = read('inc/routes.php');
   const content = read('template-parts/content-page.php');
   assert.match(routes, /function\s+rayton_v2_current_locale\s*\(/);
@@ -57,9 +57,22 @@ test('locale routing renders redesign only for verified Ukrainian pages', () => 
   assert.match(routes, /determine_locale\s*\(/);
   assert.match(routes, /function\s+rayton_v2_page_map\s*\(/);
   assert.match(routes, /function\s+rayton_v2_page_url\s*\(/);
-  assert.match(content, /rayton_v2_current_locale\s*\(\s*\)\s*!==\s*['"]uk['"]/);
+  assert.match(routes, /function\s+rayton_v2_use_packaged_page\s*\(/);
+  assert.match(routes, /['"]uk['"]\s*===\s*rayton_v2_current_locale\s*\(\s*\)/);
+  assert.match(content, /!\s*rayton_v2_use_packaged_page\s*\(\s*\)/);
   assert.match(content, /the_content\s*\(\s*\)/);
   assert.match(content, /get_template_part\s*\(/);
+  assert.match(read('front-page.php'), /rayton_v2_use_packaged_page\s*\(\s*\)/);
+  assert.match(read('front-page.php'), /the_content\s*\(\s*\)/);
+  assert.match(routes, /if\s*\(\s*\$key\s*\)\s*\{[\s\S]{0,120}page--/);
+});
+
+test('home and internal URLs resolve the linked Polylang page', () => {
+  const routes = read('inc/routes.php');
+  assert.match(routes, /get_option\s*\(\s*['"]page_on_front['"]\s*\)/);
+  assert.match(routes, /pll_get_post\s*\(\s*\$page_id\s*,\s*rayton_v2_current_locale\s*\(\s*\)\s*\)/);
+  assert.match(routes, /get_permalink\s*\(\s*\$page_id\s*\)/);
+  assert.match(routes, /pll_the_languages\s*\(\s*array\s*\(\s*['"]raw['"]\s*=>\s*1\s*\)\s*\)/);
 });
 
 test('production Page aliases are resolved in explicit priority order', () => {
@@ -83,6 +96,8 @@ test('production Page aliases are resolved in explicit priority order', () => {
   assert.ok(pageMap.indexOf("'financing'") < pageMap.indexOf("'calculator'"), 'calculator slug ownership stays with financing');
   assert.match(routes, /foreach\s*\(\s*\$definition\['slugs'\]\s+as\s+\$slug/);
   assert.match(routes, /foreach\s*\(\s*\$map\[\s*\$key\s*\]\['slugs'\]\s+as\s+\$slug/);
+  assert.match(routes, /\$translated_id\s*=\s*\(int\)\s*pll_get_post/);
+  assert.match(routes, /\$translated_id\s*===\s*\$current_id/);
 });
 
 test('required shared-chrome routes cannot emit empty URL attributes', () => {
@@ -92,7 +107,23 @@ test('required shared-chrome routes cannot emit empty URL attributes', () => {
     assert.match(routes, new RegExp(`'${key}'[\\s\\S]{0,180}'required'\\s*=>\\s*true`), key);
     assert.match(header, new RegExp(`rayton_v2_page_url\\(\\s*'${key}'`), key);
   }
-  assert.match(routes, /home_url\s*\(\s*'\/'\s*\.\s*trailingslashit/);
+  assert.match(routes, /trailingslashit\s*\(\s*\$base_url\s*\)\s*\.\s*trailingslashit/);
+});
+
+test('Rayton TV has an internal route fallback and header links stay inside the site', () => {
+  const routes = read('inc/routes.php');
+  const header = read('header.php');
+  assert.match(routes, /function\s+rayton_v2_virtual_page_key\s*\(/);
+  assert.match(routes, /function\s+rayton_v2_virtual_page_template\s*\(/);
+  assert.match(routes, /status_header\s*\(\s*200\s*\)/);
+  assert.match(routes, /template-virtual-page\.php/);
+  assert.match(header, /class="rh-news-card" href="<\?php echo esc_url\( rayton_v2_page_url\( 'youtube' \) \)/);
+});
+
+test('desktop Media hover bridge covers the entire panel offset', () => {
+  const css = fs.readFileSync(path.join(root, 'assets/css/header.css'), 'utf8');
+  assert.match(css, /\.rh-media-panel\s*\{[^}]*top:calc\(100% \+ 24px\)/s);
+  assert.match(css, /\.rh-media-panel::before\s*\{\s*height:26px;\s*\}/);
 });
 
 test('shared header and footer labels use the locale UI dictionary', () => {
@@ -102,6 +133,37 @@ test('shared header and footer labels use the locale UI dictionary', () => {
   assert.match(routes, /'ru'\s*=>\s*array\s*\(/);
   assert.match(read('header.php'), /rayton_v2_ui\s*\(/);
   assert.match(read('template-parts/footer-chrome.php'), /rayton_v2_ui\s*\(/);
+});
+
+test('WordPress header preserves the full interactive chrome and hides Russian from the switcher', () => {
+  const header = read('header.php');
+  const headerScript = read('assets/js/header.js');
+  const routes = read('inc/routes.php');
+
+  assert.match(header, /class="rh-dropdown rh-media"/);
+  assert.match(header, /id="header-notifications"/);
+  assert.match(header, /896-22555-imgBell\.svg/);
+  assert.match(header, /class="rh-dropdown rh-contact"/);
+  assert.match(header, /id="header-contact"/);
+  assert.match(headerScript, /pointerenter/);
+  assert.match(headerScript, /pointerleave/);
+  assert.match(routes, /in_array\(\s*\$language\['slug'\]\s*,\s*array\(\s*'uk'\s*,\s*'en'\s*\)/);
+});
+
+test('UZE model buttons have packaged modal markup and behaviour', () => {
+  const uze = read('template-parts/pages/uze.php');
+  const assets = read('inc/assets.php');
+  const modalScript = fs.readFileSync(path.join(root, 'assets/js/uze-modal.js'), 'utf8');
+
+  assert.match(uze, /data-uze-model=/);
+  assert.match(uze, /id="uze-modal"/);
+  assert.match(uze, /data-uze-modal-close/);
+  assert.match(uze, /rayton_v2_page_url\(\s*'contacts'/);
+  assert.match(assets, /rayton-v2-uze-modal/);
+  assert.match(assets, /assets\/js\/uze-modal\.js/);
+  assert.match(assets, /['"]assetsUrl['"]\s*=>\s*untrailingslashit/);
+  assert.match(modalScript, /config\.assetsUrl/);
+  assert.match(modalScript, /closest\(\s*['"]\[data-uze-model\]/);
 });
 
 test('converted theme code contains no static-site routing or document metadata', () => {

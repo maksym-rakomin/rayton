@@ -2,6 +2,10 @@
    Existing components are adjusted only within these page sections. */
 .page--blog .rh-media > .rh-trigger,.page--youtube .rh-media > .rh-trigger { color:var(--c-yellow); }
 .media-blog-hero { min-height:667px; padding-top:109px; color:#fff; background:linear-gradient(#000d,#000d),url('../img/media/hero.webp') center/cover; }
+.media-blog-intro { display:flex; flex-direction:column; justify-content:center; max-width:820px; min-height:500px; padding-bottom:48px; }
+.media-blog-intro .eyebrow { margin-bottom:16px; color:var(--c-yellow); }
+.media-blog-intro h1 { max-width:780px; margin:0; font-size:clamp(40px,5vw,72px); line-height:1.04; letter-spacing:-.04em; }
+.media-blog-intro > p:last-child { max-width:720px; margin:24px 0 0; font-size:18px; line-height:1.5; color:#ddd; }
 .media-blog-hero .breadcrumbs { margin:0; }
 .media-blog-hero .partner-project { background:transparent; color:#fff; margin-top:8px; }
 .media-blog-hero .partner-project__content .fin-title { color:#fff; }
@@ -20,6 +24,7 @@
 .media-post .post-card__body { padding:20px 22px 19px; gap:20px; }
 .media-post .post-card__title { font-size:24px; line-height:24px; }
 .media-post .post-card__text { font-size:16px; line-height:20px; min-height:60px; }
+.media-post .post-card__text p { margin:0; }
 .media-post__meta { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:14px; line-height:24px; color:var(--c-grey-dark); }
 .media-post__meta div { display:grid; gap:2px; }
 .media-post__meta > span { font-size:12px; white-space:nowrap; }
@@ -71,6 +76,7 @@
 }
 @media (max-width:1024px) {
  .media-blog-hero { padding-top:100px; }
+ .media-blog-intro { min-height:380px; }
  .media-blog-hero .partner-project__grid { grid-template-columns:minmax(0,1fr); }
  .media-blog-hero .partner-project__media { height:auto; aspect-ratio:684/394; }
  .media-blog-hero .partner-project__content { max-width:700px; }
@@ -91,6 +97,7 @@
 @media (max-width:640px) {
  .media-blog-content { padding:32px 0 48px; }
  .media-blog-hero .partner-project { padding:28px 0 0; }
+ .media-blog-intro { min-height:330px; padding-bottom:32px; }
  .media-blog-hero .partner-project__content .fin-title { font-size:30px; line-height:34px; }
  .media-blog-hero .partner-project__stat + .partner-project__stat { padding-left:12px; }
  .media-blog-hero .partner-project__stats { gap:12px; }

@@ -56,13 +56,26 @@ test('document hooks and safe content fallbacks are present', () => {
   assert.match(read('header.php'), /wp_body_open\s*\(\s*\)/);
   assert.match(read('footer.php'), /wp_footer\s*\(\s*\)/);
 
-  for (const file of ['index.php', 'front-page.php', 'page.php', 'single.php']) {
+  for (const file of ['index.php', 'single.php']) {
     const template = read(file);
     assert.match(template, /get_header\s*\(\s*\)/, file);
     assert.match(template, /get_footer\s*\(\s*\)/, file);
     assert.match(template, /have_posts\s*\(\s*\)/, file);
     assert.match(template, /the_content\s*\(\s*\)/, file);
   }
+
+  const frontPage = read('front-page.php');
+  assert.match(frontPage, /get_header\s*\(\s*\)/);
+  assert.match(frontPage, /get_footer\s*\(\s*\)/);
+  assert.match(frontPage, /have_posts\s*\(\s*\)/);
+  assert.match(frontPage, /template-parts\/pages\/home/);
+
+  const page = read('page.php');
+  assert.match(page, /get_header\s*\(\s*\)/);
+  assert.match(page, /get_footer\s*\(\s*\)/);
+  assert.match(page, /have_posts\s*\(\s*\)/);
+  assert.match(page, /template-parts\/content/);
+  assert.match(read('template-parts/content-page.php'), /the_content\s*\(\s*\)/);
 
   for (const file of ['home.php', 'archive.php', 'search.php']) {
     const template = read(file);
