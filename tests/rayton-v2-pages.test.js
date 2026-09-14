@@ -124,8 +124,15 @@ test('theme routes and language links stay on packaged pages when WordPress mapp
   const routes = read('inc/routes.php');
   assert.match(routes, /function\s+rayton_v2_page_url_for_locale\s*\(/);
   assert.match(routes, /function\s+rayton_v2_language_base_url\s*\(/);
-  assert.match(routes, /home_url\(\s*'\/'\s*\.\s*\$locale\s*\.\s*'\/'\s*\)/);
+	assert.match(routes, /get_option\(\s*['"]home['"]\s*\)/);
+	assert.match(routes, /set_url_scheme\s*\(/);
+	assert.match(routes, /\$site_home\s*\.\s*trailingslashit\(\s*\$locale\s*\)/);
   assert.doesNotMatch(routes, /\$base_url\s*=\s*function_exists\(\s*'pll_home_url'/);
+	const languageBase = routes.slice(
+		routes.indexOf('function rayton_v2_language_base_url'),
+		routes.indexOf('function rayton_v2_page_url_for_locale')
+	);
+	assert.doesNotMatch(languageBase, /(?:pll_)?home_url\s*\(/);
   assert.match(routes, /'blog'\s*=>\s*array\([^\n]*'part'\s*=>\s*'blog'/);
   assert.doesNotMatch(routes, /['"]blog['"]\s*===\s*\$virtual_key[\s\S]{0,180}home\.php/);
   assert.match(routes, /rayton_v2_page_url_for_locale\(\s*\$current_key\s*,\s*\$language\['slug'\]/);
@@ -158,13 +165,25 @@ test('packaged Page routes bypass an incorrect posts-index classification', () =
 
 	assert.match(router, /rayton_v2_packaged_page_key\s*\(\s*\)/);
   assert.match(router, /\$wp_query->is_home\s*=\s*false/);
-  assert.match(router, /\$wp_query->is_posts_page\s*=\s*false/);
+	assert.match(router, /\$wp_query->is_posts_page\s*=\s*false/);
 	assert.match(router, /\$wp_query->is_single\s*=\s*false/);
-	assert.match(router, /\$wp_query->is_page\s*=\s*true/);
-	assert.match(router, /\$wp_query->is_singular\s*=\s*true/);
+	assert.match(router, /get_queried_object_id\s*\(\s*\)/);
+	assert.match(router, /['"]page['"]\s*===\s*get_post_type\s*\(/);
+	assert.match(router, /\$wp_query->is_page\s*=\s*\$has_queried_page/);
+	assert.match(router, /\$wp_query->is_singular\s*=\s*\$has_queried_page/);
   assert.match(router, /return\s+get_theme_file_path\(\s*'template-virtual-page\.php'\s*\)/);
   const notFoundBlock = router.slice(router.indexOf('if ( is_404() )'), router.indexOf('/*'));
   assert.doesNotMatch(notFoundBlock, /return\s+get_theme_file_path/);
+});
+
+test('virtual redesign routes never claim to have a Page without a queried post', () => {
+	const routes = read('inc/routes.php');
+	const router = routes.slice(
+		routes.indexOf('function rayton_v2_virtual_page_template'),
+		routes.indexOf("add_filter( 'template_include'")
+	);
+	assert.doesNotMatch(router, /\$wp_query->is_page\s*=\s*true/);
+	assert.doesNotMatch(router, /\$wp_query->is_singular\s*=\s*true/);
 });
 
 test('single template recovers Polylang Pages misclassified by production rewrites', () => {

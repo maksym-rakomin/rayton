@@ -245,8 +245,16 @@ function rayton_v2_virtual_page_template( $template ) {
 	$wp_query->is_home       = false;
 	$wp_query->is_posts_page = false;
 	$wp_query->is_single     = false;
-	$wp_query->is_page       = true;
-	$wp_query->is_singular   = true;
+
+	/*
+	 * Only advertise a normal Page when WordPress resolved an actual Page
+	 * object. Theme-owned virtual routes have no queried post; marking those as
+	 * pages makes core body_class() dereference a null $post.
+	 */
+	$queried_id                = (int) get_queried_object_id();
+	$has_queried_page          = $queried_id && 'page' === get_post_type( $queried_id );
+	$wp_query->is_page         = $has_queried_page;
+	$wp_query->is_singular     = $has_queried_page;
 
 	return get_theme_file_path( 'template-virtual-page.php' );
 }
@@ -260,7 +268,10 @@ add_filter( 'template_include', 'rayton_v2_virtual_page_template' );
 function rayton_v2_language_base_url( $locale ) {
 	$locale = in_array( $locale, array( 'uk', 'en' ), true ) ? $locale : 'uk';
 	$default_locale = function_exists( 'pll_default_language' ) ? pll_default_language( 'slug' ) : 'uk';
-	return $locale === $default_locale ? home_url( '/' ) : home_url( '/' . $locale . '/' );
+
+	/* Avoid the locale-filtered home helper when constructing another locale. */
+	$site_home = trailingslashit( set_url_scheme( (string) get_option( 'home' ) ) );
+	return $locale === $default_locale ? $site_home : $site_home . trailingslashit( $locale );
 }
 
 function rayton_v2_page_url_for_locale( $key, $locale, $fragment = '' ) {
