@@ -49,7 +49,7 @@ test('all 22 top-level sources have a redesign part or an explicit WordPress des
   assert.match(routes, /projects-hash-detail/);
 });
 
-test('locale routing keeps Ukrainian redesign and independent Polylang page content', () => {
+test('locale routing keeps the packaged redesign for Ukrainian and English', () => {
   const routes = read('inc/routes.php');
   const content = read('template-parts/content-page.php');
   assert.match(routes, /function\s+rayton_v2_current_locale\s*\(/);
@@ -58,7 +58,7 @@ test('locale routing keeps Ukrainian redesign and independent Polylang page cont
   assert.match(routes, /function\s+rayton_v2_page_map\s*\(/);
   assert.match(routes, /function\s+rayton_v2_page_url\s*\(/);
   assert.match(routes, /function\s+rayton_v2_use_packaged_page\s*\(/);
-  assert.match(routes, /['"]uk['"]\s*===\s*rayton_v2_current_locale\s*\(\s*\)/);
+  assert.match(routes, /in_array\(\s*rayton_v2_current_locale\s*\(\s*\)\s*,\s*array\(\s*['"]uk['"]\s*,\s*['"]en['"]/);
   assert.match(content, /!\s*rayton_v2_use_packaged_page\s*\(\s*\)/);
   assert.match(content, /the_content\s*\(\s*\)/);
   assert.match(content, /get_template_part\s*\(/);
@@ -70,7 +70,7 @@ test('locale routing keeps Ukrainian redesign and independent Polylang page cont
 test('home and internal URLs resolve the linked Polylang page', () => {
   const routes = read('inc/routes.php');
   assert.match(routes, /get_option\s*\(\s*['"]page_on_front['"]\s*\)/);
-  assert.match(routes, /pll_get_post\s*\(\s*\$page_id\s*,\s*rayton_v2_current_locale\s*\(\s*\)\s*\)/);
+  assert.match(routes, /pll_get_post\s*\(\s*\$page_id\s*,\s*\$locale\s*\)/);
   assert.match(routes, /get_permalink\s*\(\s*\$page_id\s*\)/);
   assert.match(routes, /pll_the_languages\s*\(\s*array\s*\(\s*['"]raw['"]\s*=>\s*1\s*\)\s*\)/);
 });
@@ -118,6 +118,29 @@ test('Rayton TV has an internal route fallback and header links stay inside the 
   assert.match(routes, /status_header\s*\(\s*200\s*\)/);
   assert.match(routes, /template-virtual-page\.php/);
   assert.match(header, /class="rh-news-card" href="<\?php echo esc_url\( rayton_v2_page_url\( 'youtube' \) \)/);
+});
+
+test('theme routes and language links stay on packaged pages when WordPress mappings are incomplete', () => {
+  const routes = read('inc/routes.php');
+  assert.match(routes, /function\s+rayton_v2_page_url_for_locale\s*\(/);
+  assert.match(routes, /function\s+rayton_v2_prepare_blog_query\s*\(/);
+  assert.match(routes, /['"]blog['"]\s*===\s*\$virtual_key[\s\S]{0,180}home\.php/);
+  assert.match(routes, /rayton_v2_page_url_for_locale\(\s*\$current_key\s*,\s*\$language\['slug'\]/);
+});
+
+test('packaged Page routes bypass an incorrect posts-index classification', () => {
+  const routes = read('inc/routes.php');
+  const router = routes.slice(
+    routes.indexOf('function rayton_v2_virtual_page_template'),
+    routes.indexOf("add_filter( 'template_include'")
+  );
+
+  assert.match(router, /empty\(\s*\$page_map\[\s*\$virtual_key\s*\]\['part'\]\s*\)/);
+  assert.match(router, /\$wp_query->is_home\s*=\s*false/);
+  assert.match(router, /\$wp_query->is_posts_page\s*=\s*false/);
+  assert.match(router, /return\s+get_theme_file_path\(\s*'template-virtual-page\.php'\s*\)/);
+  const notFoundBlock = router.slice(router.indexOf('if ( is_404() )'), router.indexOf('/*'));
+  assert.doesNotMatch(notFoundBlock, /return\s+get_theme_file_path/);
 });
 
 test('desktop Media hover bridge covers the entire panel offset', () => {

@@ -104,12 +104,9 @@ function rayton_v2_ui( $key ) {
 	return isset( $dictionary[ $locale ][ $key ] ) ? $dictionary[ $locale ][ $key ] : $key;
 }
 
-/**
- * The redesign copy currently belongs to the Ukrainian pages. Other locales
- * retain their independent WordPress/Elementor content linked by Polylang.
- */
+/** Use the redesign for every locale currently exposed by the theme switcher. */
 function rayton_v2_use_packaged_page() {
-	return 'uk' === rayton_v2_current_locale();
+	return in_array( rayton_v2_current_locale(), array( 'uk', 'en' ), true );
 }
 
 function rayton_v2_page_map() {
@@ -187,45 +184,103 @@ function rayton_v2_virtual_page_key() {
 		array_shift( $segments );
 	}
 
-	return 1 === count( $segments ) && 'youtube' === $segments[0] ? 'youtube' : '';
+	if ( 1 !== count( $segments ) ) {
+		return '';
+	}
+
+	foreach ( rayton_v2_page_map() as $key => $definition ) {
+		if ( ! empty( $definition['slugs'] ) && in_array( $segments[0], $definition['slugs'], true ) ) {
+			return $key;
+		}
+	}
+
+	return '';
 }
 
 /**
- * Serve the packaged Rayton TV template even before a matching WP Page is created.
+ * Keep theme-owned routes inside the redesign even when a WP Page or Polylang
+ * relation has not been created yet.
  */
 function rayton_v2_virtual_page_template( $template ) {
-	if ( ! is_404() || 'youtube' !== rayton_v2_virtual_page_key() || ! rayton_v2_use_packaged_page() ) {
+	$virtual_key = rayton_v2_virtual_page_key();
+	if ( ! $virtual_key || ! rayton_v2_use_packaged_page() ) {
+		return $template;
+	}
+
+	if ( 'blog' === $virtual_key ) {
+		return get_theme_file_path( 'home.php' );
+	}
+
+	$page_map = rayton_v2_page_map();
+	if ( empty( $page_map[ $virtual_key ]['part'] ) ) {
 		return $template;
 	}
 
 	global $wp_query;
-	$wp_query->is_404 = false;
-	status_header( 200 );
+	if ( is_404() ) {
+		status_header( 200 );
+	}
+
+	/*
+	 * Some production stacks can leave a pretty Page URL classified as the
+	 * posts index after a theme switch. Route every packaged Page explicitly,
+	 * rather than limiting the fallback to requests classified as a 404.
+	 */
+	$wp_query->is_404        = false;
+	$wp_query->is_home       = false;
+	$wp_query->is_posts_page = false;
+
 	return get_theme_file_path( 'template-virtual-page.php' );
 }
 add_filter( 'template_include', 'rayton_v2_virtual_page_template' );
 
-function rayton_v2_page_url( $key, $fragment = '' ) {
+/** Turn /blogs/ and /blog/ into the real posts index regardless of old Page content. */
+function rayton_v2_prepare_blog_query( $query ) {
+	if ( is_admin() || ! $query->is_main_query() || 'blog' !== rayton_v2_virtual_page_key() ) {
+		return;
+	}
+
+	$query->set( 'post_type', 'post' );
+	$query->set( 'page_id', '' );
+	$query->set( 'pagename', '' );
+	$query->set( 'name', '' );
+	$query->is_page = false;
+	$query->is_404  = false;
+	$query->is_home = true;
+}
+add_action( 'pre_get_posts', 'rayton_v2_prepare_blog_query' );
+
+function rayton_v2_page_url_for_locale( $key, $locale, $fragment = '' ) {
 	$map = rayton_v2_page_map();
 	if ( ! isset( $map[ $key ] ) ) {
 		return '';
 	}
+	$locale = in_array( $locale, array( 'uk', 'en' ), true ) ? $locale : 'uk';
+	$base_url = function_exists( 'pll_home_url' ) ? pll_home_url( $locale ) : home_url( '/' );
 	if ( 'home' === $key ) {
 		$page_id = (int) get_option( 'page_on_front' );
 		if ( $page_id ) {
 			if ( function_exists( 'pll_get_post' ) ) {
-				$translated_id = pll_get_post( $page_id, rayton_v2_current_locale() );
-				$page_id       = $translated_id ? (int) $translated_id : $page_id;
+				$translated_id = pll_get_post( $page_id, $locale );
+				if ( $translated_id ) {
+					$page_id = (int) $translated_id;
+				} elseif ( $locale !== rayton_v2_current_locale() ) {
+					return trailingslashit( $base_url ) . $fragment;
+				}
 			}
 			$url = get_permalink( $page_id );
 		} else {
-			$url = function_exists( 'pll_home_url' ) ? pll_home_url( rayton_v2_current_locale() ) : home_url( '/' );
+			$url = $base_url;
 		}
 	} elseif ( 'blog' === $key && get_option( 'page_for_posts' ) ) {
 		$page_id = (int) get_option( 'page_for_posts' );
 		if ( function_exists( 'pll_get_post' ) ) {
-			$translated_id = pll_get_post( $page_id, rayton_v2_current_locale() );
-			$page_id       = $translated_id ? (int) $translated_id : $page_id;
+			$translated_id = pll_get_post( $page_id, $locale );
+			if ( $translated_id ) {
+				$page_id = (int) $translated_id;
+			} elseif ( $locale !== rayton_v2_current_locale() ) {
+				return trailingslashit( $base_url ) . trailingslashit( $map[ $key ]['slugs'][0] ) . $fragment;
+			}
 		}
 		$url = get_permalink( $page_id );
 	} else {
@@ -238,20 +293,27 @@ function rayton_v2_page_url( $key, $fragment = '' ) {
 		}
 		if ( ! $page ) {
 			if ( ! empty( $map[ $key ]['required'] ) && ! empty( $map[ $key ]['slugs'][0] ) ) {
-				$base_url = function_exists( 'pll_home_url' ) ? pll_home_url( rayton_v2_current_locale() ) : home_url( '/' );
 				return trailingslashit( $base_url ) . trailingslashit( $map[ $key ]['slugs'][0] ) . $fragment;
 			}
 			return '';
 		}
 		$page_id = (int) $page->ID;
 		if ( function_exists( 'pll_get_post' ) ) {
-			$translated_id = pll_get_post( $page_id, rayton_v2_current_locale() );
-			$page_id       = $translated_id ? (int) $translated_id : $page_id;
+			$translated_id = pll_get_post( $page_id, $locale );
+			if ( $translated_id ) {
+				$page_id = (int) $translated_id;
+			} elseif ( $locale !== rayton_v2_current_locale() ) {
+				return trailingslashit( $base_url ) . trailingslashit( $map[ $key ]['slugs'][0] ) . $fragment;
+			}
 		}
 		$url = get_permalink( $page_id );
 	}
 
 	return $url ? $url . $fragment : '';
+}
+
+function rayton_v2_page_url( $key, $fragment = '' ) {
+	return rayton_v2_page_url_for_locale( $key, rayton_v2_current_locale(), $fragment );
 }
 
 function rayton_v2_language_urls() {
@@ -263,7 +325,7 @@ function rayton_v2_language_urls() {
 		return array();
 	}
 
-	return array_values(
+	$languages = array_values(
 		array_filter(
 			$languages,
 			function ( $language ) {
@@ -271,6 +333,16 @@ function rayton_v2_language_urls() {
 			}
 		)
 	);
+
+	$current_key = rayton_v2_current_page_key();
+	if ( $current_key && ! is_singular( 'post' ) && ! is_archive() && ! is_search() ) {
+		foreach ( $languages as &$language ) {
+			$language['url'] = rayton_v2_page_url_for_locale( $current_key, $language['slug'] );
+		}
+		unset( $language );
+	}
+
+	return $languages;
 }
 
 function rayton_v2_body_classes( $classes ) {
