@@ -1,7 +1,7 @@
-/* Local article pagination and click-to-play YouTube; shared tabs remain in main.js. */
+/* Local video filtering and click-to-play YouTube. Blog pagination is server-side. */
 (function () {
   'use strict';
-  document.querySelectorAll('.media-blog-content, .media-tv-videos').forEach(function (section) {
+  document.querySelectorAll('.media-tv-videos').forEach(function (section) {
     var buttons = Array.from(section.querySelectorAll('[data-media-filter]'));
     var grid = section.querySelector('.grid');
     if (!grid) return;

@@ -368,6 +368,36 @@ function rayton_v2_blog_category_id( $locale = '' ) {
 	return 'uk' === $locale ? (int) $category->term_id : 0;
 }
 
+/** Resolve both WordPress and legacy blog pagination URL shapes. */
+function rayton_v2_blog_page_number() {
+	$page_number = max( (int) get_query_var( 'paged' ), (int) get_query_var( 'page' ) );
+	if ( $page_number ) {
+		return $page_number;
+	}
+
+	$request_path = wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/', PHP_URL_PATH );
+	$request_path = trim( (string) $request_path, '/' );
+	$home_path    = trim( (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
+	if ( $home_path && 0 === strpos( $request_path, $home_path . '/' ) ) {
+		$request_path = substr( $request_path, strlen( $home_path ) + 1 );
+	}
+	$segments = array_values( array_filter( explode( '/', $request_path ) ) );
+	if ( $segments && in_array( $segments[0], array( 'uk', 'en' ), true ) ) {
+		array_shift( $segments );
+	}
+
+	if ( isset( $segments[0] ) && in_array( $segments[0], array( 'blogs', 'blog' ), true ) ) {
+		if ( isset( $segments[1] ) && ctype_digit( $segments[1] ) ) {
+			return max( 1, (int) $segments[1] );
+		}
+		if ( isset( $segments[1], $segments[2] ) && 'page' === $segments[1] && ctype_digit( $segments[2] ) ) {
+			return max( 1, (int) $segments[2] );
+		}
+	}
+
+	return 1;
+}
+
 function rayton_v2_language_urls() {
 	if ( ! function_exists( 'pll_the_languages' ) ) {
 		return array();

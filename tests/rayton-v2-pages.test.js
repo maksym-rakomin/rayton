@@ -49,6 +49,23 @@ test('all 22 top-level sources have a redesign part or an explicit WordPress des
   assert.match(routes, /projects-hash-detail/);
 });
 
+test('financing CTA logo positions survive WordPress image optimizer markup', () => {
+  const financing = read('template-parts/pages/financing.php');
+  const styles = fs.readFileSync(path.join(root, 'assets/css/financing-figma.css'), 'utf8');
+  const logoClasses = [
+    'fin-cta__logo--raiffeisen',
+    'fin-cta__logo--pumb',
+    'fin-cta__logo--credit-agricole',
+    'fin-cta__logo--otp'
+  ];
+
+  for (const logoClass of logoClasses) {
+    assert.match(financing, new RegExp(`class="${logoClass}"`), logoClass);
+    assert.match(styles, new RegExp(`\\.${logoClass}\\s*\\{`), logoClass);
+  }
+  assert.doesNotMatch(styles, /\.fin-cta__logos\s+img:nth-child\(/);
+});
+
 test('locale routing keeps the packaged redesign for Ukrainian and English', () => {
   const routes = read('inc/routes.php');
   const content = read('template-parts/content-page.php');

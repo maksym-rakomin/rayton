@@ -15,7 +15,7 @@ $rayton_blog_copy    = $rayton_blog_english
 		'story' => 'View the full story', 'all' => 'All', 'solar' => 'Solar for business', 'uze' => 'Energy storage',
 		'hybrid' => 'Solar + storage', 'finance' => 'Financing', 'news' => 'News', 'demian' => 'Demian Krutchenko’s blog',
 		'olha' => 'Olha Lesko’s blog', 'more' => 'Read more', 'empty' => 'No articles have been published yet.',
-		'results' => 'articles',
+		'results' => 'articles', 'of' => 'of', 'previous' => 'Previous', 'next' => 'Next',
 	)
 	: array(
 		'home' => 'Головна', 'media' => 'Медіа', 'blog' => 'Блог', 'our_blog' => 'Наш блог',
@@ -25,19 +25,52 @@ $rayton_blog_copy    = $rayton_blog_english
 		'story' => 'Дивитися повну історію', 'all' => 'Усі', 'solar' => 'СЕС для бізнесу', 'uze' => 'УЗЕ',
 		'hybrid' => 'СЕС + УЗЕ', 'finance' => 'Фінансування', 'news' => 'Новини', 'demian' => 'Блог Дем’яна Крутченко',
 		'olha' => 'Блог Ольги Лесько', 'more' => 'Детальніше', 'empty' => 'Матеріалів поки немає.',
-		'results' => 'матеріалів',
+		'results' => 'матеріалів', 'of' => 'із', 'previous' => 'Назад', 'next' => 'Далі',
 	);
 
 $rayton_blog_category_id = rayton_v2_blog_category_id();
-$rayton_blog_query_args  = array(
-		'post_type'           => 'post',
-		'post_status'         => 'publish',
-		'posts_per_page'      => 60,
-		'ignore_sticky_posts' => true,
-		'suppress_filters'    => false,
+$rayton_blog_page        = rayton_v2_blog_page_number();
+$rayton_blog_page_size   = 6;
+$rayton_blog_topics      = array();
+$rayton_active_topic     = '';
+
+if ( $rayton_blog_category_id ) {
+	$rayton_blog_topics = get_categories(
+		array(
+			'parent'       => $rayton_blog_category_id,
+			'hide_empty'   => true,
+			'orderby'      => 'name',
+			'order'        => 'ASC',
+			'hierarchical' => false,
+		)
 	);
+	$rayton_requested_topic = isset( $_GET['blog_topic'] ) ? sanitize_title( wp_unslash( $_GET['blog_topic'] ) ) : '';
+	foreach ( $rayton_blog_topics as $rayton_blog_topic ) {
+		if ( $rayton_requested_topic && $rayton_requested_topic === $rayton_blog_topic->slug ) {
+			$rayton_active_topic = $rayton_requested_topic;
+			break;
+		}
+	}
+}
+
+$rayton_blog_query_args = array(
+	'post_type'           => 'post',
+	'post_status'         => 'publish',
+	'posts_per_page'      => $rayton_blog_page_size,
+	'paged'               => $rayton_blog_page,
+	'ignore_sticky_posts' => true,
+	'suppress_filters'    => false,
+);
 if ( $rayton_blog_category_id ) {
 	$rayton_blog_query_args['cat'] = $rayton_blog_category_id;
+	if ( $rayton_active_topic ) {
+		foreach ( $rayton_blog_topics as $rayton_blog_topic ) {
+			if ( $rayton_active_topic === $rayton_blog_topic->slug ) {
+				$rayton_blog_query_args['cat'] = (int) $rayton_blog_topic->term_id;
+				break;
+			}
+		}
+	}
 } else {
 	/* Never fill an untranslated blog with legacy portfolio posts. */
 	$rayton_blog_query_args['post__in'] = array( 0 );
@@ -98,38 +131,20 @@ if ( $rayton_case_posts ) {
 	<section class="media-blog-content">
 		<div class="container">
 			<p class="eyebrow"><?php echo esc_html( $rayton_blog_copy['our_blog'] ); ?></p>
-			<div class="tabs tabs--wrap media-filters" aria-label="<?php echo esc_attr( $rayton_blog_copy['blog'] ); ?>">
-				<?php
-				$rayton_blog_filters = array(
-					'all' => 'all', 'solar' => 'solar', 'storage' => 'uze', 'hybrid' => 'hybrid',
-					'finance' => 'finance', 'news' => 'news', 'demian' => 'demian', 'olha' => 'olha',
-				);
-				foreach ( $rayton_blog_filters as $rayton_filter => $rayton_label ) :
-					?>
-					<button class="tabs__btn<?php echo 'all' === $rayton_filter ? ' is-active' : ''; ?>" type="button" data-media-filter="<?php echo esc_attr( $rayton_filter ); ?>" aria-pressed="<?php echo 'all' === $rayton_filter ? 'true' : 'false'; ?>"><?php echo esc_html( $rayton_blog_copy[ $rayton_label ] ); ?></button>
-				<?php endforeach; ?>
-			</div>
+			<?php if ( $rayton_blog_topics ) : ?>
+				<nav class="tabs tabs--wrap media-filters" aria-label="<?php echo esc_attr( $rayton_blog_copy['blog'] ); ?>">
+					<a class="tabs__btn<?php echo $rayton_active_topic ? '' : ' is-active'; ?>" href="<?php echo esc_url( rayton_v2_page_url( 'blog' ) ); ?>"<?php echo $rayton_active_topic ? '' : ' aria-current="page"'; ?>><?php echo esc_html( $rayton_blog_copy['all'] ); ?></a>
+					<?php foreach ( $rayton_blog_topics as $rayton_blog_topic ) : ?>
+						<a class="tabs__btn<?php echo $rayton_active_topic === $rayton_blog_topic->slug ? ' is-active' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'blog_topic', $rayton_blog_topic->slug, rayton_v2_page_url( 'blog' ) ) ); ?>"<?php echo $rayton_active_topic === $rayton_blog_topic->slug ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $rayton_blog_topic->name ); ?></a>
+					<?php endforeach; ?>
+				</nav>
+			<?php endif; ?>
 
 			<?php if ( $rayton_blog_query->have_posts() ) : ?>
 				<ul class="grid grid--3 media-blog-grid" id="media-articles">
 					<?php while ( $rayton_blog_query->have_posts() ) : $rayton_blog_query->the_post(); ?>
-						<?php
-						$rayton_categories = get_the_category();
-						$rayton_haystack   = strtolower( implode( ' ', wp_list_pluck( $rayton_categories, 'slug' ) ) . ' ' . implode( ' ', wp_list_pluck( $rayton_categories, 'name' ) ) );
-						$rayton_tokens     = array();
-						$rayton_category_map = array(
-							'solar' => array( 'ses', 'solar', 'сес', 'соняч' ), 'storage' => array( 'uze', 'storage', 'узе', 'накоп' ),
-							'finance' => array( 'financ', 'фінанс', 'кредит', 'інвест' ), 'news' => array( 'news', 'новин' ),
-							'demian' => array( 'demian', 'дем’ян', 'дем\'ян' ), 'olha' => array( 'olha', 'ольг' ),
-						);
-						foreach ( $rayton_category_map as $rayton_token => $rayton_needles ) {
-							foreach ( $rayton_needles as $rayton_needle ) {
-								if ( false !== strpos( $rayton_haystack, $rayton_needle ) ) { $rayton_tokens[] = $rayton_token; break; }
-							}
-						}
-						if ( in_array( 'solar', $rayton_tokens, true ) && in_array( 'storage', $rayton_tokens, true ) ) { $rayton_tokens[] = 'hybrid'; }
-						?>
-						<li data-media-category="<?php echo esc_attr( implode( ' ', array_unique( $rayton_tokens ) ) ); ?>">
+						<?php $rayton_categories = get_the_category(); ?>
+						<li>
 							<article id="post-<?php the_ID(); ?>" <?php post_class( 'post-card media-post' ); ?>>
 								<a class="post-card__media" href="<?php the_permalink(); ?>">
 									<?php if ( has_post_thumbnail() ) : the_post_thumbnail( 'large', array( 'loading' => 'lazy' ) ); else : ?>
@@ -147,12 +162,32 @@ if ( $rayton_case_posts ) {
 						</li>
 					<?php endwhile; ?>
 				</ul>
-				<?php $rayton_page_count = max( 1, (int) ceil( $rayton_blog_query->post_count / 6 ) ); ?>
-				<nav class="media-pagination" aria-label="<?php echo esc_attr( $rayton_blog_copy['blog'] ); ?>">
-					<?php for ( $rayton_page = 1; $rayton_page <= $rayton_page_count; $rayton_page++ ) : ?><button type="button" data-media-page="<?php echo esc_attr( $rayton_page ); ?>"<?php echo 1 === $rayton_page ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $rayton_page ); ?></button><?php endfor; ?>
-					<a href="#media-articles"><?php echo esc_html( $rayton_blog_copy['blog'] ); ?></a>
-				</nav>
-				<p class="media-results" aria-live="polite">1–<?php echo esc_html( min( 6, $rayton_blog_query->post_count ) ); ?> <?php echo esc_html( $rayton_blog_copy['results'] ); ?></p>
+				<?php
+					$rayton_total_posts     = (int) $rayton_blog_query->found_posts;
+					$rayton_result_start    = ( ( $rayton_blog_page - 1 ) * $rayton_blog_page_size ) + 1;
+					$rayton_result_end      = min( $rayton_blog_page * $rayton_blog_page_size, $rayton_total_posts );
+					$rayton_pagination_base = trailingslashit( rayton_v2_page_url( 'blog' ) ) . 'page/%#%/';
+					if ( $rayton_active_topic ) {
+						$rayton_pagination_base = add_query_arg( 'blog_topic', $rayton_active_topic, $rayton_pagination_base );
+					}
+					$rayton_page_links = paginate_links(
+						array(
+							'base'      => $rayton_pagination_base,
+							'format'    => '',
+							'current'   => $rayton_blog_page,
+							'total'     => max( 1, (int) $rayton_blog_query->max_num_pages ),
+							'type'      => 'array',
+							'prev_text' => $rayton_blog_copy['previous'],
+							'next_text' => $rayton_blog_copy['next'],
+						)
+					);
+				?>
+				<?php if ( $rayton_page_links ) : ?>
+					<nav class="media-pagination" aria-label="<?php echo esc_attr( $rayton_blog_copy['blog'] ); ?>">
+						<?php foreach ( $rayton_page_links as $rayton_page_link ) : ?><?php echo wp_kses_post( $rayton_page_link ); ?><?php endforeach; ?>
+					</nav>
+				<?php endif; ?>
+				<p class="media-results" aria-live="polite"><?php echo esc_html( $rayton_result_start . '–' . $rayton_result_end . ' ' . $rayton_blog_copy['of'] . ' ' . $rayton_total_posts . ' ' . $rayton_blog_copy['results'] ); ?></p>
 			<?php else : ?>
 				<p class="media-empty"><?php echo esc_html( $rayton_blog_copy['empty'] ); ?></p>
 			<?php endif; ?>
