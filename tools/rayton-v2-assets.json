@@ -553,56 +553,8 @@
       "destination": "assets/img/investments/hero.png"
     },
     {
-      "source": "assets/img/media-1.jpg",
-      "destination": "assets/img/media-1.jpg"
-    },
-    {
-      "source": "assets/img/media-2.jpg",
-      "destination": "assets/img/media-2.jpg"
-    },
-    {
-      "source": "assets/img/media-3.jpg",
-      "destination": "assets/img/media-3.jpg"
-    },
-    {
-      "source": "assets/img/media-4.jpg",
-      "destination": "assets/img/media-4.jpg"
-    },
-    {
-      "source": "assets/img/media-5.jpg",
-      "destination": "assets/img/media-5.jpg"
-    },
-    {
-      "source": "assets/img/media-6.jpg",
-      "destination": "assets/img/media-6.jpg"
-    },
-    {
-      "source": "assets/img/media-7.jpg",
-      "destination": "assets/img/media-7.jpg"
-    },
-    {
-      "source": "assets/img/media-8.jpg",
-      "destination": "assets/img/media-8.jpg"
-    },
-    {
       "source": "assets/img/media/article-8270.jpg",
       "destination": "assets/img/media/article-8270.jpg"
-    },
-    {
-      "source": "assets/img/media/article-8466.jpg",
-      "destination": "assets/img/media/article-8466.jpg"
-    },
-    {
-      "source": "assets/img/media/article-8521.jpg",
-      "destination": "assets/img/media/article-8521.jpg"
-    },
-    {
-      "source": "assets/img/media/article-8660.jpg",
-      "destination": "assets/img/media/article-8660.jpg"
-    },
-    {
-      "source": "assets/img/media/article-8663.jpg",
-      "destination": "assets/img/media/article-8663.jpg"
     },
     {
       "source": "assets/img/media/article-8673.jpg",
@@ -615,10 +567,6 @@
     {
       "source": "assets/img/media/article-8677.jpg",
       "destination": "assets/img/media/article-8677.jpg"
-    },
-    {
-      "source": "assets/img/media/article-8678.jpg",
-      "destination": "assets/img/media/article-8678.jpg"
     },
     {
       "source": "assets/img/media/hero.webp",
@@ -639,10 +587,6 @@
     {
       "source": "assets/img/project-4.jpg",
       "destination": "assets/img/project-4.jpg"
-    },
-    {
-      "source": "assets/img/projects-video.jpg",
-      "destination": "assets/img/projects-video.jpg"
     },
     {
       "source": "assets/img/projects/ast.jpg",

@@ -28,13 +28,14 @@ function rayton_v2_enqueue_assets() {
 	$key    = function_exists( 'rayton_v2_current_page_key' ) ? rayton_v2_current_page_key() : '';
 	$packaged_key = function_exists( 'rayton_v2_use_packaged_page' ) && rayton_v2_use_packaged_page() ? $key : '';
 	$extra  = array(
+		'home'        => array( 'assets/css/media.css' ),
 		'ses'         => array( 'assets/css/business.css', 'assets/css/calculator.css' ),
 		'uze'         => array( 'assets/css/business.css' ),
 		'financing'   => array( 'assets/css/financing-figma.css' ),
 		'projects'    => array( 'assets/css/projects.css' ),
 		'blog'        => array( 'assets/css/financing-figma.css', 'assets/css/media.css' ),
 		'youtube'     => array( 'assets/css/financing-figma.css', 'assets/css/media.css' ),
-		'about'       => array( 'assets/css/company.css' ),
+		'about'       => array( 'assets/css/company.css', 'assets/css/media.css' ),
 		'contacts'    => array( 'assets/css/company.css' ),
 		'calculator'  => array( 'assets/css/calculator.css' ),
 		'investments' => array( 'assets/css/investments.css', 'assets/css/quote.css' ),
@@ -81,7 +82,7 @@ function rayton_v2_enqueue_assets() {
 			)
 		);
 	}
-	if ( in_array( $packaged_key, array( 'blog', 'youtube' ), true ) || 'blog' === $key ) {
+	if ( in_array( $packaged_key, array( 'home', 'about', 'blog', 'youtube' ), true ) || 'blog' === $key ) {
 		wp_enqueue_script( 'rayton-v2-media', rayton_v2_asset_url( 'assets/js/media.js' ), array(), rayton_v2_asset_version( 'assets/js/media.js' ), true );
 	}
 	if ( 'projects' === $packaged_key ) {
