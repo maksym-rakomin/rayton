@@ -53,7 +53,7 @@
   .control__scheme { margin-top: 24px; }
   .control__scheme img { margin-left: 0; max-width: 100%; }
   .whatis-grid { max-width: none; }
-  .process-grid > .step:nth-child(4) { border-left: 0; padding-left: 0; }
+  .process-grid > .step:nth-child(4) { border-left: 0; }
 
   .showcase { grid-template-columns: minmax(0, 1fr); }
   .showcase__list { max-height: none; padding-right: 0; }
@@ -265,7 +265,7 @@
   .quote { flex-direction: column; gap: 24px; padding: 0 0 24px; }
   .quote__photo { flex: 0 0 auto; width: 100%; min-height: 0; aspect-ratio: 16 / 10; }
   .quote__body { padding: 0 24px; }
-  .process-grid > .step { min-height: 0; padding: 24px 16px; border-left: 0; padding-left: 0; }
+  .process-grid > .step { min-height: 0; padding: 24px 16px; border-left: 0; }
   .process-grid > .step.step--accent { padding: 24px 16px; }
   .step { gap: 24px; }
 

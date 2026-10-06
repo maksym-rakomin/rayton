@@ -249,7 +249,7 @@
   border-left: 1px solid var(--c-border);
 }
 
-.process-grid > .step:first-child { border-left: 0; padding-left: 0; }
+.process-grid > .step:first-child { border-left: 0; }
 .process-grid > .step.step--accent { border-left: 0; border-radius: var(--r-md); background: var(--c-yellow); }
 
 .process-grid > .step {
