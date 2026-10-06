@@ -21,7 +21,7 @@ get_header();
 		$rayton_english    = 'en' === rayton_v2_current_locale();
 		$rayton_categories = get_the_category();
 		$rayton_category   = $rayton_categories ? $rayton_categories[0]->name : ( $rayton_english ? 'Article' : 'Стаття' );
-		$rayton_excerpt    = trim( (string) get_the_excerpt() );
+		$rayton_excerpt    = trim( (string) get_post_field( 'post_excerpt', get_the_ID(), 'raw' ) );
 		$rayton_words      = preg_match_all( '/[\p{L}\p{N}]+/u', wp_strip_all_tags( get_the_content() ), $rayton_word_matches );
 		$rayton_minutes    = max( 1, (int) ceil( $rayton_words / 180 ) );
 		$rayton_author_id  = (int) get_the_author_meta( 'ID' );
