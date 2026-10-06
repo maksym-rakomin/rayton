@@ -10,6 +10,24 @@ const { execFileSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const configPath = path.join(root, 'tools/rayton-v2-assets.json');
 
+test('shared control illustration uses one content-addressed filename to avoid stale WebP derivatives', () => {
+	const crypto = require('node:crypto');
+	const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+	const illustrations = config.assets.filter(asset => /\/rayton-control[^/]*\.png$/.test(asset.source));
+	assert.equal(illustrations.length, 1);
+	const asset = illustrations[0];
+	const hash = crypto.createHash('sha256').update(fs.readFileSync(path.join(root, asset.source))).digest('hex').slice(0, 12);
+	assert.equal(asset.source, `assets/img/rayton-control-${hash}.png`);
+	assert.equal(asset.destination, asset.source);
+	for (const page of ['ses', 'ses-industrial', 'ses-roof', 'ses-consumption', 'hybrid', 'autonomous', 'investments']) {
+		for (const file of [`${page}.html`, `wordpress/themes/rayton-v2/template-parts/pages/${page}.php`]) {
+			const contents = fs.readFileSync(path.join(root, file), 'utf8');
+			assert.ok(contents.includes(asset.source), file);
+			assert.ok(!contents.includes('assets/img/rayton-control.png'), file);
+		}
+	}
+});
+
 test('asset allowlist exactly matches reachable PHP, JavaScript, and recursive CSS dependencies', () => {
 	const { auditAssetDependencies } = require('../tools/build-rayton-v2.js');
 	const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));

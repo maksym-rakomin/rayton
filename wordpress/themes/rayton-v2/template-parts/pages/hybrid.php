@@ -359,7 +359,7 @@
     </div>
 
     <div class="control__scheme">
-      <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/rayton-control.png' ) ); ?>" alt="Схема системи Rayton Control" width="1210" height="681" loading="lazy">
+      <img src="<?php echo esc_url( rayton_v2_asset_url( 'assets/img/rayton-control-41797767801d.png' ) ); ?>" alt="Схема системи Rayton Control" width="1210" height="681" loading="lazy">
     </div>
   </section>
 
