@@ -269,7 +269,7 @@
   .process-grid > .step.step--accent { padding: 24px 16px; }
   .step { gap: 24px; }
 
-  .showcase__feature { min-height: 380px; padding: 24px; }
+  .showcase__feature { padding: 24px; }
   .media-row__media { flex-basis: 140px; width: 140px; }
 
   .post-row { gap: 16px; padding: 20px 0; }
