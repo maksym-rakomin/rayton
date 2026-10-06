@@ -1,0 +1,212 @@
+[
+  {
+    "phone_start": 0,
+    "phone_end": 17,
+    "screen_start": null,
+    "screen_end": null,
+    "title": "Инвестиции и карточки решений"
+  },
+  {
+    "phone_start": 17,
+    "phone_end": 28,
+    "screen_start": 52,
+    "screen_end": 67,
+    "title": "Последние статьи и видео"
+  },
+  {
+    "phone_start": 28,
+    "phone_end": 48,
+    "screen_start": null,
+    "screen_end": null,
+    "title": "YouTube и передача ссылки"
+  },
+  {
+    "phone_start": 48,
+    "phone_end": 55,
+    "screen_start": 85,
+    "screen_end": 98,
+    "title": "Главное видео"
+  },
+  {
+    "phone_start": 55,
+    "phone_end": 61,
+    "screen_start": null,
+    "screen_end": null,
+    "title": "Переходы на главной"
+  },
+  {
+    "phone_start": 61,
+    "phone_end": 79,
+    "screen_start": 100,
+    "screen_end": 118,
+    "title": "Rayton TV и каталог видео"
+  },
+  {
+    "phone_start": 79,
+    "phone_end": 110,
+    "screen_start": 119,
+    "screen_end": 148,
+    "title": "Проекты и фильтры"
+  },
+  {
+    "phone_start": 110,
+    "phone_end": 125,
+    "screen_start": null,
+    "screen_end": null,
+    "title": "Редактирование контента страниц"
+  },
+  {
+    "phone_start": 125,
+    "phone_end": 135,
+    "screen_start": null,
+    "screen_end": null,
+    "title": "Переходы между страницами"
+  },
+  {
+    "phone_start": 135,
+    "phone_end": 143,
+    "screen_start": 173,
+    "screen_end": 187,
+    "title": "Каталог статей в админке"
+  },
+  {
+    "phone_start": 143,
+    "phone_end": 205,
+    "screen_start": 190,
+    "screen_end": 257,
+    "title": "Поля и редактор статьи"
+  },
+  {
+    "phone_start": 205,
+    "phone_end": 228,
+    "screen_start": 262,
+    "screen_end": 286,
+    "title": "Дашборд"
+  },
+  {
+    "phone_start": 228,
+    "phone_end": 255,
+    "screen_start": 297,
+    "screen_end": 326,
+    "title": "Чат на сайте"
+  },
+  {
+    "phone_start": 255,
+    "phone_end": 355,
+    "screen_start": 327,
+    "screen_end": 367,
+    "title": "Поддержка и управление контентом"
+  },
+  {
+    "phone_start": 355,
+    "phone_end": 386,
+    "screen_start": 385,
+    "screen_end": 415,
+    "title": "Последние материалы"
+  },
+  {
+    "phone_start": 386,
+    "phone_end": 405,
+    "screen_start": 416,
+    "screen_end": 438,
+    "title": "Описание статьи"
+  },
+  {
+    "phone_start": 405,
+    "phone_end": 438,
+    "screen_start": 449,
+    "screen_end": 486,
+    "title": "Настройки публикации"
+  },
+  {
+    "phone_start": 438,
+    "phone_end": 476,
+    "screen_start": null,
+    "screen_end": null,
+    "title": "Автор и текст статьи"
+  },
+  {
+    "phone_start": 476,
+    "phone_end": 486,
+    "screen_start": 527,
+    "screen_end": 547,
+    "title": "Обновление материалов"
+  },
+  {
+    "phone_start": 486,
+    "phone_end": 500,
+    "screen_start": 577,
+    "screen_end": 596,
+    "title": "Блок Как мы работаем"
+  },
+  {
+    "phone_start": 500,
+    "phone_end": 513,
+    "screen_start": 598,
+    "screen_end": 611,
+    "title": "Главная страница"
+  },
+  {
+    "phone_start": 513,
+    "phone_end": 537,
+    "screen_start": null,
+    "screen_end": null,
+    "title": "Текст статьи и страницы банков"
+  },
+  {
+    "phone_start": 537,
+    "phone_end": 560,
+    "screen_start": null,
+    "screen_end": null,
+    "title": "Главная страница и обсуждение объёма"
+  },
+  {
+    "phone_start": 560,
+    "phone_end": 589,
+    "screen_start": 611,
+    "screen_end": 642,
+    "title": "Обсуждение завершения работ"
+  },
+  {
+    "phone_start": 589,
+    "phone_end": 623,
+    "screen_start": null,
+    "screen_end": null,
+    "title": "Чат и админка"
+  },
+  {
+    "phone_start": 623,
+    "phone_end": 640,
+    "screen_start": 653,
+    "screen_end": 676,
+    "title": "Обращения в поддержку"
+  },
+  {
+    "phone_start": 640,
+    "phone_end": 653,
+    "screen_start": 678,
+    "screen_end": 697,
+    "title": "Активное обращение на дашборде"
+  },
+  {
+    "phone_start": 653,
+    "phone_end": 672,
+    "screen_start": 699,
+    "screen_end": 738,
+    "title": "Блоки главной страницы"
+  },
+  {
+    "phone_start": 672,
+    "phone_end": 711,
+    "screen_start": 742,
+    "screen_end": 752,
+    "title": "Идея всплывающего блока"
+  },
+  {
+    "phone_start": 711,
+    "phone_end": 734.869333,
+    "screen_start": null,
+    "screen_end": null,
+    "title": "YouTube и завершение записи"
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "duration_seconds": 734.869333,
+  "streams": [
+    {
+      "type": "video",
+      "codec": "h264",
+      "duration_seconds": 734.818984375
+    },
+    {
+      "type": "audio",
+      "codec": "aac",
+      "duration_seconds": 734.8693333333333
+    }
+  ],
+  "checked_video_times": [
+    10,
+    60,
+    150,
+    270,
+    400,
+    500,
+    635,
+    705,
+    730
+  ],
+  "original_aac_packets_equal": true
+}
