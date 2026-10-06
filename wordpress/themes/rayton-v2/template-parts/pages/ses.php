@@ -196,10 +196,6 @@
                 <span class="tag tag--solid tag--glass">УЗЕ: 4180 кВт·год</span>
               </span>
             </a>
-            <div class="project-card__body">
-              <h3 class="project-card__title">Дніпровський металургійний завод</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
-            </div>
           </article>
         </li>
         <li>
@@ -212,10 +208,6 @@
                 <span class="tag tag--solid tag--glass">УЗЕ: 4180 кВт·год</span>
               </span>
             </a>
-            <div class="project-card__body">
-              <h3 class="project-card__title">Компанія «Юнівест Маркетинг»</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
-            </div>
           </article>
         </li>
         <li>
@@ -228,10 +220,6 @@
                 <span class="tag tag--solid tag--glass">УЗЕ: 1827 кВт·год</span>
               </span>
             </a>
-            <div class="project-card__body">
-              <h3 class="project-card__title">ТОВ «АФ Шевченка»</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
-            </div>
           </article>
         </li>
         <li>
@@ -244,10 +232,6 @@
                 <span class="tag tag--solid tag--glass">УЗЕ: 1405 кВт·год</span>
               </span>
             </a>
-            <div class="project-card__body">
-              <h3 class="project-card__title">ТОВ «Факторія Агро»</h3>
-              <a class="link-arrow" href="<?php echo esc_url( rayton_v2_page_url( 'projects', '' ) ); ?>">Детальніше <svg><use href="#i-arrow-right"></use></svg></a>
-            </div>
           </article>
         </li>
       </ul>
