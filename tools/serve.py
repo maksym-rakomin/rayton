@@ -6,6 +6,7 @@ show up on a plain reload.
 
     python3 tools/serve.py [port]      # default 4173
 """
+import utils.session
 import sys
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer

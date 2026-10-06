@@ -12,5 +12,5 @@ _design/
 
 # локальные настройки редактора
 .idea/
-.vscode/
 *.log
+config.bat
